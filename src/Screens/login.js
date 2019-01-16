@@ -11,6 +11,8 @@ import {
 } from "react-native";
 import FloatingLabel from "react-native-floating-labels";
 import SplashScreen from "react-native-splash-screen";
+import EvilIcon from "react-native-vector-icons/EvilIcons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 export default class Login extends Component {
   constructor() {
     super();
@@ -48,10 +50,16 @@ export default class Login extends Component {
             }}
           >
             <View style={{ flex: 1 }}>
-              <Image
+              {/* <Image
                 source={require("../../assets/email1_icon.png")}
                 style={{ width: 40, height: 20, marginVertical: 25 }}
                 resizeMode="contain"
+              /> */}
+              <MaterialCommunityIcons
+                name={"email-outline"}
+                size={25}
+                color={"white"}
+                style={{ marginVertical: 25, marginHorizontal: 5 }}
               />
             </View>
             <View style={{ flex: 6, flexDirection: "column" }}>
@@ -73,10 +81,16 @@ export default class Login extends Component {
             }}
           >
             <View style={{ flex: 1 }}>
-              <Image
+              {/* <Image
                 source={require("../../assets/password2_icon.png")}
                 style={{ width: 40, height: 20, marginVertical: 25 }}
                 resizeMode="contain"
+              /> */}
+              <EvilIcon
+                name={"lock"}
+                size={40}
+                color={"white"}
+                style={{ marginVertical: 20 }}
               />
             </View>
             <View style={{ flex: 5 }}>

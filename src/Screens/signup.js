@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import FloatingLabel from "react-native-floating-labels";
 import SplashScreen from "react-native-splash-screen";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 export default class Login extends Component {
   constructor() {
     super();
