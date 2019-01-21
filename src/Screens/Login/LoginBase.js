@@ -1,9 +1,12 @@
-import React, { Component } from "react";
-import { isValidEmail, isValidPassword } from "../../utilities/validation";
-import { callApi } from "../../utilities/serverApi";
-import { setUserToken, setUser } from "../../redux/index";
-import { get } from "lodash";
+import React, { Component } from 'react';
+import { isValidEmail, isValidPassword } from '../../utilities/validation';
+import { callApi } from '../../utilities/serverApi';
+import { setUserToken, setUser } from '../../redux/index';
+import { get } from 'lodash';
 export default class LoginBase extends Component {
+  constructor(props) {
+    super(props);
+  }
   ChangeText = (text, name) => {
     this.setState({ [name]: text });
   };
@@ -12,7 +15,7 @@ export default class LoginBase extends Component {
     var email = isValidEmail(this.state.email);
     var password = isValidPassword(this.state.password);
     console.log(email, password);
-    if (email === false) email = "Enter Valid Email id";
+    if (email === false) email = 'Enter Valid Email id';
     this.setState({
       emailerror: email,
       passworderror: password
@@ -23,28 +26,30 @@ export default class LoginBase extends Component {
     return false;
   };
   onSubmit = () => {
+    const { navigate } = this.props.navigation;
     if (this.checkAllField()) {
       let data = {
         email: this.state.email,
         password: this.state.password
       };
-      let result = callApi("post", "v1/auth/login", data)
+      let result = callApi('post', 'v1/auth/login', data)
         .then(response => {
           console.log(
-            "access token",
+            'access token',
             response.data.token.accessToken,
-            "user",
+            'user',
             response.data.user
           );
           setUser(response.data.user);
           setUserToken(response.data.token.accessToken);
-          console.log("token set");
+          navigate('Oauth');
+          console.log('token set');
         })
         .catch(error => {
           console.log(error);
         });
     } else {
-      console.log("error in validation");
+      console.log('error in validation');
     }
   };
   componentDidMount() {}

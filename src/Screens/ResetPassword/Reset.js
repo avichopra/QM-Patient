@@ -9,17 +9,22 @@ import {
 } from 'react-native';
 import Textinput from '../../component/CustomComponent/Textinput';
 import style from '../../styles/index';
-import Base from './LoginBase';
+import Base from './ResetBase';
 import SplashScreen from 'react-native-splash-screen';
-export default class Login extends Base {
+export default class Reset extends Base {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
       password: '',
-      emailerror: '',
-      passworderror: ''
+      confirmpassword: '',
+      passworderror: '',
+      confirmpassworderror: ''
     };
+  }
+  componentDidMount() {
+    setTimeout(() => {
+      SplashScreen.hide();
+    }, 1000);
   }
   render() {
     return (
@@ -38,22 +43,23 @@ export default class Login extends Base {
           <View style={style.f1}>
             <View style={style.d4}>
               <Image
-                source={{ uri: 'asset:/icon/mail_copy.png' }}
+                source={{ uri: 'asset:/icon/lock.png' }}
                 style={style.d5}
                 resizeMode='contain'
               />
 
               <View style={style.f8}>
                 <Textinput
+                  secureTextEntry={true}
                   onChangeText={text => {
-                    this.ChangeText(text, 'email');
+                    this.ChangeText(text, 'password');
                   }}
                 >
-                  Email
+                  Password
                 </Textinput>
               </View>
             </View>
-            <Text style={style.c1}>{this.state.emailerror}</Text>
+            <Text style={style.c1}>{this.state.passworderror}</Text>
             <View style={style.d4}>
               <Image
                 source={{ uri: 'asset:/icon/lock.png' }}
@@ -65,39 +71,16 @@ export default class Login extends Base {
                 <Textinput
                   secureTextEntry={true}
                   onChangeText={text => {
-                    this.ChangeText(text, 'password');
+                    this.ChangeText(text, 'confirmpassword');
                   }}
                 >
-                  Password
+                  Confirm Password
                 </Textinput>
               </View>
-
-              <Text
-                style={{ fontSize: 12, color: 'white', marginVertical: 20 }}
-                onPress={() => {
-                  this.props.navigation.navigate('Reset');
-                }}
-              >
-                Forgot Password?
-              </Text>
             </View>
-            <Text style={style.c1}>{this.state.passworderror}</Text>
+            <Text style={style.c1}>{this.state.confirmpassworderror}</Text>
           </View>
           <View style={[style.j1, style.f1]}>
-            <View style={style.d7}>
-              <Text style={[style.i1, { fontSize: 12 }]}>
-                Dont have an account? &nbsp;
-              </Text>
-
-              <Text
-                onPress={() => {
-                  this.props.navigation.navigate('SignUp');
-                }}
-                style={style.i1}
-              >
-                Create One
-              </Text>
-            </View>
             <TouchableOpacity style={style.c2} onPress={this.onSubmit}>
               <Text
                 style={{
@@ -108,7 +91,7 @@ export default class Login extends Base {
                   fontFamily: 'Nunito Bold'
                 }}
               >
-                SIGN IN
+                Change Password
               </Text>
             </TouchableOpacity>
           </View>

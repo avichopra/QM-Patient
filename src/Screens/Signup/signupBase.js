@@ -87,20 +87,6 @@ export default class signupBase extends Component {
         .catch(error => {
           console.log(error);
         });
-      //   axios
-      //     .post("http://192.168.100.166:3000/v1/auth/register", {
-      //       fullname: "asd",
-      //       email: "ashutoshkr@daffodilsw.com",
-      //       contactNo: "9045552671",
-      //       emergencycontactnumber: "9045552671",
-      //       password: "hjvghjv"
-      //     })
-      //     .then(response => {
-      //       console.log(response);
-      //     })
-      //     .catch(error => {
-      //       console.log(error);
-      //     });
     } else {
       console.log("error");
     }

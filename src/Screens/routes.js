@@ -2,16 +2,24 @@ import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 import Login from './Login/login';
 import SignUp from './Signup/signup';
 import Reset from './reset/reset';
-import Drawer from './DrawerNavigator';
+import Oauth from './oAuthComponent/oauth';
+import Drawer from './drawer';
+import OTP from './OTP/otp';
+import ResetPassword from './ResetPassword/Reset';
 const SwitchRouteConfig = {
-	Login: Login,
-	SignUp: SignUp,
-	Reset: Reset,
-	Drawer: Drawer
+  Login: Login,
+  SignUp: SignUp,
+  Reset: Reset,
+  Oauth: Oauth,
+  Drawer: Drawer,
+  OTP: OTP,
+  ResetPassword: ResetPassword
 };
 
 const SwitchConfig = {
-	initialRouteName: 'Drawer'
+  initialRouteName: 'Oauth'
 };
 
-export default createAppContainer(createSwitchNavigator(SwitchRouteConfig, SwitchConfig));
+export default createAppContainer(
+  createSwitchNavigator(SwitchRouteConfig, SwitchConfig)
+);
