@@ -10,7 +10,8 @@ export default (Button = (props) => {
 		style = {},
 		backgroundColor = '',
 		styleTitle = {},
-		loading = false
+		loading = false,
+		onSave = () => {}
 	} = props;
 	return (
 		<View style={{ width: '100%', alignItems: 'center' }}>
@@ -27,7 +28,8 @@ export default (Button = (props) => {
 					},
 					style
 				]}
-				onPress={disabled ? () => {} : onPress}
+				onPress={onSave}
+				// {disabled ? () => {} : onPress}
 				activeOpacity={0.5}
 			>
 				<Text style={{ color: 'white', fontSize: 20 }}>{title}</Text>

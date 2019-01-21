@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { NavigationActions } from 'react-navigation';
-import { ScrollView, Text, View, StyleSheet, Dimensions } from 'react-native';
+import { ScrollView, Text, View, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import DrawerItem from '../ReusableComponents/DrawerItem';
 import Foundation from 'react-native-vector-icons/Foundation';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -15,7 +15,11 @@ class DrawerContent extends Component {
 		this.props.navigation.dispatch(navigateAction);
 		this.props.navigation.closeDrawer();
 	};
+	onPressLogout = () => {
+		this.props.navigation.closeDrawer();
 
+		this.props.navigation.navigate('Login');
+	};
 	render() {
 		return (
 			<View style={styles.DrawerContent}>
@@ -52,13 +56,15 @@ class DrawerContent extends Component {
 					// icon={<FontAwesome name={'history'} size={25} color={'#383838'} />}
 					name={'history'}
 				/>
+				{/* <TouchableOpacity onPress={this.onPressLogout}> */}
 				<DrawerItem
 					title={'Logout'}
-					navigateToScreen={this.navigateToScreen}
+					navigateToScreen={this.onPressLogout}
 					route={'Logout'}
 					// icon={<FontAwesome name={'history'} size={25} color={'#383838'} />}
 					name={'logout'}
 				/>
+				{/* </TouchableOpacity> */}
 				<View style={{ position: 'absolute', width: '100%', alignItems: 'center' }}>
 					<View
 						style={{

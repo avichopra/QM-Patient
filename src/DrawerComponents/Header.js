@@ -8,42 +8,41 @@ import ImagePicker from 'react-native-image-picker';
 export default class Header extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			avatarSource: null
-		};
 	}
-	cameraClicked = () => {
-		console.log('avatarrrrrrrrrrrrrrr clicked called>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-		const options = {
-			// title: 'Select Avatar'
-			// customButtons: [ { name: 'fb', title: 'Choose Photo from Facebook' } ],
-			// storageOptions: {
-			// 	skipBackup: true,
-			// 	path: 'images'
-			// }
-		};
-		ImagePicker.launchCamera(options, (response) => {
-			console.log('Response = ', response);
+	// cameraClicked = () => {
+	// 	console.log('avatarrrrrrrrrrrrrrr clicked called>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+	// 	const options = {
+	// 		title: 'Select Avatar'
+	// 		// customButtons: [ { name: 'fb', title: 'Choose Photo from Facebook' } ],
+	// 		// storageOptions: {
+	// 		// 	skipBackup: true,
+	// 		// 	path: 'images'
+	// 		// }
+	// 	};
+	// 	ImagePicker.showImagePicker(options, (response) => {
+	// 		console.log('Response = ', response);
 
-			if (response.didCancel) {
-				console.log('User cancelled image picker');
-			} else if (response.error) {
-				console.log('ImagePicker Error: ', response.error);
-			} else if (response.customButton) {
-				console.log('User tapped custom button: ', response.customButton);
-			} else {
-				const source = { uri: response.uri };
+	// 		if (response.didCancel) {
+	// 			console.log('User cancelled image picker');
+	// 		} else if (response.error) {
+	// 			console.log('ImagePicker Error: ', response.error);
+	// 		} else if (response.customButton) {
+	// 			console.log('User tapped custom button: ', response.customButton);
+	// 		} else {
+	// 			const source = { uri: response.uri };
 
-				// You can also display the image using data:
-				// const source = { uri: 'data:image/jpeg;base64,' + response.data };
+	// 			// You can also display the image using data:
+	// 			// const source = { uri: 'data:image/jpeg;base64,' + response.data };
 
-				this.setState({
-					avatarSource: source
-				});
-			}
-		});
-	};
+	// 			this.setState({
+	// 				avatarSource: source,
+	// 				imageSelected: true
+	// 			});
+	// 		}
+	// 	});
+	// };
 	render() {
+		const { cameraClicked = () => {}, avatarSource = {} } = this.props;
 		return (
 			// <View style={styles.mainView}>
 			<View
@@ -82,12 +81,29 @@ export default class Header extends Component {
 								// backgroundColor: 'coral',
 								// position: 'absolute',
 								marginTop: 20,
-								borderColor: 'white',
-								borderWidth: 1.5,
-								alignSelf: 'center'
+								// borderColor: 'white',
+								// borderWidth: 1.5,
+								alignSelf: 'center',
+								alignItems: 'center'
 								// marginTop: 100
 							}}
-						/>
+						>
+							<Image
+								source={avatarSource}
+								style={{
+									height: 80,
+									width: 80,
+									borderRadius: 50,
+									borderWidth: 1.5,
+									borderColor: 'white'
+
+									// backgroundColor: 'coral',
+									// position: 'absolute',
+
+									// marginTop: 100
+								}}
+							/>
+						</View>
 						<TouchableOpacity
 							style={{
 								height: 35,
@@ -100,7 +116,7 @@ export default class Header extends Component {
 								alignItems: 'flex-end',
 								justifyContent: 'flex-end'
 							}}
-							onPress={this.cameraClicked}
+							onPress={cameraClicked}
 						>
 							<Image
 								source={{ uri: 'mipmap/camera' }}

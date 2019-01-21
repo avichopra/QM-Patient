@@ -12,6 +12,8 @@ class MyProfile extends MyProfileBase {
 	};
 
 	render() {
+		console.log('avatarrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr', this.state.avatarSource);
+
 		const height = Dimensions.get('window').height;
 		const { GeneralInfoPressed, AdditionalInfoPressed } = this.state;
 		return (
@@ -24,6 +26,7 @@ class MyProfile extends MyProfileBase {
 								openDrawer={this.openDrawer}
 								height={200}
 								cameraClicked={this.cameraClicked}
+								avatarSource={this.state.avatarSource}
 							/>
 						</View>
 						<View
@@ -175,7 +178,7 @@ class MyProfile extends MyProfileBase {
 								marginVertical: 30
 							}}
 						>
-							<Button title={'Save'} backgroundColor={'#443BFF'} />
+							<Button title={'Save'} backgroundColor={'#443BFF'} onSave={this.onSave} />
 						</View>
 					</View>
 				</ScrollView>

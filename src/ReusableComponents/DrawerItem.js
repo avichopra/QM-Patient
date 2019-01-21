@@ -8,9 +8,10 @@ export default class DrawerItem extends Component {
 	}
 
 	render() {
+		const { navigateToScreen = () => {} } = this.props;
 		return (
 			<View style={styles.DrawerItem}>
-				<TouchableOpacity onPress={this.props.navigateToScreen(this.props.route)}>
+				<TouchableOpacity onPress={() => navigateToScreen(this.props.route)}>
 					<View style={styles.Container}>
 						<View style={styles.Icon}>
 							<Image
