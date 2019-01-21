@@ -19,29 +19,8 @@ export default class Login extends SignupBase {
     super(props);
   }
   componentDidMount() {
-    Linking.getInitialURL().then(url => {
-      this.navigate(url);
-    });
-    setTimeout(() => {
-      SplashScreen.hide();
-    }, 5000);
+    SplashScreen.hide();
   }
-  handleOpenURL = event => {
-    this.navigate(event.url);
-  };
-  navigate = url => {
-    console.log('Linking ', url);
-    // E
-    // const { navigate } = this.props.navigation;
-    // const route = url.replace(/.*?:\/\//g, '');
-    // const id = route.match(/\/([^\/]+)\/?$/)[1];
-    // const routeName = route.split('/')[0];
-
-    // // if (routeName === 'people') {
-    // //   navigate('People', { id, name: 'chris' });
-    // // }
-    // console.log('Navigate', routeName);
-  };
   render() {
     return (
       <ScrollView contentContainerStyle={style.f1}>

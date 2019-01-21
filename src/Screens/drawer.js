@@ -4,7 +4,7 @@ export default class Drawer extends Component {
   render() {
     return (
       <View>
-        <Text>Hiii in Drawer</Text>
+        <Text> Drawer</Text>
       </View>
     );
   }
