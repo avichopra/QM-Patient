@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, ScrollView, KeyboardAvoidingView, Dimensions } from 'react-native';
+import { Text, View, TouchableOpacity, ScrollView, KeyboardAvoidingView, Dimensions, StyleSheet } from 'react-native';
 import Header from './Header';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import TextField from '../ReusableComponents/TextInput';
 import Button from '../ReusableComponents/Button';
 import MyProfileBase from './MyProfileBase';
+import { connect } from 'react-redux';
 class MyProfile extends MyProfileBase {
 	static navigationOptions = {
 		drawerLabel: 'My Profile',
@@ -12,42 +13,27 @@ class MyProfile extends MyProfileBase {
 	};
 
 	render() {
-		console.log('avatarrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr', this.state.avatarSource);
-
 		const height = Dimensions.get('window').height;
 		const { GeneralInfoPressed, AdditionalInfoPressed } = this.state;
+		let { username = '', email = '', contactNo = '', picture = '' } = this.props.user;
 		return (
-			<KeyboardAvoidingView style={{ flex: 1 }}>
-				<ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-					<View style={{ flexGrow: 1 }}>
-						<View style={{ height: 200 }}>
+			<KeyboardAvoidingView style={styles.fg}>
+				<ScrollView contentContainerStyle={styles.fg}>
+					<View style={styles.fg}>
+						<View style={styles.ProfileHeaderHeight}>
 							<Header
 								title={'My Profile'}
 								openDrawer={this.openDrawer}
 								height={200}
 								cameraClicked={this.cameraClicked}
-								avatarSource={this.state.avatarSource}
+								avatarSource={this.state.picture}
+								onHandleChange={this.onHandleChange}
+								name="userName"
+								fieldValue={this.state.userName}
 							/>
 						</View>
-						<View
-							style={{
-								height: 60,
-								width: '100%',
-								flexDirection: 'row',
-								alignItems: 'center'
-								// flexGrow: 1,
-							}}
-						>
-							<TouchableOpacity
-								style={{
-									width: '48%',
-									borderRightWidth: 1,
-									borderRightColor: '#B1B1B1',
-									alignItems: 'center',
-									justifyContent: 'center'
-								}}
-								onPress={this.GeneralInfoPressed}
-							>
+						<View style={styles.InfoView}>
+							<TouchableOpacity style={[ styles.GInfo, styles.center ]} onPress={this.GeneralInfoPressed}>
 								<Text
 									style={[
 										GeneralInfoPressed && true ? { color: 'black' } : { color: '#B1B1B1' },
@@ -107,6 +93,7 @@ class MyProfile extends MyProfileBase {
 									onHandleChange={this.onHandleChange}
 									field={'GeneralInfo'}
 									value={'email'}
+									fieldValue={email}
 								/>
 								<TextField
 									placeholder={'Contact No.'}
@@ -114,6 +101,9 @@ class MyProfile extends MyProfileBase {
 									onHandleChange={this.onHandleChange}
 									field={'GeneralInfo'}
 									value={'contactNo'}
+									fieldValue={contactNo}
+									error={this.state.GeneralInfo.contactNoError}
+									keyboardType={'numeric'}
 								/>
 								<TextField
 									placeholder={'Emergency Contact No.'}
@@ -121,6 +111,8 @@ class MyProfile extends MyProfileBase {
 									onHandleChange={this.onHandleChange}
 									field={'GeneralInfo'}
 									value={'emergencyContactNo'}
+									error={this.state.GeneralInfo.emergencyContactNoError}
+									keyboardType={'numeric'}
 								/>
 							</View>
 						) : (
@@ -178,7 +170,12 @@ class MyProfile extends MyProfileBase {
 								marginVertical: 30
 							}}
 						>
-							<Button title={'Save'} backgroundColor={'#443BFF'} onSave={this.onSave} />
+							<Button
+								title={'Save'}
+								backgroundColor={'#443BFF'}
+								onSave={this.onSave}
+								loading={this.state.loading}
+							/>
 						</View>
 					</View>
 				</ScrollView>
@@ -186,4 +183,30 @@ class MyProfile extends MyProfileBase {
 		);
 	}
 }
-export default MyProfile;
+function mapStateToProps(state) {
+	console.log('I am the stateeeeeeeeeeeeeeeeeeeeeeeeeeee', state);
+	return {
+		user: state.user,
+		token: state.token
+	};
+}
+const styles = StyleSheet.create({
+	fg: { flexGrow: 1 },
+	ProfileHeaderHeight: { height: 200 },
+	InfoView: {
+		height: 60,
+		width: '100%',
+		flexDirection: 'row',
+		alignItems: 'center'
+		// flexGrow: 1,
+	},
+	center: { alignItems: 'center', justifyContent: 'center' },
+	GInfo: {
+		width: '48%',
+		borderRightWidth: 1,
+		borderRightColor: '#B1B1B1'
+		// alignItems: 'center',
+		// justifyContent: 'center'
+	}
+});
+export default connect(mapStateToProps)(MyProfile);
