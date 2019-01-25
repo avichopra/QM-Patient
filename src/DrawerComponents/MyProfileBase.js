@@ -1,20 +1,23 @@
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 import { callApi } from '../utilities/serverApi';
+import ImageResizer from 'react-native-image-resizer';
+
 import SplashScreen from 'react-native-splash-screen';
 import ImagePicker from 'react-native-image-picker';
+import { setUser } from '../redux/index';
+
 import Axios from 'axios';
 export default class MyProfile extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			GeneralInfoPressed: false,
+			GeneralInfoPressed: true,
 			AdditionalInfoPressed: false,
 			GeneralInfo: {
 				email: '',
 				contactNo: '',
 				emergencyContactNo: '',
-				emailError: '',
 				contactNoError: '',
 				emergencyContactNoError: ''
 			},
@@ -22,77 +25,104 @@ export default class MyProfile extends Component {
 				address: '',
 				bloodGroup: '',
 				emergencyContactNo: '',
-				relationWithPatient: '',
-				addressError: '',
-				bloodGroupError: '',
-				relationWithPatientError: ''
+				relationWithPatient: ''
 			},
 			imageSelected: false,
 			profileImage: '',
 			userName: '',
 			avatarSource: null,
-			picture: ''
+			picture: '',
+			userName: '',
+			loading: false
 		};
 	}
+
 	onHandleChange = (name, value, field) => {
-		this.state[field][name] = value;
-		this.setState({});
-		console.log('stateeeeeeeeeeeeeeeeee', this.state[field]);
+		if (field) {
+			this.state[field][name] = value;
+			this.setState({});
+		} else {
+			this.state[name] = value;
+			this.setState({});
+		}
 	};
 	openDrawer = () => {
 		this.props.navigation.openDrawer();
 	};
 	componentDidMount() {
+		this.state.userName = this.props.user.username;
+		this.state.GeneralInfo.email = this.props.user.email;
+		this.state.GeneralInfo.contactNo = this.props.user.contactNo;
+		this.state.picture = this.props.user.picture;
+		this.setState({});
+		// console.log('did mount>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', this.props.user.);
 		setTimeout(() => {
 			SplashScreen.hide();
 		}, 2000);
 	}
 
 	onSave = () => {
-		console.log('onSave being called>>>>>>>>>>>>>>>>>>>>>>>');
-		let data = new FormData();
-		// data.append('email', this.state.GeneralInfo.email);
-		// data.append('contactNo', this.state.GeneralInfo.contactNo);
-		// data.append('emergencycontactnumber', this.state.GeneralInfo.emergencyContactNo);
-		// data.append('bloodGroup', this.state.AdditionalInfo.bloodGroup);
-		// data.append('realtionWithPatient', this.state.AdditionalInfo.relationWithPatient);
-		// data.append('emergencyContactNo', this.state.AdditionalInfo.emergencyContactNo);
-		// if (this.state.imageSelected === true) {
-		data.append('file', {
-			uri: this.state.avatarSource.uri,
-			type: 'image/jpeg',
-			name: this.state.avatarSource.fileName
-		});
-		data.append('bucket', 'public');
-
+		// console.log('on save being called>>>>>>>>>>>>>>>>>>>>>>>>>>.');
+		// let contactNoError, emergencyContactNoError;
+		// if (
+		// 	this.state.GeneralInfo.contactNo !== '' &&
+		// 	(this.state.GeneralInfo.contactNo.length < 10 || this.state.GeneralInfo.contactNo.length > 10)
+		// ) {
+		// 	contactNoError = true;
+		// 	this.state.GeneralInfo.contactNoError = 'field should be 10 characters long';
+		// 	this.setState({});
+		// } else {
+		// 	contactNoError = false;
 		// }
-		let headers = {
-			'Content-Type': 'multipart/form-data',
-			Accept: 'application/json',
-			authorization:
-				'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NDgwNDk1MDMsImlhdCI6MTU0ODA0NzcwMywic3ViIjoiNWM0MzAwODRkNmVhMTgzZDYyNTMwMzc4In0.1fIiDfuod_ggf21IrtmuMA6f1_m0UQAZXXqMoZnkMnc'
+		// if (
+		// 	this.state.GeneralInfo.emergencyContactNo !== '' &&
+		// 	(this.state.GeneralInfo.emergencyContactNo.length < 10 || this.state.GeneralInfo.emergencyContactNo > 10)
+		// ) {
+		// 	emergencyContactNoError = true;
+		// 	this.state.GeneralInfo.emergencyContactNoError = 'field should be 10 characters long';
+		// 	this.setState({});
+		// } else {
+		// 	emergencyContactNoError = false;
+		// }
+		// if (emergencyContactNoError && contactNoError === false) {
+		let data = {
+			setter: {
+				$set: {
+					username: this.state.userName,
+					email: this.state.GeneralInfo.email,
+					contactNo: this.state.GeneralInfo.contactNo,
+					emergencycontactnumber: this.state.GeneralInfo.emergencyContactNo,
+					address: this.state.AdditionalInfo.address,
+					bloodGroup: this.state.AdditionalInfo.bloodGroup,
+					realtionWithPatient: this.state.realtionWithPatient,
+					emergencyContactNo: this.state.AdditionalInfo.emergencyContactNo,
+					picture: this.state.picture
+				}
+			}
 		};
-		console.log('callinnnnnnnnnnnnnnnnnnnnng api', data);
-		callApi('post', 'v1/daffo/dispatch/upload', data, headers)
-			// Axios.post('http://192.168.100.141:3000/v1/daffo/dispatch/upload', data, { headers })
-			.then((response) => {
-				console.log('recieved response from uploaddddddddd', response.data[0].file.filename);
-				this.setState({ picture: response.data[0].file.filename });
+		let headers = {
+			'Content-Type': 'application/json',
+			Accept: 'application/json',
+			authorization: `Bearer ${this.props.token}`
+		};
+		this.setState({ loading: true });
+		callApi('patch', 'v1/daffo/User/updateOwn', data, headers)
+			// Axios.patch('http://192.168.100.141:3000/v1/daffo/User/updateOwn', data, { headers })
+			.then((result) => {
+				console.log('result>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', result);
+				setUser(result.data[0]);
+				this.setState({ loading: false });
 			})
 			.catch((err) => {
-				console.log('error from myProfile Base upload image', err.response, err.status, err);
+				console.log('error from myProfile Base', err.response, err.status, err);
 				// this.setState({ loading: false });
 			});
+		// }
 	};
 	cameraClicked = () => {
 		console.log('avatarrrrrrrrrrrrrrr clicked called>>>>>>>>>>>>>>>>>>>>>>>>>>>');
 		const options = {
 			title: 'Select Avatar'
-			// customButtons: [ { name: 'fb', title: 'Choose Photo from Facebook' } ],
-			// storageOptions: {
-			// 	skipBackup: true,
-			// 	path: 'images'
-			// }
 		};
 		ImagePicker.launchImageLibrary(options, (response) => {
 			console.log('Response = ', response);
@@ -104,14 +134,34 @@ export default class MyProfile extends Component {
 			} else if (response.customButton) {
 				console.log('User tapped custom button: ', response.customButton);
 			} else {
+				let data = new FormData();
 				// const source = { uri: response.uri };
 
 				// You can also display the image using data:
 				// const source = { uri: 'data:image/jpeg;base64,' + response.data };
-
-				this.setState({
-					avatarSource: response,
-					imageSelected: true
+				ImageResizer.createResizedImage(response.uri, 164, 164, 'JPEG', 100, 0).then((result) => {
+					data.append('file', {
+						uri: result.uri,
+						type: 'image/jpeg',
+						name: result.name
+					});
+					data.append('bucket', 'public');
+					let headers = {
+						'Content-Type': 'multipart/form-data',
+						Accept: 'application/json',
+						authorization: `Bearer ${this.props.token}`
+					};
+					console.log('Tokennnnnnnnnnnnnnnnnnnnnnnnnnnnn', this.props.token);
+					callApi('post', 'v1/daffo/dispatch/upload', data, headers)
+						// Axios.post('http://192.168.100.141:3000/v1/daffo/dispatch/upload', data, { headers })
+						.then((result1) => {
+							console.log('updateddddddddddddddddddd', result1);
+							this.setState({ picture: result1.data[0].file.filename });
+						})
+						.catch((err) => {
+							console.log('error from myProfile Base upload image', err.response, err.status, err);
+							// this.setState({ loading: false });
+						});
 				});
 			}
 		});
