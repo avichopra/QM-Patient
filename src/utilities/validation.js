@@ -1,5 +1,5 @@
-function checkField(field) {
-  if (field === '') return 'Fullname cannot be empty';
+function checkField(field, data) {
+  if (data === '') return `${field} cannot be empty`;
   return true;
 }
 function isValidEmail(email) {
@@ -27,11 +27,4 @@ function isValidConfirmPassword(password, confirmpassword) {
   if (confirmpassword !== password) return 'Password not Match';
   return true;
 }
-export {
-  checkField,
-  isValidEmail,
-  isValidContactnumber,
-  isValidPassword,
-  isValidConfirmPassword,
-  isValidOTP
-};
+export { checkField, isValidEmail, isValidContactnumber, isValidPassword, isValidConfirmPassword, isValidOTP };

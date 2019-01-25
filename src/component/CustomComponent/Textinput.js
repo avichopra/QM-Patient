@@ -15,7 +15,7 @@ export default class Textinput extends Component {
         }}
         inputStyle={{
           borderWidth: 0,
-          fontSize: 16,
+          fontSize: 14,
           color: 'white',
           fontFamily: 'Nunito Regular'
         }}
