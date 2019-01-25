@@ -2,21 +2,23 @@ import React, { Component } from 'react';
 import { Text, View, Image, TouchableOpacity, ImageBackground, ScrollView, KeyboardAvoidingView } from 'react-native';
 import Textinput from '../../component/CustomComponent/Textinput';
 import style from '../../styles/index';
-import SplashScreen from 'react-native-splash-screen';
-import Base from './resetBase';
-export default class Reset extends Base {
+import Base from './otpBase';
+export default class OTP extends Base {
   constructor(props) {
     super(props);
     this.state = {
       email: '',
-      emailerror: ''
+      otp: '',
+      otperror: ''
     };
   }
 
   componentDidMount() {
-    setTimeout(() => {
-      SplashScreen.hide();
-    }, 5000);
+    const { navigation } = this.props;
+    const email = navigation.getParam('email');
+    // const user = navigation.getParam('user');
+    this.setState({ email });
+    console.log('Parameter', email);
   }
 
   render() {
@@ -31,51 +33,33 @@ export default class Reset extends Base {
               />
             </View>
 
-            <View style={{ marginVertical: 10 }}>
-              <Text style={[style.i1, style.a1]}>Forget Password</Text>
-            </View>
-            <View style={{ flexGrow: 0.5 }}>
-              <Text style={[style.i1, { fontSize: 12 }]}>We just need your registered e-mail address to</Text>
-
-              <Text style={[style.i1, style.a1, { fontSize: 12 }]}>send you password reset link</Text>
+            <View style={{ marginVertical: 10, flexGrow: 0.5 }}>
+              <Text style={[style.i1, style.a1]}>Enter OTP</Text>
             </View>
             <View style={style.d4}>
               <Image
-                source={{ uri: 'asset:/icon/mail_copy.png' }}
+                source={{ uri: 'asset:/icon/lock.png' }}
                 style={{ width: 40, height: 20, marginVertical: 30 }}
                 resizeMode='contain'
               />
 
               <View style={style.f3}>
                 <Textinput
+                  keyboardType={'numeric'}
+                  maxLength={6}
                   onChangeText={text => {
-                    this.ChangeText(text, 'email');
+                    this.ChangeText(text, 'otp');
                   }}
                 >
-                  Email
+                  OTP
                 </Textinput>
               </View>
+              <Text style={{ fontSize: 12, color: 'white', marginVertical: 20 }} onPress={this.resendOTP}>
+                Resend OTP
+              </Text>
             </View>
-            <Text style={style.c1}>{this.state.emailerror}</Text>
+            <Text style={style.c1}>{this.state.otperror}</Text>
             <View style={[style.f1, style.j1]}>
-              <View style={style.d7}>
-                <Text
-                  style={{
-                    color: 'white',
-                    fontSize: 13
-                  }}
-                >
-                  I have an account?&nbsp;
-                </Text>
-                <Text
-                  style={{ fontSize: 15, color: 'white' }}
-                  onPress={() => {
-                    this.props.navigation.navigate('Login');
-                  }}
-                >
-                  Sign In
-                </Text>
-              </View>
               <TouchableOpacity style={style.c2} onPress={this.onSubmit}>
                 <Text
                   style={{
@@ -85,7 +69,7 @@ export default class Reset extends Base {
                     color: '#2948ff'
                   }}
                 >
-                  Reset Password
+                  Submit
                 </Text>
               </TouchableOpacity>
             </View>

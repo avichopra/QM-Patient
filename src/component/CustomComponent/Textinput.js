@@ -1,6 +1,5 @@
-import FloatingLabel from "react-native-floating-labels";
-import React, { Component } from "react";
-import style from "../../styles/index";
+import FloatingLabel from 'react-native-floating-labels';
+import React, { Component } from 'react';
 export default class Textinput extends Component {
   constructor(props) {
     super(props);
@@ -10,15 +9,15 @@ export default class Textinput extends Component {
     return (
       <FloatingLabel
         labelStyle={{
-          color: "white",
+          color: 'white',
           fontSize: 14,
-          fontFamily: "Nunito-Bold"
+          fontFamily: 'Nunito-Bold'
         }}
         inputStyle={{
           borderWidth: 0,
-          fontSize: 16,
-          color: "white",
-          fontFamily: "Nunito Regular"
+          fontSize: 14,
+          color: 'white',
+          fontFamily: 'Nunito Regular'
         }}
         {...props}
       />
