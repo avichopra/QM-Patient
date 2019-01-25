@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
-import SplashScreen from 'react-native-splash-screen';
 import Axios from 'axios';
 import { callApi } from '../utilities/serverApi';
 import { checkEmpty } from '../utilities/validation';

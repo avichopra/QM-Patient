@@ -4,6 +4,7 @@ import Store from './src/redux/store/index';
 import Model from './src/ReusableComponents/modal';
 import Switchnavigator from './src/Screens/routes';
 import ModalView from './src/ReusableComponents/modal';
+import SplashScreen from 'react-native-splash-screen';
 export default class App extends Component {
 	componentDidMount() {
 		setTimeout(() => {

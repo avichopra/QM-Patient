@@ -109,6 +109,7 @@ export default class MyProfile extends Component {
 		callApi('patch', 'v1/daffo/User/updateOwn', data, headers)
 			// Axios.patch('http://192.168.100.141:3000/v1/daffo/User/updateOwn', data, { headers })
 			.then((result) => {
+				console.log('result>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', result);
 				setUser(result.data[0]);
 				this.setState({ loading: false });
 			})
@@ -150,6 +151,7 @@ export default class MyProfile extends Component {
 						Accept: 'application/json',
 						authorization: `Bearer ${this.props.token}`
 					};
+					console.log('Tokennnnnnnnnnnnnnnnnnnnnnnnnnnnn', this.props.token);
 					callApi('post', 'v1/daffo/dispatch/upload', data, headers)
 						// Axios.post('http://192.168.100.141:3000/v1/daffo/dispatch/upload', data, { headers })
 						.then((result1) => {

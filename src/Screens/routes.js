@@ -19,7 +19,7 @@ const SwitchRouteConfig = {
 };
 
 const SwitchConfig = {
-	initialRouteName: 'Oauth'
+	initialRouteName: 'Login'
 };
 
 const SwitchNavigator = createSwitchNavigator(SwitchRouteConfig, SwitchConfig);
