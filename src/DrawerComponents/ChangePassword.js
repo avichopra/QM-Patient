@@ -23,7 +23,11 @@ class ChangePassword extends Base {
 	render() {
 		return (
 			<KeyboardAvoidingView style={{ flex: 1 }}>
-				<ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1 }}>
+				<ScrollView
+					showsVerticalScrollIndicator={false}
+					contentContainerStyle={{ flexGrow: 1 }}
+					keyboardShouldPersistTaps="always"
+				>
 					<View style={{ flexGrow: 1, alignItems: 'center' }}>
 						<View style={{ flexGrow: 1, width: '100%' }}>
 							<Header title={'Change Password'} openDrawer={this.openDrawer} />
@@ -33,8 +37,6 @@ class ChangePassword extends Base {
 								flexGrow: 1,
 								alignSelf: 'center',
 								width: '50%'
-								// height: height * 0.227,
-								// marginBottom: height * 0.051
 							}}
 						>
 							<Image source={{ uri: 'mipmap/aid' }} style={{ height: height * 0.227, width: '100%' }} />
@@ -64,6 +66,7 @@ class ChangePassword extends Base {
 								onHandleChange={this.onHandleChange}
 								value={'oldPassword'}
 								error={this.state.oldPasswordError}
+								secureTextEntry={true}
 							/>
 							<TextField
 								placeholder={'New Password'}
@@ -71,6 +74,7 @@ class ChangePassword extends Base {
 								onHandleChange={this.onHandleChange}
 								value={'newPassword'}
 								error={this.state.newPasswordError}
+								secureTextEntry={true}
 							/>
 							<TextField
 								placeholder={'Confirm New Password'}
@@ -78,6 +82,7 @@ class ChangePassword extends Base {
 								onHandleChange={this.onHandleChange}
 								value={'confirmNewPassword'}
 								error={this.state.confirmNewPasswordError}
+								secureTextEntry={true}
 							/>
 						</View>
 						<View

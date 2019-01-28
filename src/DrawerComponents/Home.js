@@ -206,9 +206,18 @@ class Home extends Component {
 						alignSelf: 'center'
 					}}
 				>
-					<ScrollView style={{ width: '90%' }} horizontal={true} showsHorizontalScrollIndicator={false}>
+					<ScrollView
+						contentContainerStyle={{ alignItems: 'center' }}
+						style={{ width: '90%' }}
+						horizontal={true}
+						showsHorizontalScrollIndicator={false}
+					>
 						<Text
-							style={{ borderBottomWidth: 2, borderBottomColor: '#507CFC', fontSize: 18 }}
+							style={{
+								borderBottomWidth: 2,
+								borderBottomColor: '#507CFC',
+								fontSize: 18
+							}}
 							onLongPress={this.AutoCom}
 						>
 							{this.state.currentPlace}

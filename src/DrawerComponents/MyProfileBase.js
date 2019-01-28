@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Keyboard } from 'react-native';
 import { callApi } from '../utilities/serverApi';
 import ImageResizer from 'react-native-image-resizer';
 
 import SplashScreen from 'react-native-splash-screen';
 import ImagePicker from 'react-native-image-picker';
-import { setUser } from '../redux/index';
+import { setUser, setPatient } from '../redux/index';
 
 import Axios from 'axios';
 export default class MyProfile extends Component {
@@ -54,6 +54,11 @@ export default class MyProfile extends Component {
 		this.state.GeneralInfo.email = this.props.user.email;
 		this.state.GeneralInfo.contactNo = this.props.user.contactNo;
 		this.state.picture = this.props.user.picture;
+		this.state.AdditionalInfo.bloodGroup = this.props.patient.bloodGroup;
+		this.state.AdditionalInfo.relationWithPatient = this.props.patient.realtionWithPatient;
+		this.state.AdditionalInfo.address = this.props.patient.address;
+		this.state.GeneralInfo.emergencyContactNo = this.props.user.emergencycontactnumber;
+		this.state.AdditionalInfo.emergencyContactNo = this.props.patient.emergencyContactNo;
 		this.setState({});
 		// console.log('did mount>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', this.props.user.);
 		setTimeout(() => {
@@ -62,6 +67,7 @@ export default class MyProfile extends Component {
 	}
 
 	onSave = () => {
+		Keyboard.dismiss();
 		// console.log('on save being called>>>>>>>>>>>>>>>>>>>>>>>>>>.');
 		// let contactNoError, emergencyContactNoError;
 		// if (
@@ -86,19 +92,15 @@ export default class MyProfile extends Component {
 		// }
 		// if (emergencyContactNoError && contactNoError === false) {
 		let data = {
-			setter: {
-				$set: {
-					username: this.state.userName,
-					email: this.state.GeneralInfo.email,
-					contactNo: this.state.GeneralInfo.contactNo,
-					emergencycontactnumber: this.state.GeneralInfo.emergencyContactNo,
-					address: this.state.AdditionalInfo.address,
-					bloodGroup: this.state.AdditionalInfo.bloodGroup,
-					realtionWithPatient: this.state.realtionWithPatient,
-					emergencyContactNo: this.state.AdditionalInfo.emergencyContactNo,
-					picture: this.state.picture
-				}
-			}
+			username: this.state.userName,
+			email: this.state.GeneralInfo.email,
+			contactNo: this.state.GeneralInfo.contactNo,
+			emergencycontactnumber: this.state.GeneralInfo.emergencyContactNo,
+			address: this.state.AdditionalInfo.address,
+			bloodGroup: this.state.AdditionalInfo.bloodGroup,
+			realtionWithPatient: this.state.AdditionalInfo.relationWithPatient,
+			emergencyContactNo: this.state.AdditionalInfo.emergencyContactNo,
+			picture: this.state.picture
 		};
 		let headers = {
 			'Content-Type': 'application/json',
@@ -106,16 +108,16 @@ export default class MyProfile extends Component {
 			authorization: `Bearer ${this.props.token}`
 		};
 		this.setState({ loading: true });
-		callApi('patch', 'v1/daffo/User/updateOwn', data, headers)
+		callApi('post', 'v1/daffo/dispatch/updatePatient', data, headers)
 			// Axios.patch('http://192.168.100.141:3000/v1/daffo/User/updateOwn', data, { headers })
 			.then((result) => {
-				console.log('result>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', result);
-				setUser(result.data[0]);
+				console.log('useeeeeeeeeeeeeeeeeeeeeeeeee', result);
 				this.setState({ loading: false });
+				setUser(result.data.updatedUser);
+				setPatient(result.data.updatedPatient);
 			})
 			.catch((err) => {
-				console.log('error from myProfile Base', err.response, err.status, err);
-				// this.setState({ loading: false });
+				console.log('error from myProfile Base ', err.response, err.status, err);
 			});
 		// }
 	};
@@ -124,7 +126,7 @@ export default class MyProfile extends Component {
 		const options = {
 			title: 'Select Avatar'
 		};
-		ImagePicker.launchImageLibrary(options, (response) => {
+		ImagePicker.showImagePicker(options, (response) => {
 			console.log('Response = ', response);
 
 			if (response.didCancel) {

@@ -9,7 +9,7 @@ export default class Header extends Component {
 	render() {
 		const {
 			cameraClicked = () => {},
-			avatarSource = {},
+			avatarSource = '',
 			name = '',
 			onHandleChange = () => {},
 			fieldValue
@@ -36,7 +36,12 @@ export default class Header extends Component {
 						{console.log('avataaaar source>>>>>>>?', avatarSource)}
 						<View style={[ styles.circle, styles.HImage ]}>
 							<Image
-								source={{ uri: `http://192.168.100.141:3000/v1/daffo/file/${avatarSource}` }}
+								source={{
+									uri:
+										avatarSource === ''
+											? 'asset:/images/def.png'
+											: `http://192.168.100.141:3000/v1/daffo/file/${avatarSource}`
+								}}
 								style={[ styles.circle, styles.circleBorder ]}
 							/>
 						</View>

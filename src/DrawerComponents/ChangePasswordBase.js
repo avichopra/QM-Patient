@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Keyboard } from 'react-native';
 import Axios from 'axios';
 import { callApi } from '../utilities/serverApi';
 import { checkEmpty } from '../utilities/validation';
@@ -94,29 +94,25 @@ export default class MyProfile extends Component {
 		}
 	};
 	onSave = () => {
-		Alert({
-			title: 'Change Password',
-			message: 'Your password has been changed',
-			buttons: [ { title: 'OK' } ]
-		});
-		// let { oldPassword, newPassword, confirmNewPassword } = this.state;
-		// let oldPasswordError, newPasswordError, confirmNewPasswordError;
-		// oldPasswordError = checkEmpty(oldPassword);
-		// oldPasswordError && true ? this.setError('oldPasswordError', 'Old Password') : '';
-		// newPasswordError = checkEmpty(newPassword);
-		// newPasswordError && true ? this.setError('newPasswordError', 'New Password') : '';
-		// confirmNewPasswordError = checkEmpty(confirmNewPassword);
-		// confirmNewPasswordError && true ? this.setError('confirmNewPasswordError', 'Confirm New Password') : '';
+		Keyboard.dismiss();
+		let { oldPassword, newPassword, confirmNewPassword } = this.state;
+		let oldPasswordError, newPasswordError, confirmNewPasswordError;
+		oldPasswordError = checkEmpty(oldPassword);
+		oldPasswordError && true ? this.setError('oldPasswordError', 'Old Password') : '';
+		newPasswordError = checkEmpty(newPassword);
+		newPasswordError && true ? this.setError('newPasswordError', 'New Password') : '';
+		confirmNewPasswordError = checkEmpty(confirmNewPassword);
+		confirmNewPasswordError && true ? this.setError('confirmNewPasswordError', 'Confirm New Password') : '';
 
-		// console.log('newpassword error', newPasswordError && false);
+		console.log('newpassword error', newPasswordError && false);
 
-		// oldPasswordError === false ? (oldPasswordError = this.checkLength('oldPasswordError', 'oldPassword')) : '';
+		oldPasswordError === false ? (oldPasswordError = this.checkLength('oldPasswordError', 'oldPassword')) : '';
 
-		// newPasswordError === false ? (newPasswordError = this.checkLength('newPasswordError', 'newPassword')) : '';
-		// confirmNewPasswordError === false ? this.checkLength('confirmNewPasswordError', 'confirmNewPassword') : '';
+		newPasswordError === false ? (newPasswordError = this.checkLength('newPasswordError', 'newPassword')) : '';
+		confirmNewPasswordError === false ? this.checkLength('confirmNewPasswordError', 'confirmNewPassword') : '';
 
-		// newPasswordError === false ? (newPasswordError = this.checkMatch()) : '';
+		newPasswordError === false ? (newPasswordError = this.checkMatch()) : '';
 
-		// oldPasswordError === false && newPasswordError === false ? this.setOldPassword() : '';
+		oldPasswordError === false && newPasswordError === false ? this.setOldPassword() : '';
 	};
 }

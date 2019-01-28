@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { isValidEmail, isValidPassword, checkField } from '../../utilities/validation';
 import { callApi } from '../../utilities/serverApi';
-import { setUserToken, setUser } from '../../redux/index';
+import { setUserToken, setUser, setPatient } from '../../redux/index';
 import { Alert } from '../../ReusableComponents/modal';
 import { get } from 'lodash';
 export default class LoginBase extends Component {
@@ -58,7 +58,22 @@ export default class LoginBase extends Component {
 					console.log('user details', response);
 					setUser(response.data.user);
 					setUserToken(response.data.token.accessToken);
-					navigate('Drawer');
+					let headers = {
+						'Content-Type': 'application/json',
+						Accept: 'application/json',
+						authorization: `Bearer ${response.data.token.accessToken}`
+					};
+					callApi(
+						'post',
+						'v1/daffo/Patient/getOwn',
+						{ perPage: 1, filter: { userId: response.data.user.id } },
+						headers
+					).then((result) => {
+						console.log('resultttttttttttttttttttttttttttttt getOwn', result.data[0]);
+						result.data[0] ? setPatient(result.data[0]) : '';
+						navigate('Drawer');
+					});
+
 					console.log('token set');
 				})
 				.catch((error) => {
