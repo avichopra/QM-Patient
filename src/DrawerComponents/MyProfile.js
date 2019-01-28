@@ -15,10 +15,12 @@ class MyProfile extends MyProfileBase {
 	render() {
 		const height = Dimensions.get('window').height;
 		const { GeneralInfoPressed, AdditionalInfoPressed } = this.state;
+		let { bloodGroup = '', address = '', relationWithPatient = '', emergencyContactNo } = this.state.AdditionalInfo;
 		let { username = '', email = '', contactNo = '', picture = '' } = this.props.user;
+		let ECN = this.state.GeneralInfo.emergencyContactNo;
 		return (
 			<KeyboardAvoidingView style={styles.fg}>
-				<ScrollView contentContainerStyle={styles.fg}>
+				<ScrollView contentContainerStyle={styles.fg} keyboardShouldPersistTaps="always">
 					<View style={styles.fg}>
 						<View style={styles.ProfileHeaderHeight}>
 							<Header
@@ -113,6 +115,7 @@ class MyProfile extends MyProfileBase {
 									value={'emergencyContactNo'}
 									error={this.state.GeneralInfo.emergencyContactNoError}
 									keyboardType={'numeric'}
+									fieldValue={ECN}
 								/>
 							</View>
 						) : (
@@ -137,6 +140,7 @@ class MyProfile extends MyProfileBase {
 									onHandleChange={this.onHandleChange}
 									field={'AdditionalInfo'}
 									value={'address'}
+									fieldValue={address}
 								/>
 								<TextField
 									placeholder={'Blood Group'}
@@ -144,13 +148,16 @@ class MyProfile extends MyProfileBase {
 									onHandleChange={this.onHandleChange}
 									field={'AdditionalInfo'}
 									value={'bloodGroup'}
+									fieldValue={bloodGroup}
 								/>
 								<TextField
 									placeholder={'Emergency Contact No.'}
 									icon={'call_answer_grey'}
 									onHandleChange={this.onHandleChange}
-									field={'GeneralInfo'}
+									field={'AdditionalInfo'}
 									value={'emergencyContactNo'}
+									fieldValue={emergencyContactNo}
+									keyboardType={'numeric'}
 								/>
 								<TextField
 									placeholder={'Relation with Patient'}
@@ -158,6 +165,7 @@ class MyProfile extends MyProfileBase {
 									onHandleChange={this.onHandleChange}
 									field={'AdditionalInfo'}
 									value={'relationWithPatient'}
+									fieldValue={relationWithPatient}
 								/>
 							</View>
 						)}
@@ -187,7 +195,8 @@ function mapStateToProps(state) {
 	console.log('I am the stateeeeeeeeeeeeeeeeeeeeeeeeeeee', state);
 	return {
 		user: state.user,
-		token: state.token
+		token: state.token,
+		patient: state.patient
 	};
 }
 const styles = StyleSheet.create({

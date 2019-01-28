@@ -32,15 +32,16 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
             new MapsPackage(),
+                        new RNGooglePlacesPackage(),
+
             new ImageResizerPackage(),
             new ImagePickerPackage(),
             new SvgPackage(),
             new RNGestureHandlerPackage(),
             new VectorIconsPackage(),
-            new SplashScreenReactPackage(),
+            new SplashScreenReactPackage()
     
 
-new RNGooglePlacesPackage()
       );
     }
 

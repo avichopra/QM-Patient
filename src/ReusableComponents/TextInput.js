@@ -4,7 +4,14 @@ import Icon from 'react-native-vector-icons/Octicons';
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
 export default (TextField = (props) => {
-	let { placeholder = '', fieldValue, error = '', onHandleChange = () => {}, keyboardType = 'default' } = props;
+	let {
+		placeholder = '',
+		fieldValue,
+		error = '',
+		onHandleChange = () => {},
+		keyboardType = 'default',
+		secureTextEntry = false
+	} = props;
 	return (
 		<View>
 			<View
@@ -35,6 +42,7 @@ export default (TextField = (props) => {
 					value={fieldValue ? fieldValue : null}
 					editable={true}
 					keyboardType={keyboardType}
+					secureTextEntry={secureTextEntry}
 				/>
 			</View>
 			<View style={{ height: 5, width: '90%', marginLeft: 10 }}>
