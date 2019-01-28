@@ -24,7 +24,7 @@ export default class OTP extends Base {
   render() {
     return (
       <KeyboardAvoidingView style={{ flex: 1 }}>
-        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps='always'>
           <ImageBackground source={{ uri: 'asset:/icon/group_2.png' }} style={[style.d1]} resizeMode={'stretch'}>
             <View style={style.d3}>
               <Image

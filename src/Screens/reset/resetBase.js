@@ -31,6 +31,7 @@ export default class resetBase extends Component {
       callApi('post', 'v1/auth/forget', data)
         .then(response => {
           if (response.status === 200) {
+            this.setState({email:""})
             Alert({
               message: 'Password reset link has been sent to your email'
             });

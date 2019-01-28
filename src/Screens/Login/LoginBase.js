@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Keyboard} from "react-native"
 import { isValidEmail, isValidPassword, checkField } from '../../utilities/validation';
 import { callApi } from '../../utilities/serverApi';
 import { setUserToken, setUser } from '../../redux/index';
@@ -47,11 +48,12 @@ export default class LoginBase extends Component {
 			});
 	};
 	onSubmit = () => {
+		Keyboard.dismiss();
 		const { navigate } = this.props.navigation;
 		if (this.checkAllField()) {
 			let data = {
-				email: this.state.email,
-				password: this.state.password
+				email: this.state.email.trim(),
+				password: this.state.password.trim()
 			};
 			callApi('post', 'v1/auth/login', data)
 				.then((response) => {
@@ -64,18 +66,22 @@ export default class LoginBase extends Component {
 				.catch((error) => {
 					console.log('Error---->', error.response);
 					if (error.response.data.message === 'Incorrect email')
-						this.setState({ emailerror: 'Incorrect email' });
+					{
+						
+						
+						this.setState({ emailerror: 'Incorrect email'})
+					}
+						
 					else if (error.response.data.message === 'Incorrect password')
-						this.setState({ passworderror: 'Incorrect password' });
+						this.setState({ passworderror: 'Incorrect password'});
 					else if (!error.response.data.message.emailVerified) {
 						console.log('inside verify modal');
+						this.setState({email:"",password:""})
 						Alert({
 							message: 'Verify your email',
-
 							buttons: [
 								{
 									title: 'Cancel',
-
 									icon: false,
 									backgroundColor: 'blue'
 								},
@@ -94,5 +100,7 @@ export default class LoginBase extends Component {
 			console.log('error in validation');
 		}
 	};
-	componentDidMount() {}
+	componentDidMount() {
+		Keyboard.dismiss();
+	  }
 }

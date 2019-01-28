@@ -19,7 +19,7 @@ const SwitchRouteConfig = {
 };
 
 const SwitchConfig = {
-	initialRouteName: 'Login'
+	initialRouteName: 'Oauth'
 };
 
 const SwitchNavigator = createSwitchNavigator(SwitchRouteConfig, SwitchConfig);
@@ -28,11 +28,7 @@ class SwitchNavigatorWrapper extends React.Component {
 	static router = SwitchNavigator.router;
 
 	componentDidMount() {
-		Linking.getInitialURL().then((url) => {
-			if (url === null) return;
-			console.warn(url);
-			this.navigateTo(url);
-		});
+		
 		Linking.addEventListener('url', this.handleOpenURL);
 	}
 	handleOpenURL = (event) => {
@@ -41,7 +37,7 @@ class SwitchNavigatorWrapper extends React.Component {
 	};
 
 	componentWillUnmount() {
-		Linking.removeAllListeners(); //'url', this.handleOpenURL);
+		Linking.removeAllListeners("url"); //'url', this.handleOpenURL);
 	}
 
 	navigateTo = (url) => {
@@ -59,12 +55,12 @@ class SwitchNavigatorWrapper extends React.Component {
 		let email = routeParams[1];
 		if (routeName === 'otp') {
 			console.log('User in auth', email);
-			navigate('OTP', { email: email });
+			this.props.navigation.navigate('OTP', { email: email });
 		}
 		if (routeName === 'reset') {
 			let resetPasswordToken = routeParams[2];
-			console.log('inside reset');
-			navigate('ResetPassword', { email: email, token: resetPasswordToken });
+			console.log(' reset');
+			this.props.navigation.navigate('ResetPassword', { email: email, token: resetPasswordToken });
 		}
 	};
 	render() {

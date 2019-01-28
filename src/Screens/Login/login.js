@@ -19,21 +19,16 @@ export default class Login extends Base {
 	constructor(props) {
 		super(props);
 		this.state = {
-			email: 'jainnaveksha96@gmail.com',
-			password: '123456789',
+			email: '',
+			password: '',
 			emailerror: '',
 			passworderror: ''
 		};
 	}
-	componentDidMount() {
-		// Linking.addEventListener('url', this.handleOpenURL);
-		// Linking.getInitialURL().then(url => {
-		//   if (url != null) this.navigate(url);
-		// });
-		// if (Platform.OS === 'android') {
-		//   AppState.addEventListener('change', this._handleAppStateChange);
-		// }
-	}
+	// componentDidMount() {
+	// 	Linking.addEventListener("url", this.handleOpenURL);
+	// 	AppState.addEventListener("change", this._handleAppStateChange);
+	// }
 	// componentWillUnmount() {
 	//   AppState.removeEventListener('change', this._handleAppStateChange);
 	// }
@@ -41,15 +36,13 @@ export default class Login extends Base {
 	//   console.log('inside handle', event);
 	//   this.navigate(event.url);
 	// };
-	// _handleAppStateChange = nextAppState => {
-	//   console.log('inside app state change', nextAppState);
-	//   if (Platform.OS === 'android') {
-	//     Linking.getInitialURL().then(url => {
-	//       // if (url === null) return;
-	//       this.navigate(url);
-	//     });
-	//   }
-	// };
+	// _handleAppStateChange = () => {
+	// 	if (Platform.OS === "android") {
+	// 	  Linking.getInitialURL().then(url => {
+	// 		this.navigate(url);
+	// 	  });
+	// 	}
+	//   };
 	// navigate = url => {
 	//   console.log('Inside navigate url', url);
 	//   if (url === null) {
@@ -75,8 +68,8 @@ export default class Login extends Base {
 	// };
 	render() {
 		return (
-			<KeyboardAvoidingView style={{ flex: 1 }}>
-				<ScrollView contentContainerStyle={style.f1}>
+			<KeyboardAvoidingView style={{ flex: 1 }} >
+				<ScrollView contentContainerStyle={style.f1} keyboardShouldPersistTaps='always'>
 					<ImageBackground
 						source={{ uri: 'asset:/icon/group_2.png' }}
 						style={style.d1}
@@ -98,6 +91,7 @@ export default class Login extends Base {
 										onChangeText={(text) => {
 											this.ChangeText(text, 'email');
 										}}
+										value={this.state.email}
 									>
 										Email
 									</Textinput>
@@ -117,6 +111,7 @@ export default class Login extends Base {
 										onChangeText={(text) => {
 											this.ChangeText(text, 'password');
 										}}
+										value={this.state.password}
 									>
 										Password
 									</Textinput>
@@ -146,7 +141,7 @@ export default class Login extends Base {
 									Create One
 								</Text>
 							</View>
-							<TouchableOpacity style={style.c2} onPress={this.onSubmit}>
+							<TouchableOpacity style={style.c2} onPress={this.onSubmit} accessible={false}>
 								<Text
 									style={{
 										textAlign: 'center',

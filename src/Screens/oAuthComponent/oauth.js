@@ -12,13 +12,46 @@ class oauth extends Component {
 		super(props);
 	}
 	componentDidMount() {
+		Linking.getInitialURL().then((url) => {
+			if (url === null){
+				this.tryLogin();
+			}
+			console.warn(url);
+			this.navigateTo(url);
+		});
+
 		setTimeout(() => {
 			SplashScreen.hide();
 		}, 1000);
 		console.log('inside oauth ');
-		this.tryLogin();
 	}
 
+	navigateTo = (url) => {
+		console.log('Inside navigate url', url);
+		if (url === null) {
+			console.log('url', url);
+			return;
+		}
+		console.log('Linking ', url);
+		// E
+		const { navigate } = this.props.navigation;
+		const route = url.replace(/.*?:\/\//g, '');
+		const routeParams = route.split('/');
+		let routeName = routeParams[0];
+		let email = routeParams[1];
+		if (routeName === 'otp') {
+			console.log('User in auth', email);
+			this.props.navigation.navigate('OTP', { email: email });
+		}
+		if (routeName === 'reset') {
+			let resetPasswordToken = routeParams[2];
+			console.log(' reset');
+			this.props.navigation.navigate('ResetPassword', { email: email, token: resetPasswordToken });
+		}
+	};
+componentWillUnmount(){
+	// Linking.removeAllListeners("url");
+}
 	tryLogin = async () => {
 		const { navigate } = this.props.navigation;
 		try {

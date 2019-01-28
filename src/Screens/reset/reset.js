@@ -22,7 +22,7 @@ export default class Reset extends Base {
   render() {
     return (
       <KeyboardAvoidingView style={{ flex: 1 }}>
-        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps='always'>
           <ImageBackground source={{ uri: 'asset:/icon/group_2.png' }} style={[style.d1]} resizeMode={'stretch'}>
             <View style={style.d3}>
               <Image
@@ -51,6 +51,7 @@ export default class Reset extends Base {
                   onChangeText={text => {
                     this.ChangeText(text, 'email');
                   }}
+                  value={this.state.email}
                 >
                   Email
                 </Textinput>

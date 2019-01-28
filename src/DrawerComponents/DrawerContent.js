@@ -3,6 +3,7 @@ import { NavigationActions, StackActions } from 'react-navigation';
 import { ScrollView, Text, View, StyleSheet, Dimensions, TouchableOpacity, Image } from 'react-native';
 import DrawerItem from '../ReusableComponents/DrawerItem';
 import { connect } from 'react-redux';
+import * as Storage from '../utilities/asyncStorage';
 import Foundation from 'react-native-vector-icons/Foundation';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Octicons from 'react-native-vector-icons/Octicons';
@@ -17,9 +18,10 @@ class DrawerContent extends Component {
 		this.props.navigation.dispatch(navigateAction);
 		this.props.navigation.closeDrawer();
 	};
-	onPressLogout = () => {
+	onPressLogout = async () => {
 		this.props.navigation.closeDrawer();
-
+		await Storage.remove('token');
+		await Storage.remove('user');
 		this.props.navigation.navigate('Login');
 	};
 	render() {

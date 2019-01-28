@@ -30,7 +30,7 @@ export default class Reset extends Base {
   render() {
     return (
       <KeyboardAvoidingView style={{ flex: 1 }}>
-        <ScrollView contentContainerStyle={style.f1}>
+        <ScrollView contentContainerStyle={style.f1} keyboardShouldPersistTaps='always'>
           <ImageBackground source={{ uri: 'asset:/icon/group_2.png' }} style={style.d1} resizeMode={'stretch'}>
             <View style={style.f1}>
               <Image source={{ uri: 'asset:/icon/group.png' }} style={[style.d2, style.d3, style.a1]} />
