@@ -23,7 +23,8 @@ class DrawerContent extends Component {
 		this.props.navigation.navigate('Login');
 	};
 	render() {
-		let { picture } = this.props.user;
+		let { picture = '' } = this.props.user;
+		console.log('picture>>>>>>>>>>>>>>>>>>>>>>>', picture === '');
 		return (
 			<View style={styles.DrawerContent}>
 				<View>
@@ -69,7 +70,7 @@ class DrawerContent extends Component {
 				/>
 				{/* </TouchableOpacity> */}
 				<View style={{ position: 'absolute', width: '100%', alignItems: 'center' }}>
-					<View
+					<TouchableOpacity
 						style={{
 							height: 100,
 							width: 100,
@@ -81,9 +82,17 @@ class DrawerContent extends Component {
 							// borderColor: 'white',
 							// borderWidth: 2
 						}}
+						onPress={() => {
+							this.navigateToScreen('MyProfile');
+						}}
 					>
 						<Image
-							source={{ uri: `http://192.168.100.141:3000/v1/daffo/file/${picture}` }}
+							source={{
+								uri:
+									picture === ''
+										? 'asset:/images/def.png'
+										: `http://192.168.100.141:3000/v1/daffo/file/${picture}`
+							}}
 							style={{
 								height: 90,
 								width: 90,
@@ -96,11 +105,12 @@ class DrawerContent extends Component {
 							}}
 							// resizeMode={'contain'}
 						/>
+					</TouchableOpacity>
+					<View style={{ width: '50%', alignItems: 'center' }}>
+						<Text style={{ color: 'black' }} numberOfLines={1}>
+							{this.props.user.fullname ? this.props.user.fullname : 'Name'}
+						</Text>
 					</View>
-
-					<Text style={{ color: 'black' }}>
-						{this.props.user.fullname ? this.props.user.fullname : 'Name'}
-					</Text>
 				</View>
 			</View>
 		);

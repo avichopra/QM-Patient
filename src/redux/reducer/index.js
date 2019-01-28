@@ -1,7 +1,8 @@
-import { ADD_USER, ADD_USER_TOKEN } from '../actions/index';
+import { ADD_USER, ADD_USER_TOKEN, ADD_PATIENT } from '../actions/index';
 export const initialState = {
 	user: null,
-	token: null
+	token: null,
+	patient: null
 };
 export default function(state = {}, action) {
 	switch (action.type) {
@@ -11,6 +12,9 @@ export default function(state = {}, action) {
 		case ADD_USER_TOKEN:
 			console.log('User token added in redux state', action.data);
 			return { ...state, token: action.data };
+		case ADD_PATIENT:
+			console.log('User token added in redux state', action.data);
+			return { ...state, patient: action.data };
 		default:
 			return { ...state };
 	}
