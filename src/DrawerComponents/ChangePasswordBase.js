@@ -4,21 +4,25 @@ import Axios from 'axios';
 import { callApi } from '../utilities/serverApi';
 import { checkEmpty } from '../utilities/validation';
 import { Alert } from '../../src/ReusableComponents/modal';
+const emptyState = {
+    oldPasswordError: '',
+    newPassword: '',
+    newPasswordError: '',
+    confirmNewPassword: '',
+    confirmNewPasswordError: '',
+    oldPassword: '',
 
+    loading: false
+};
 export default class MyProfile extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			oldPassword: '',
-			oldPasswordError: '',
-			newPassword: '',
-			newPasswordError: '',
-			confirmNewPassword: '',
-			confirmNewPasswordError: '',
-			loading: false
-		};
-	}
-
+    constructor(props) {
+        super(props);
+        this.state = emptyState;
+    }
+	setEmpty = () => {
+        this.setState(emptyState);
+        this.setState({ oldPassword: '' });
+    };
 	onHandleChange = (name, value) => {
 		let { oldPasswordError, newPasswordError, confirmNewPasswordError } = this.state;
 		if (oldPasswordError !== '' && name === 'oldPassword') {
@@ -68,10 +72,9 @@ export default class MyProfile extends Component {
 					Alert({
 						title: 'Change Password',
 						message: 'Your password has been changed',
-						buttons: [ { title: 'okieeeeeeeeeee', backgroundColor: '#1A5276' } ]
+						buttons: [ { title: 'OK', backgroundColor: '#1A5276' } ]
 					});
-					this.setState({ loading: false });
-
+this.setEmpty()
 					return false;
 				} else {
 					this.setState({ oldPasswordError: 'current password could not be matched' });
@@ -86,7 +89,7 @@ export default class MyProfile extends Component {
 	};
 	checkLength = (errorField, field) => {
 		if (this.state[field].length < 6) {
-			this.state[errorField] = `Field length should not be less than 6 characters`;
+			this.state[errorField] = `Password length should not be less than 6 characters`;
 			this.setState({});
 			return true;
 		} else {

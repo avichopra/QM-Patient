@@ -9,12 +9,16 @@ import {
 	Platform,
 	Linking,
 	AppState,
-	KeyboardAvoidingView
+	KeyboardAvoidingView,
+	ActivityIndicator,
+	StatusBar
 } from 'react-native';
 import Textinput from '../../component/CustomComponent/Textinput';
 import style from '../../styles/index';
 import Base from './LoginBase';
 import SplashScreen from 'react-native-splash-screen';
+import Loading from '../../ReusableComponents/loading';
+
 export default class Login extends Base {
 	constructor(props) {
 		super(props);
@@ -22,7 +26,8 @@ export default class Login extends Base {
 			email: '',
 			password: '',
 			emailerror: '',
-			passworderror: ''
+			passworderror: '',
+			loading:false
 		};
 	}
 	// componentDidMount() {
@@ -67,8 +72,10 @@ export default class Login extends Base {
 	//   }
 	// };
 	render() {
+		// console.warn("hiiiiiiiiiiiiiiiiii")
 		return (
 			<KeyboardAvoidingView style={{ flex: 1 }} >
+			
 				<ScrollView contentContainerStyle={style.f1} keyboardShouldPersistTaps='always'>
 					<ImageBackground
 						source={{ uri: 'asset:/icon/group_2.png' }}
@@ -141,7 +148,7 @@ export default class Login extends Base {
 									Create One
 								</Text>
 							</View>
-							<TouchableOpacity style={style.c2} onPress={this.onSubmit} accessible={false}>
+							{this.state.loading===false?<TouchableOpacity style={style.c2} onPress={this.onSubmit} accessible={false}>
 								<Text
 									style={{
 										textAlign: 'center',
@@ -153,7 +160,7 @@ export default class Login extends Base {
 								>
 									SIGN IN
 								</Text>
-							</TouchableOpacity>
+							</TouchableOpacity>:<View style={style.c2}><ActivityIndicator size="large" color="#000" /></View>}
 						</View>
 					</ImageBackground>
 				</ScrollView>

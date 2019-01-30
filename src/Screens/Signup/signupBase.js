@@ -27,7 +27,8 @@ export default class signupBase extends Component {
       emergencycontacterror: '',
       passworderror: '',
       confirmpassworderror: '',
-      modalVisible: false
+      modalVisible: false,
+      loading:false
     };
   }
   checkAllMandatoryField = () => {
@@ -84,6 +85,7 @@ export default class signupBase extends Component {
   };
   onSubmit = () => {
     if (this.checkAllMandatoryField()) {
+      this.setState({loading:true})
       let data = {
         fullname: this.state.FullName.trim(),
         email: this.state.Email.trim(),
@@ -95,14 +97,21 @@ export default class signupBase extends Component {
       callApi('post', 'v1/auth/register', data)
         .then(response => {
           if (response.status === 201) {
-            this.setState({FullName:"",Email:"",contactnumber:"",emergencycontactnumber:"",password:"",confirmpassword:""})
-            Alert({ message: 'Verification link has been sent to your email' });
+            this.setState({FullName:"",Email:"",contactnumber:"",emergencycontactnumber:"",password:"",confirmpassword:"",loading:false})
+            Alert({ message: 'Verification link has been sent to your email' ,	buttons: [
+              {
+                title: 'Ok',
+                icon: false,
+                backgroundColor: 'blue'
+              }
+            ]});
+
             // alert('Verification link has been sent to your email');
           }
           // console.log(response);
         })
         .catch(error => {
-          this.setState({FullName:"",Email:"",contactnumber:"",emergencycontactnumber:"",password:"",confirmpassword:"",emailerror:"Email already exist"})
+          this.setState({loading:false,FullName:"",Email:"",contactnumber:"",emergencycontactnumber:"",password:"",confirmpassword:"",emailerror:"Email already exist"})
           console.log(error.response);
         });
     } else {

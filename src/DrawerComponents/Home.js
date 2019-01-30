@@ -1,39 +1,3 @@
-// import React, { Component } from 'react';
-// import { Text, View, TouchableOpacity } from 'react-native';
-// import Header from './Header';
-// import Icon from 'react-native-vector-icons/Foundation';
-// import SplashScreen from 'react-native-splash-screen';
-
-// class Home extends Component {
-// 	constructor(props) {
-// 		super(props);
-// 	}
-// 	static navigationOptions = {
-// 		drawerLabel: 'Home',
-// 		drawerIcon: ({ tintColor }) => (
-// 			// <Image source={require('./chats-icon.png')} style={[ styles.icon, { tintColor: tintColor } ]} />
-// 			<Icon name={'home'} size={25} color={'black'} />
-// 		)
-// 	};
-
-// 	componentDidMount() {
-// 		setTimeout(() => {
-// 			SplashScreen.hide();
-// 		}, 2000);
-// 	}
-
-// 	render() {
-// 		return (
-// 			// <View>
-// 			<Header title={'Quick Medic'} openDrawer={this.openDrawer} />
-// 			/* <TouchableOpacity onPress={this.openDrawer}>
-// 					<Text>Home</Text>
-// 				</TouchableOpacity> */
-// 			// </View>
-// 		);
-// 	}
-// }
-// export default Home;
 import React, { Component } from 'react';
 import Header from './Header';
 
@@ -50,6 +14,9 @@ import {
 	TouchableOpacity,
 	ScrollView
 } from 'react-native';
+import { callApi } from '../utilities/serverApi';
+import {connect} from "react-redux"
+import {setPatient} from "../redux/index"
 import RNGooglePlaces from 'react-native-google-places';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 const instructions = Platform.select({
@@ -67,6 +34,24 @@ class Home extends Component {
 			longitudeDelta: 0,
 			currentPlace: ''
 		};
+	}
+	componentWillMount()
+	{
+		let headers = {
+			'Content-Type': 'application/json',
+			Accept: 'application/json',
+			authorization: `Bearer ${this.props.token}`
+		};
+		console.warn("token",this.props.token)
+		callApi(
+			'post',
+			'v1/daffo/Patient/getOwn',
+			{ perPage: 1, filter: { userId: this.props.user.id} },
+			headers
+		).then((result) => {
+			console.warn('resultttttttttttttttttttttttttttttt getOwn', result.data[0]);
+			result.data[0] ?  setPatient(result.data[0]) : '';
+		});
 	}
 	componentWillUnmount() {
 		navigator.geolocation.clearWatch();
@@ -251,4 +236,11 @@ const styles = StyleSheet.create({
 		flexGrow: 1
 	}
 });
-export default Home;
+function mapStateToProps(state) {
+	console.warn('I am the stateeeeeeeeeeeeeeeeeeeeeeeeeeee', state.user);
+	return {
+		user: state.user,
+		token: state.token
+	};
+}
+export default connect(mapStateToProps)(Home);

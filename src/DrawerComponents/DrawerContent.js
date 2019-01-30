@@ -9,6 +9,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Octicons from 'react-native-vector-icons/Octicons';
 import Svg, { Path, Ellipse } from 'react-native-svg';
 const width = Dimensions.get('window').width;
+import config from "../config/index"
 class DrawerContent extends Component {
 	navigateToScreen = (route) => {
 		const navigateAction = StackActions.reset({
@@ -93,7 +94,7 @@ class DrawerContent extends Component {
 								uri:
 									picture === ''
 										? 'asset:/images/def.png'
-										: `http://192.168.100.141:3000/v1/daffo/file/${picture}`
+										: `${config.SERVER_URL}/v1/daffo/file/${picture}`
 							}}
 							style={{
 								height: 90,

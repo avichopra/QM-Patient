@@ -8,7 +8,8 @@ import {
 	KeyboardAvoidingView,
 	ImageBackground,
 	StatusBar,
-	Linking
+	Linking,
+	ActivityIndicator
 } from 'react-native';
 import SignupBase from './signupBase';
 import style from '../../styles/index';
@@ -186,10 +187,11 @@ export default class Login extends SignupBase {
 							<Text style={{ color: 'red' }}>{this.state.confirmpassworderror}</Text>
 						</View>
 						<View style={style.a9}>
-							<Button style={style.a10} onPress={this.onSubmit}>
-								<Text style={style.f10}>SIGN UP</Text>
-							</Button>
 
+							{this.state.loading===false?<Button style={style.a10} onPress={this.onSubmit}>
+								<Text style={style.f10}>SIGN UP</Text>
+							</Button>:<View style={style.a10}><ActivityIndicator size="large" color="#000" /></View>}
+                                
 							<Button
 								style={style.a11}
 								onPress={() => {

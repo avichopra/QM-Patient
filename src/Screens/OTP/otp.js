@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Image, TouchableOpacity, ImageBackground, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { Text, View, Image, TouchableOpacity, ImageBackground, ScrollView, KeyboardAvoidingView ,ActivityIndicator} from 'react-native';
 import Textinput from '../../component/CustomComponent/Textinput';
 import style from '../../styles/index';
 import Base from './otpBase';
@@ -9,7 +9,8 @@ export default class OTP extends Base {
     this.state = {
       email: '',
       otp: '',
-      otperror: ''
+      otperror: '',
+      loading:false
     };
   }
 
@@ -26,6 +27,7 @@ export default class OTP extends Base {
       <KeyboardAvoidingView style={{ flex: 1 }}>
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps='always'>
           <ImageBackground source={{ uri: 'asset:/icon/group_2.png' }} style={[style.d1]} resizeMode={'stretch'}>
+            <View >
             <View style={style.d3}>
               <Image
                 source={{ uri: 'asset:/icon/lock_1.png' }}
@@ -60,7 +62,7 @@ export default class OTP extends Base {
             </View>
             <Text style={style.c1}>{this.state.otperror}</Text>
             <View style={[style.f1, style.j1]}>
-              <TouchableOpacity style={style.c2} onPress={this.onSubmit}>
+              {this.state.loading===false?<TouchableOpacity style={style.c2} onPress={this.onSubmit}>
                 <Text
                   style={{
                     textAlign: 'center',
@@ -71,7 +73,8 @@ export default class OTP extends Base {
                 >
                   Submit
                 </Text>
-              </TouchableOpacity>
+              </TouchableOpacity>:<View style={style.c2}><ActivityIndicator size="large" color="#000" /></View>}
+            </View>
             </View>
           </ImageBackground>
         </ScrollView>

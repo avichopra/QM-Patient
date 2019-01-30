@@ -28,7 +28,6 @@ class SwitchNavigatorWrapper extends React.Component {
 	static router = SwitchNavigator.router;
 
 	componentDidMount() {
-		
 		Linking.addEventListener('url', this.handleOpenURL);
 	}
 	handleOpenURL = (event) => {

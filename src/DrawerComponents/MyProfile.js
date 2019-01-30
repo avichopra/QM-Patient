@@ -180,7 +180,7 @@ class MyProfile extends MyProfileBase {
 						>
 							<Button
 								title={'Save'}
-								backgroundColor={'#443BFF'}
+								backgroundColor={'#2d76d4'}
 								onSave={this.onSave}
 								loading={this.state.loading}
 							/>
@@ -192,7 +192,7 @@ class MyProfile extends MyProfileBase {
 	}
 }
 function mapStateToProps(state) {
-	console.log('I am the stateeeeeeeeeeeeeeeeeeeeeeeeeeee', state);
+	console.warn('I am the stateeeeeeeeeeeeeeeeeeeeeeeeeeee', state);
 	return {
 		user: state.user,
 		token: state.token,
