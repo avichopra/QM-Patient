@@ -49,8 +49,11 @@ export default class MyProfile extends Component {
 	openDrawer = () => {
 		this.props.navigation.openDrawer();
 	};
+
+	
 	componentDidMount() {
-		this.state.userName = this.props.user.username;
+		console.warn(this.props.patient);
+		this.state.userName = this.props.user.fullname;
 		this.state.GeneralInfo.email = this.props.user.email;
 		this.state.GeneralInfo.contactNo = this.props.user.contactNo;
 		this.state.picture = this.props.user.picture;
@@ -102,6 +105,7 @@ export default class MyProfile extends Component {
 			emergencyContactNo: this.state.AdditionalInfo.emergencyContactNo,
 			picture: this.state.picture
 		};
+		console.warn("token before save",this.props.token)
 		let headers = {
 			'Content-Type': 'application/json',
 			Accept: 'application/json',
@@ -117,7 +121,7 @@ export default class MyProfile extends Component {
 				setPatient(result.data.updatedPatient);
 			})
 			.catch((err) => {
-				console.log('error from myProfile Base ', err.response, err.status, err);
+				console.warn('error from myProfile Base ', err.response, err.status, err);
 			});
 		// }
 	};
@@ -157,7 +161,7 @@ export default class MyProfile extends Component {
 					callApi('post', 'v1/daffo/dispatch/upload', data, headers)
 						// Axios.post('http://192.168.100.141:3000/v1/daffo/dispatch/upload', data, { headers })
 						.then((result1) => {
-							console.log('updateddddddddddddddddddd', result1);
+							console.warn('updateddddddddddddddddddd', result1);
 							this.setState({ picture: result1.data[0].file.filename });
 						})
 						.catch((err) => {

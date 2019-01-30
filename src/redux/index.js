@@ -12,3 +12,6 @@ export function setUserToken(token) {
 	Store.dispatch(addUserToken(token));
 	Storage.set('token', token);
 }
+export function setUserRefreshToken(refresshToken){
+	Storage.set('refreshToken',refresshToken)
+}

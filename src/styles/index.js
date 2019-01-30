@@ -44,7 +44,7 @@ export default StyleSheet.create({
 		alignSelf: 'center'
 	},
 	d3: {
-		marginVertical: 25
+		marginVertical: 30
 	},
 	d4: {
 		flexDirection: 'row',

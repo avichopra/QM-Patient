@@ -67,6 +67,7 @@ class ChangePassword extends Base {
 								value={'oldPassword'}
 								error={this.state.oldPasswordError}
 								secureTextEntry={true}
+								fieldValue={this.state.oldPassword}
 							/>
 							<TextField
 								placeholder={'New Password'}
@@ -75,6 +76,8 @@ class ChangePassword extends Base {
 								value={'newPassword'}
 								error={this.state.newPasswordError}
 								secureTextEntry={true}
+								fieldValue={this.state.newPassword}
+
 							/>
 							<TextField
 								placeholder={'Confirm New Password'}
@@ -83,6 +86,8 @@ class ChangePassword extends Base {
 								value={'confirmNewPassword'}
 								error={this.state.confirmNewPasswordError}
 								secureTextEntry={true}
+								fieldValue={this.state.confirmNewPassword}
+
 							/>
 						</View>
 						<View
@@ -98,7 +103,7 @@ class ChangePassword extends Base {
 						>
 							<Button
 								title={'Save'}
-								backgroundColor={'#433BFF'}
+								backgroundColor={'#2d76d4'}
 								onSave={this.onSave}
 								loading={this.state.loading}
 							/>

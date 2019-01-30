@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import {Keyboard} from "react-native"
 import { isValidEmail, isValidPassword, checkField } from '../../utilities/validation';
 import { callApi } from '../../utilities/serverApi';
-import { setUserToken, setUser, setPatient } from '../../redux/index';
+import { setUserToken, setUser, setPatient,setUserRefreshToken } from '../../redux/index';
 import { Alert } from '../../ReusableComponents/modal';
 import { get } from 'lodash';
 export default class LoginBase extends Component {
@@ -47,50 +48,45 @@ export default class LoginBase extends Component {
 			});
 	};
 	onSubmit = () => {
+		Keyboard.dismiss();
 		const { navigate } = this.props.navigation;
 		if (this.checkAllField()) {
 			let data = {
-				email: this.state.email,
-				password: this.state.password
+				email: this.state.email.trim(),
+				password: this.state.password.trim()
 			};
+			this.setState({loading:true})
 			callApi('post', 'v1/auth/login', data)
 				.then((response) => {
 					console.log('user details', response);
 					setUser(response.data.user);
 					setUserToken(response.data.token.accessToken);
-					let headers = {
-						'Content-Type': 'application/json',
-						Accept: 'application/json',
-						authorization: `Bearer ${response.data.token.accessToken}`
-					};
-					callApi(
-						'post',
-						'v1/daffo/Patient/getOwn',
-						{ perPage: 1, filter: { userId: response.data.user.id } },
-						headers
-					).then((result) => {
-						console.log('resultttttttttttttttttttttttttttttt getOwn', result.data[0]);
-						result.data[0] ? setPatient(result.data[0]) : '';
-						navigate('Drawer');
-					});
+					setUserRefreshToken(response.data.token)
+					this.setState({loading:false})
+				navigate("Drawer")
 
 					console.log('token set');
 				})
 				.catch((error) => {
 					console.log('Error---->', error.response);
+					this.setState({loading:false})
 					if (error.response.data.message === 'Incorrect email')
-						this.setState({ emailerror: 'Incorrect email' });
+					{
+						
+						
+						this.setState({ emailerror: 'Incorrect email'})
+					}
+						
 					else if (error.response.data.message === 'Incorrect password')
-						this.setState({ passworderror: 'Incorrect password' });
+						this.setState({ passworderror: 'Incorrect password'});
 					else if (!error.response.data.message.emailVerified) {
 						console.log('inside verify modal');
+						this.setState({email:"",password:""})
 						Alert({
 							message: 'Verify your email',
-
 							buttons: [
 								{
 									title: 'Cancel',
-
 									icon: false,
 									backgroundColor: 'blue'
 								},
@@ -109,5 +105,7 @@ export default class LoginBase extends Component {
 			console.log('error in validation');
 		}
 	};
-	componentDidMount() {}
+	componentDidMount() {
+		Keyboard.dismiss();
+	  }
 }

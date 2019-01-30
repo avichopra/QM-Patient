@@ -2,7 +2,7 @@ import { Component } from 'react';
 import axios from 'axios';
 import { isValidOTP, checkField } from '../../utilities/validation';
 import { callApi } from '../../utilities/serverApi';
-import { setUserToken, setUser } from '../../redux/index';
+import { setUserToken, setUser,setUserRefreshToken } from '../../redux/index';
 export default class resetBase extends Component {
   componentDidMount() {
     const { navigation } = this.props;
@@ -21,12 +21,14 @@ export default class resetBase extends Component {
   ChangeText = async (text, name) => {
     await this.setState({ [name]: text });
     if (name === 'otp') {
-      let otp = checkField('OTp', this.state.otp);
+      let otp = checkField('OTP', this.state.otp);
       this.setState({ otperror: otp });
     }
   };
   onSubmit = () => {
+    
     if (this.checkAllMandatoryField()) {
+      this.setState({loading:true})
       // console.log('OTP Verified', this.state.otp, this.state.id);
       let data = {
         email: this.state.email,
@@ -36,12 +38,13 @@ export default class resetBase extends Component {
         .then(response => {
           setUser(response.data.user);
           setUserToken(response.data.token.accessToken);
-
+          setUserRefreshToken(response.data.token)
+          this.setState({loading:false})
           console.log('response', response);
           this.props.navigation.navigate('Drawer');
         })
         .catch(error => {
-          this.setState({ otperror: error.response.data.message });
+          this.setState({ otperror: error.response.data.message ,loading:false});
           console.log(error);
         });
     } else {
@@ -49,11 +52,12 @@ export default class resetBase extends Component {
     }
   };
   resendOTP = () => {
+    this.setState({loading:true})
     let data = { email: this.state.email };
     callApi('post', 'v1/daffo/dispatch/reSendOtp', data)
       .then(response => {
         if (response.status === 200) {
-          this.setState({ otperror: 'Otp sent successfully' });
+          this.setState({ otperror: 'OTP sent successfully',loading:false });
         }
         console.log('Response in resend otp', response);
       })

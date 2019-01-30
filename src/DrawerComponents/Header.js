@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Dimensions, StyleSheet, Text, View, TextInput, Image, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
+import config from "../config/index"
 export default class Header extends Component {
 	constructor(props) {
 		super(props);
@@ -40,7 +41,7 @@ export default class Header extends Component {
 									uri:
 										avatarSource === ''
 											? 'asset:/images/def.png'
-											: `http://192.168.100.141:3000/v1/daffo/file/${avatarSource}`
+											: `${config.SERVER_URL}/v1/daffo/file/${avatarSource}`
 								}}
 								style={[ styles.circle, styles.circleBorder ]}
 							/>
@@ -68,7 +69,7 @@ export default class Header extends Component {
 const styles = StyleSheet.create({
 	header: {
 		width: '100%',
-		backgroundColor: '#4064EC'
+		backgroundColor: '#2d76d4'
 	},
 	fr: {
 		flexDirection: 'row'

@@ -8,6 +8,6 @@ export function addPatient(patient) {
 	return { type: ADD_PATIENT, data: patient };
 }
 export function addUserToken(token) {
-	console.log('adding ', token);
+	console.warn('adding ', token);
 	return { type: ADD_USER_TOKEN, data: token };
 }
