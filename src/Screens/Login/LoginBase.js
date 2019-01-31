@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import {Keyboard} from "react-native"
+import { Keyboard } from 'react-native';
 import { isValidEmail, isValidPassword, checkField } from '../../utilities/validation';
 import { callApi } from '../../utilities/serverApi';
-import { setUserToken, setUser, setPatient,setUserRefreshToken } from '../../redux/index';
+import { setUserToken, setUser, setPatient, setUserRefreshToken } from '../../redux/index';
 import { Alert } from '../../ReusableComponents/modal';
 import { get } from 'lodash';
 export default class LoginBase extends Component {
@@ -13,10 +13,10 @@ export default class LoginBase extends Component {
 	ChangeText = async (text, name) => {
 		await this.setState({ [name]: text });
 		if (name === 'email') {
-			let email = checkField(name, this.state.email.trim());
+			let email = checkField('Email', this.state.email.trim());
 			this.setState({ emailerror: email });
 		} else if (name === 'password') {
-			let password = checkField(name, this.state.password.trim());
+			let password = checkField('Password', this.state.password.trim());
 			this.setState({ passworderror: password });
 		}
 	};
@@ -39,11 +39,11 @@ export default class LoginBase extends Component {
 		let data = {
 			email: this.state.email.trim()
 		};
-		console.log("email",data)
+		console.log('email', data);
 		callApi('post', 'v1/daffo/dispatch/resentVerificationEmail', data)
 			.then((response) => {
 				console.log('Response in resend', response);
-				this.setState({email:"",password:""})
+				this.setState({ email: '', password: '' });
 			})
 			.catch((error) => {
 				console.log(error);
@@ -57,33 +57,28 @@ export default class LoginBase extends Component {
 				email: this.state.email.trim(),
 				password: this.state.password.trim()
 			};
-			this.setState({loading:true})
+			this.setState({ loading: true });
 			callApi('post', 'v1/auth/login', data)
 				.then((response) => {
 					console.log('user details', response);
 					setUser(response.data.user);
 					setUserToken(response.data.token.accessToken);
-					setUserRefreshToken(response.data.token)
-					this.setState({loading:false})
-				navigate("Drawer")
+					setUserRefreshToken(response.data.token);
+					this.setState({ loading: false });
+					navigate('Drawer');
 
 					console.log('token set');
 				})
 				.catch((error) => {
 					console.log('Error---->', error.response);
-					this.setState({loading:false})
-					if (error.response.data.message === 'Incorrect email')
-					{
-						
-						
-						this.setState({ emailerror: 'Incorrect email'})
-					}
-						
-					else if (error.response.data.message === 'Incorrect password')
-						this.setState({ passworderror: 'Incorrect password'});
+					this.setState({ loading: false });
+					if (error.response.data.message === 'Incorrect email') {
+						this.setState({ emailerror: 'Incorrect email' });
+					} else if (error.response.data.message === 'Incorrect password')
+						this.setState({ passworderror: 'Incorrect password' });
 					else if (!error.response.data.message.emailVerified) {
 						console.log('inside verify modal');
-						
+
 						Alert({
 							title: 'Verify Email',
 							message: 'Verify your email',
@@ -102,7 +97,7 @@ export default class LoginBase extends Component {
 							]
 						});
 					} else if (!error.response.data.message.phoneVerified)
-						navigate('OTP', { email: error.response.data.message.email });
+						navigate('OTP', { email: error.response.data.message.email, routeName: 'Drawer' });
 				});
 		} else {
 			console.log('error in validation');
@@ -110,5 +105,5 @@ export default class LoginBase extends Component {
 	};
 	componentDidMount() {
 		Keyboard.dismiss();
-	  }
+	}
 }

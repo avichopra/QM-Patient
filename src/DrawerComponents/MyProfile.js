@@ -16,7 +16,7 @@ class MyProfile extends MyProfileBase {
 		const height = Dimensions.get('window').height;
 		const { GeneralInfoPressed, AdditionalInfoPressed } = this.state;
 		let { bloodGroup = '', address = '', relationWithPatient = '', emergencyContactNo } = this.state.AdditionalInfo;
-		let { username = '', email = '', contactNo = '', picture = '' } = this.props.user;
+		let { username = '', email = '', picture = '' } = this.props.user;
 		let ECN = this.state.GeneralInfo.emergencyContactNo;
 		return (
 			<KeyboardAvoidingView style={styles.fg}>
@@ -103,7 +103,7 @@ class MyProfile extends MyProfileBase {
 									onHandleChange={this.onHandleChange}
 									field={'GeneralInfo'}
 									value={'contactNo'}
-									fieldValue={contactNo}
+									fieldValue={this.state.GeneralInfo.contactNo}
 									error={this.state.GeneralInfo.contactNoError}
 									keyboardType={'numeric'}
 								/>
@@ -192,7 +192,7 @@ class MyProfile extends MyProfileBase {
 	}
 }
 function mapStateToProps(state) {
-	console.warn('I am the stateeeeeeeeeeeeeeeeeeeeeeeeeeee', state);
+	console.warn('I am the stateeeeeeeeeeeeeeeeeeeeeeeeeeee from myprofile>>>>>>>>>', state);
 	return {
 		user: state.user,
 		token: state.token,
