@@ -13,10 +13,17 @@ export default class LoginBase extends Component {
 	ChangeText = async (text, name) => {
 		await this.setState({ [name]: text });
 		if (name === 'email') {
+<<<<<<< e2fe7d3eaf83f3e7d5f1a861a5b7e0f40207f401
 			let email = checkField('Email', this.state.email.trim());
 			this.setState({ emailerror: email });
 		} else if (name === 'password') {
 			let password = checkField('Password', this.state.password.trim());
+=======
+			let email = checkField("Email", this.state.email.trim());
+			this.setState({ emailerror: email });
+		} else if (name === 'password') {
+			let password = checkField("Password", this.state.password.trim());
+>>>>>>> final changes in patient
 			this.setState({ passworderror: password });
 		}
 	};

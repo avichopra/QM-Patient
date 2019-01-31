@@ -54,7 +54,7 @@ class Home extends Component {
 		});
 	}
 	componentWillUnmount() {
-		navigator.geolocation.clearWatch();
+		navigator.geolocation.clearWatch(this.watchID);
 	}
 	openDrawer = () => {
 		this.props.navigation.openDrawer();
@@ -66,7 +66,7 @@ class Home extends Component {
 					currentPlace: `${results[0].name},${results[0].address}`
 				})
 			)
-			.catch((error) => console.log(error.message));
+			.catch((error) => console.log("error in getcurrentplaces",error.message));
 		this.watchID = navigator.geolocation.watchPosition(
 			(position) => {
 				// Create the object to update this.state.mapRegion through the onRegionChange function
@@ -85,7 +85,7 @@ class Home extends Component {
 				// this._map.animateToRegion(region, 100);
 			},
 			function(error) {
-				console.log(error);
+				console.log("error in watchposition",error);
 			}
 		);
 		this.getDirection('29.132963299999993,75.7534505', '29.1328949,75.753995');
