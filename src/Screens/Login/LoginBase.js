@@ -37,11 +37,13 @@ export default class LoginBase extends Component {
 	};
 	sendVerifationEmail = () => {
 		let data = {
-			email: this.state.email
+			email: this.state.email.trim()
 		};
+		console.log("email",data)
 		callApi('post', 'v1/daffo/dispatch/resentVerificationEmail', data)
 			.then((response) => {
 				console.log('Response in resend', response);
+				this.setState({email:"",password:""})
 			})
 			.catch((error) => {
 				console.log(error);
@@ -81,8 +83,9 @@ export default class LoginBase extends Component {
 						this.setState({ passworderror: 'Incorrect password'});
 					else if (!error.response.data.message.emailVerified) {
 						console.log('inside verify modal');
-						this.setState({email:"",password:""})
+						
 						Alert({
+							title: 'Verify Email',
 							message: 'Verify your email',
 							buttons: [
 								{
