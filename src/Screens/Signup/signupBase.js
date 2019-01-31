@@ -98,7 +98,7 @@ export default class signupBase extends Component {
         .then(response => {
           if (response.status === 201) {
             this.setState({FullName:"",Email:"",contactnumber:"",emergencycontactnumber:"",password:"",confirmpassword:"",loading:false})
-            Alert({ message: 'Verification link has been sent to your email' ,	buttons: [
+            Alert({ title: 'Signup',message: 'Verification link has been sent to your email' ,	buttons: [
               {
                 title: 'Ok',
                 icon: false,
