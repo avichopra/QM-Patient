@@ -23,11 +23,11 @@ export default class Login extends Base {
 	constructor(props) {
 		super(props);
 		this.state = {
-			email: '',
-			password: '',
+			email: 'jainnaveksha96@gmail.com',
+			password: '123456',
 			emailerror: '',
 			passworderror: '',
-			loading:false
+			loading: false
 		};
 	}
 	// componentDidMount() {
@@ -74,9 +74,8 @@ export default class Login extends Base {
 	render() {
 		// console.warn("hiiiiiiiiiiiiiiiiii")
 		return (
-			<KeyboardAvoidingView style={{ flex: 1 }} >
-			
-				<ScrollView contentContainerStyle={style.f1} keyboardShouldPersistTaps='always'>
+			<KeyboardAvoidingView style={{ flex: 1 }}>
+				<ScrollView contentContainerStyle={style.f1} keyboardShouldPersistTaps="always">
 					<ImageBackground
 						source={{ uri: 'asset:/icon/group_2.png' }}
 						style={style.d1}
@@ -148,19 +147,25 @@ export default class Login extends Base {
 									Create One
 								</Text>
 							</View>
-							{this.state.loading===false?<TouchableOpacity style={style.c2} onPress={this.onSubmit} accessible={false}>
-								<Text
-									style={{
-										textAlign: 'center',
-										marginTop: 13,
-										fontSize: 14,
-										color: '#2948ff',
-										fontFamily: 'Nunito Bold'
-									}}
-								>
-									SIGN IN
-								</Text>
-							</TouchableOpacity>:<View style={style.c2}><ActivityIndicator size="large" color="#000" /></View>}
+							{this.state.loading === false ? (
+								<TouchableOpacity style={style.c2} onPress={this.onSubmit} accessible={false}>
+									<Text
+										style={{
+											textAlign: 'center',
+											marginTop: 13,
+											fontSize: 14,
+											color: '#2948ff',
+											fontFamily: 'Nunito Bold'
+										}}
+									>
+										SIGN IN
+									</Text>
+								</TouchableOpacity>
+							) : (
+								<View style={style.c2}>
+									<ActivityIndicator size="large" color="#000" />
+								</View>
+							)}
 						</View>
 					</ImageBackground>
 				</ScrollView>
