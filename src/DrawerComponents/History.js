@@ -23,9 +23,16 @@ class History extends Base {
 				{console.log('before FlatList')}
 				<FlatList
 					inverted={true}
-					onEndReached={() => {
-						this.onEndReached();
+					onScroll={(e) => {
+						let paddingToBottom = 10;
+						paddingToBottom += e.nativeEvent.layoutMeasurement.height;
+						if (e.nativeEvent.contentOffset.y >= e.nativeEvent.contentSize.height - paddingToBottom) {
+							this.onEndReached();
+						}
 					}}
+					// onEndReached={() => {
+					// 	this.onEndReached();
+					// }}
 					onEndReachedThreshold={0.5}
 					data={historyList}
 					keyExtractor={(item, index) => {

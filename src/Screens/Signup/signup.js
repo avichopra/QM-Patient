@@ -26,7 +26,7 @@ export default class Login extends SignupBase {
 	render() {
 		return (
 			<KeyboardAvoidingView style={{ flex: 1 }}>
-				<ScrollView contentContainerStyle={style.f1} keyboardShouldPersistTaps='always'>
+				<ScrollView contentContainerStyle={style.f1} keyboardShouldPersistTaps="always">
 					{/* <StatusBar barStyle='light-content' hidden={true} backgroundColor='blue' /> */}
 
 					<ImageBackground
@@ -187,11 +187,16 @@ export default class Login extends SignupBase {
 							<Text style={{ color: 'red' }}>{this.state.confirmpassworderror}</Text>
 						</View>
 						<View style={style.a9}>
+							{this.state.loading === false ? (
+								<Button style={style.a10} onPress={this.onSubmit}>
+									<Text style={style.f10}>SIGN UP</Text>
+								</Button>
+							) : (
+								<View style={style.a10}>
+									<ActivityIndicator size="large" color="#000" />
+								</View>
+							)}
 
-							{this.state.loading===false?<Button style={style.a10} onPress={this.onSubmit}>
-								<Text style={style.f10}>SIGN UP</Text>
-							</Button>:<View style={style.a10}><ActivityIndicator size="large" color="#000" /></View>}
-                                
 							<Button
 								style={style.a11}
 								onPress={() => {

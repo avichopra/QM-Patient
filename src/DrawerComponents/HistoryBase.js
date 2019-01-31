@@ -14,29 +14,29 @@ export default class History extends Component {
 		this.state = emptyState;
 	}
 	onEndReached = () => {
-		console.log('OnEndReached');
-		let data = {
-			perPage: 2,
-			page: this.state.page,
-			fields: {
-				driverId: { vehicleNo: 1, userId: { picture: 1, fullname: 1 } },
-				patientAddress: 1,
-				driverAddress: 1
-			}
-		};
-		let headers = {
-			'Content-Type': 'application/json',
-			Accept: 'application/json',
-			authorization: `Bearer ${this.props.token}`
-		};
-		callApi('post', 'v1/daffo/Trips/get', data, headers)
-			.then((response) => {
-				this.setState({ historyList: this.state.historyList.concat(response.data), page: this.state.page + 1 });
-				console.log('response from On end reached', response.data);
-			})
-			.catch((err) => {
-				console.log('error from history get route>>>>>>>>>>>>>>>>>>>>>', err);
-			});
+		// console.log('OnEndReached');
+		// let data = {
+		// 	perPage: 2,
+		// 	page: this.state.page,
+		// 	fields: {
+		// 		driverId: { vehicleNo: 1, userId: { picture: 1, fullname: 1 } },
+		// 		patientAddress: 1,
+		// 		driverAddress: 1
+		// 	}
+		// };
+		// let headers = {
+		// 	'Content-Type': 'application/json',
+		// 	Accept: 'application/json',
+		// 	authorization: `Bearer ${this.props.token}`
+		// };
+		// callApi('post', 'v1/daffo/Trips/get', data, headers)
+		// 	.then((response) => {
+		// 		this.setState({ historyList: this.state.historyList.concat(response.data), page: this.state.page + 1 });
+		// 		console.log('response from On end reached', response.data);
+		// 	})
+		// 	.catch((err) => {
+		// 		console.log('error from history get route>>>>>>>>>>>>>>>>>>>>>', err);
+		// 	});
 	};
 	componentDidMount() {
 		console.log('history        >>>>>>>>>>>>>>');
