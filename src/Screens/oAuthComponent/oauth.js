@@ -45,12 +45,12 @@ class oauth extends Component {
 		let email = routeParams[1];
 		if (routeName === 'otp') {
 			console.log('User in auth', email);
-			this.props.navigation.navigate('OTP', { email: email });
+			this.props.navigation.navigate('OTP', { email: email ,routeName:"Drawer",currentRoute:"Login"});
 		}
 		if (routeName === 'reset') {
 			let resetPasswordToken = routeParams[2];
 			console.log(' reset');
-			this.props.navigation.navigate('ResetPassword', { email: email, token: resetPasswordToken });
+			this.props.navigation.navigate('ResetPassword', { email: email, token: resetPasswordToken,currentRoute:"Login" });
 		}
 	};
 componentWillUnmount(){

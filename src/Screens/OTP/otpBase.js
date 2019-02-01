@@ -50,8 +50,9 @@ export default class resetBase extends Component {
 					setUserToken(response.data.token.accessToken);
 					setUserRefreshToken(response.data.token);
 					this.setState({ loading: false });
-					console.log('response', response);
-					this.props.navigation.navigate(this.props.navigation.state.params.routeName);
+          console.log('response', response);
+          console.warn(this.props.navigation.state.params.routeName===undefined)
+					this.props.navigation.navigate(this.props.navigation.state.params.routeName?this.props.navigation.state.params.routeName:"Drawer");
 				})
 				.catch((error) => {
 					this.setState({ otperror: error.response.data.message, loading: false });

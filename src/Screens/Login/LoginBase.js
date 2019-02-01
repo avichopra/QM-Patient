@@ -13,17 +13,10 @@ export default class LoginBase extends Component {
 	ChangeText = async (text, name) => {
 		await this.setState({ [name]: text });
 		if (name === 'email') {
-<<<<<<< e2fe7d3eaf83f3e7d5f1a861a5b7e0f40207f401
-			let email = checkField('Email', this.state.email.trim());
-			this.setState({ emailerror: email });
-		} else if (name === 'password') {
-			let password = checkField('Password', this.state.password.trim());
-=======
 			let email = checkField("Email", this.state.email.trim());
 			this.setState({ emailerror: email });
 		} else if (name === 'password') {
 			let password = checkField("Password", this.state.password.trim());
->>>>>>> final changes in patient
 			this.setState({ passworderror: password });
 		}
 	};
@@ -104,7 +97,7 @@ export default class LoginBase extends Component {
 							]
 						});
 					} else if (!error.response.data.message.phoneVerified)
-						navigate('OTP', { email: error.response.data.message.email, routeName: 'Drawer' });
+						navigate('OTP', { email: error.response.data.message.email, routeName: 'Drawer',currentRoute:"Login" });
 				});
 		} else {
 			console.log('error in validation');

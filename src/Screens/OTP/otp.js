@@ -9,6 +9,7 @@ import {
 	KeyboardAvoidingView,
 	ActivityIndicator
 } from 'react-native';
+import Icon from "react-native-vector-icons/AntDesign"
 import Textinput from '../../component/CustomComponent/Textinput';
 import style from '../../styles/index';
 import Base from './otpBase';
@@ -35,6 +36,7 @@ export default class OTP extends Base {
 	}
 
 	render() {
+    const {navigation}=this.props;
 		return (
 			<KeyboardAvoidingView style={{ flex: 1 }}>
 				<ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="always">
@@ -44,6 +46,7 @@ export default class OTP extends Base {
 						resizeMode={'stretch'}
 					>
 						<View>
+              {/* <Icon name="arrowleft" size={25} onPress={navigate.this.props.navigation.state.params.currentRoute}/> */}
 							<View style={style.d3}>
 								<Image
 									source={{ uri: 'asset:/icon/lock_1.png' }}

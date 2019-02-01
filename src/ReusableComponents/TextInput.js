@@ -10,7 +10,8 @@ export default (TextField = (props) => {
 		error = '',
 		onHandleChange = () => {},
 		keyboardType = 'default',
-		secureTextEntry = false
+		secureTextEntry = false,
+		editable=true
 	} = props;
 	return (
 		<View>
@@ -40,7 +41,7 @@ export default (TextField = (props) => {
 						onHandleChange(props.value, text, props.field);
 					}}
 					value={fieldValue ? fieldValue : null}
-					editable={true}
+					editable={editable}
 					keyboardType={keyboardType}
 					secureTextEntry={secureTextEntry}
 				/>

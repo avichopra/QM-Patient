@@ -1,4 +1,4 @@
-import { ADD_USER, ADD_USER_TOKEN, ADD_PATIENT } from '../actions/index';
+import { ADD_USER, ADD_USER_TOKEN, ADD_PATIENT ,ADD_USER_LOCATION} from '../actions/index';
 export const initialState = {
 	user: null,
 	token: null,
@@ -15,6 +15,8 @@ export default function(state = {}, action) {
 		case ADD_PATIENT:
 			console.log('User token added in redux state', action.data);
 			return { ...state, patient: action.data };
+	    case ADD_USER_LOCATION:
+			return {...state,Location:action.data};
 		default:
 			return { ...state };
 	}

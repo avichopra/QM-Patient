@@ -54,7 +54,7 @@ class SwitchNavigatorWrapper extends React.Component {
 		let email = routeParams[1];
 		if (routeName === 'otp') {
 			console.log('User in auth', email);
-			this.props.navigation.navigate('OTP', { email: email });
+			this.props.navigation.navigate('OTP', { email: email,routeName:"Drawer" });
 		}
 		if (routeName === 'reset') {
 			let resetPasswordToken = routeParams[2];
