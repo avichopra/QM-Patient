@@ -55,7 +55,7 @@ export default class LoginBase extends Component {
 		if (this.checkAllField()) {
 			let data = {
 				email: this.state.email.trim(),
-				password: this.state.password.trim()
+				password: this.state.password.trim(),
 			};
 			this.setState({ loading: true });
 			callApi('post', 'v1/auth/login', data)
@@ -77,7 +77,7 @@ export default class LoginBase extends Component {
 					} else if (error.response.data.message === 'Incorrect password')
 						this.setState({ passworderror: 'Incorrect password' });
 					else if (!error.response.data.message.emailVerified) {
-						console.log('inside verify modal');
+						console.log('inside verify modal',error.response.data.message);
 
 						Alert({
 							title: 'Verify Email',

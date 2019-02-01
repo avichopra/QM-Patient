@@ -46,6 +46,7 @@ class Home extends Component {
 	}
 	componentWillMount()
 	{
+		this.requestLocationPermission()
 		if(this.props.location!=null)
 		{
 			this.setState({loading:false,latitude:this.props.location.latitude,longitude:this.props.location.longitude})

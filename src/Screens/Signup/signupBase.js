@@ -116,7 +116,10 @@ export default class signupBase extends Component {
 								{
 									title: 'Ok',
 									icon: false,
-									backgroundColor: 'blue'
+									backgroundColor: 'blue',
+									onPress:this.gotToLogin
+									
+
 								}
 							]
 						});
@@ -142,6 +145,10 @@ export default class signupBase extends Component {
 			console.log('error');
 		}
 	};
+	gotToLogin=()=>
+	{
+		this.props.navigation.navigate("Login")
+	}
 	componentDidMount() {
 		Keyboard.dismiss();
 	}

@@ -13,7 +13,8 @@ export default class Header extends Component {
 			avatarSource = '',
 			name = '',
 			onHandleChange = () => {},
-			fieldValue
+			fieldValue,
+			clearName=()=>{}
 		} = this.props;
 		return (
 			<View
@@ -49,7 +50,7 @@ export default class Header extends Component {
 						<TouchableOpacity style={styles.cameraContainer} onPress={cameraClicked}>
 							<Image source={{ uri: 'mipmap/camera' }} style={styles.cameraIcon} />
 						</TouchableOpacity>
-						<View style={styles.nameContainer}>
+						<View style={styles.nameContainer} >
 							<TextInput
 								style={styles.name}
 								onChangeText={(text) => {
@@ -58,7 +59,9 @@ export default class Header extends Component {
 								value={fieldValue ? fieldValue : null}
 								editable={true}
 							/>
-							<Image style={styles.close} source={{ uri: 'mipmap/close' }} />
+							<TouchableOpacity onPress={clearName}>
+							<Image style={styles.close} source={{ uri: 'mipmap/close' }}  />
+						</TouchableOpacity>
 						</View>
 					</View>
 				) : null}
