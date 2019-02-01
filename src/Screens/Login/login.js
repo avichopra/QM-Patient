@@ -23,8 +23,8 @@ export default class Login extends Base {
 	constructor(props) {
 		super(props);
 		this.state = {
-			email: 'jainnaveksha96@gmail.com',
-			password: '123456',
+			email: '',
+			password: '',
 			emailerror: '',
 			passworderror: '',
 			loading: false

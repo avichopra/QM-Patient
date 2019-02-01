@@ -9,6 +9,7 @@ import com.airbnb.android.react.maps.MapsPackage;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.horcrux.svg.SvgPackage;
+import com.showlocationservicesdialogbox.LocationServicesDialogBoxPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
@@ -41,8 +42,8 @@ public class MainApplication extends Application implements ReactApplication {
             new SvgPackage(),
             new RNGestureHandlerPackage(),
             new VectorIconsPackage(),
-            new SplashScreenReactPackage()
-    
+            new SplashScreenReactPackage(),
+             new LocationServicesDialogBoxPackage()
 
       );
     }

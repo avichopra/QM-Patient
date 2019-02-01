@@ -96,6 +96,7 @@ class MyProfile extends MyProfileBase {
 									field={'GeneralInfo'}
 									value={'email'}
 									fieldValue={email}
+									editable={false}
 								/>
 								<TextField
 									placeholder={'Contact No.'}
