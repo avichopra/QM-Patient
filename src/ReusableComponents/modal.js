@@ -153,9 +153,10 @@ export default class ModalView extends Component {
 						<View
 							style={[
 								{
-									borderWidth: 5,
-									borderColor: 'grey',
-									elevation: 10,
+									// borderWidth: 5,
+									// borderColor: 'grey',
+									// elevation: 10,
+									borderRadius:15,
 									width: '90%',
 
 									height: height - 200,
@@ -256,7 +257,8 @@ export default class ModalView extends Component {
 													marginBottom: 8,
 													justifyContent: 'center',
 													alignItems: 'center',
-													backgroundColor: '#21618C'
+													backgroundColor: '#21618C',
+													borderRadius:20
 												}}
 												onPress={() => {
 													this.closeModal();
@@ -279,7 +281,8 @@ export default class ModalView extends Component {
 													justifyContent: 'center',
 													marginRight: 8,
 													alignItems: 'center',
-													backgroundColor: '#21618C'
+													backgroundColor: '#21618C',
+													borderRadius:20
 												}}
 											>
 												<View>

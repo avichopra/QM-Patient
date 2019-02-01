@@ -17,7 +17,7 @@ class MyProfile extends MyProfileBase {
 		const { GeneralInfoPressed, AdditionalInfoPressed } = this.state;
 		let { bloodGroup = '', address = '', relationWithPatient = '', emergencyContactNo } = this.state.AdditionalInfo;
 		let { username = '', email = '', picture = '' } = this.props.user;
-		let ECN = this.state.GeneralInfo.emergencyContactNo;
+		let ECN = this.state.GeneralInfo.emergencyContactNo,ECn=this.state.AdditionalInfo.emergencyContactNo;
 		return (
 			<KeyboardAvoidingView style={styles.fg}>
 				<ScrollView contentContainerStyle={styles.fg} keyboardShouldPersistTaps="always">
@@ -32,6 +32,7 @@ class MyProfile extends MyProfileBase {
 								onHandleChange={this.onHandleChange}
 								name="userName"
 								fieldValue={this.state.userName}
+								clearName={this.clearName}
 							/>
 						</View>
 						<View style={styles.InfoView}>
@@ -105,7 +106,7 @@ class MyProfile extends MyProfileBase {
 									field={'GeneralInfo'}
 									value={'contactNo'}
 									fieldValue={this.state.GeneralInfo.contactNo}
-									error={this.state.GeneralInfo.contactNoError}
+									error={this.state.contactNoError}
 									keyboardType={'numeric'}
 								/>
 								<TextField
@@ -157,7 +158,7 @@ class MyProfile extends MyProfileBase {
 									onHandleChange={this.onHandleChange}
 									field={'AdditionalInfo'}
 									value={'emergencyContactNo'}
-									fieldValue={emergencyContactNo}
+									fieldValue={ECn}
 									keyboardType={'numeric'}
 								/>
 								<TextField
@@ -170,6 +171,10 @@ class MyProfile extends MyProfileBase {
 								/>
 							</View>
 						)}
+						{this.props.user.phoneVerified===false?<Text style={{color:"red",alignSelf:"center"}} onPress={()=>
+						{
+							this.goToOtp()
+						}}>Click to verify your number</Text>:null}
 						<View
 							style={{
 								flexGrow: 1,

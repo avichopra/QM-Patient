@@ -7,6 +7,7 @@ import SplashScreen from 'react-native-splash-screen';
 import ImagePicker from 'react-native-image-picker';
 import { setUser, setPatient } from '../redux/index';
 import { Alert } from '../ReusableComponents/modal';
+import {checkEmpty} from "../utilities/validation"
 import Axios from 'axios';
 export default class MyProfile extends Component {
 	constructor(props) {
@@ -33,7 +34,8 @@ export default class MyProfile extends Component {
 			avatarSource: null,
 			picture: '',
 			userName: '',
-			loading: false
+			loading: false,
+			contactNoError:""
 		};
 	}
 
@@ -54,7 +56,7 @@ export default class MyProfile extends Component {
 		if (this.props.user.phoneVerified === false) {
 			Alert({
 				title: 'Verify Number',
-				message: 'Your new contact number is not verified',
+				message: 'Your new contact number is not verified please verify it',
 				buttons: [
 					{
 						title: 'Verify Number',
@@ -74,6 +76,10 @@ export default class MyProfile extends Component {
 			routeName: 'MyProfile'
 		});
 	};
+	clearName=()=>
+	{
+		this.setState({userName:""})
+	}
 	componentDidMount() {
 		console.warn(this.props.patient);
 		this.state.userName = this.props.user.fullname;
@@ -84,7 +90,7 @@ export default class MyProfile extends Component {
 		this.state.AdditionalInfo.relationWithPatient = this.props.patient.realtionWithPatient;
 		this.state.AdditionalInfo.address = this.props.patient.address;
 		this.state.GeneralInfo.emergencyContactNo = this.props.user.emergencycontactnumber;
-		this.state.AdditionalInfo.emergencyContactNo = this.props.patient.emergencyContactNo;
+		this.state.AdditionalInfo.emergencyContactNo = this.props.user.emergencycontactnumber;
 		this.setState({});
 		this.checkPhoneVerified();
 		// console.log('did mount>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', this.props.user.);
@@ -92,9 +98,21 @@ export default class MyProfile extends Component {
 			SplashScreen.hide();
 		}, 2000);
 	}
+	checkLength = () => {
+        if (this.state.GeneralInfo.contactNo.length !==10) {
+            this.setState({ contactNoError: 'Contact No length should be equal to  10' });
+            return true;
+        } else {
+            return false;
+        }
+    };
 
 	onSave = () => {
 		Keyboard.dismiss();
+		let  contactNo  = this.state.GeneralInfo.contactNo;
+        let contactNoError = checkEmpty(contactNo);
+        contactNoError && true ? this.setState({ contactNoError: 'Contact Number Cannot be empty' }) : '';
+        contactNoError === false ? (contactNoError = this.checkLength()) : '';
 		// console.log('on save being called>>>>>>>>>>>>>>>>>>>>>>>>>>.');
 		// let contactNoError, emergencyContactNoError;
 		// if (
@@ -118,6 +136,8 @@ export default class MyProfile extends Component {
 		// 	emergencyContactNoError = false;
 		// }
 		// if (emergencyContactNoError && contactNoError === false) {
+			if(contactNoError===false)
+			{
 		let headers = {
 			'Content-Type': 'application/json',
 			Accept: 'application/json',
@@ -125,7 +145,7 @@ export default class MyProfile extends Component {
 		};
 		if (this.state.GeneralInfo.contactNo !== this.props.user.contactNo) {
 			let data = {
-				username: this.state.userName,
+				fullname: this.state.userName,
 				email: this.state.GeneralInfo.email,
 				newContactNo: this.state.GeneralInfo.contactNo,
 				phoneVerified: false,
@@ -157,7 +177,7 @@ export default class MyProfile extends Component {
 				});
 		} else {
 			let data = {
-				username: this.state.userName,
+				fullname: this.state.userName,
 				email: this.state.GeneralInfo.email,
 				// newContactNo: this.state.GeneralInfo.contactNo,
 				emergencycontactnumber: this.state.GeneralInfo.emergencyContactNo,
@@ -183,6 +203,7 @@ export default class MyProfile extends Component {
 				});
 		}
 		// }
+	}
 	};
 	cameraClicked = () => {
 		console.log('avatarrrrrrrrrrrrrrr clicked called>>>>>>>>>>>>>>>>>>>>>>>>>>>');
