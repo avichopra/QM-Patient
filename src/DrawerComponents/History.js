@@ -20,20 +20,21 @@ class History extends Base {
 		return (
 			<View>
 				<Header title={'History'} openDrawer={this.openDrawer} />
-				{console.log('before FlatList')}
+				{consolpe.log('before FlatList')}
 				<FlatList
-					inverted={true}
-					onScroll={(e) => {
-						let paddingToBottom = 10;
-						paddingToBottom += e.nativeEvent.layoutMeasurement.height;
-						if (e.nativeEvent.contentOffset.y >= e.nativeEvent.contentSize.height - paddingToBottom) {
-							this.onEndReached();
-						}
-					}}
-					// onEndReached={() => {
-					// 	this.onEndReached();
+					// inverted={true}
+					// onScroll={(e) => {
+					// 	let paddingToBottom = 10;
+					// 	paddingToBottom += e.nativeEvent.layoutMeasurement.height;
+					// 	if (e.nativeEvent.contentOffset.y >= e.nativeEvent.contentSize.height - paddingToBottom) {
+					// 		this.onEndReached();
+					// 	}
 					// }}
-					onEndReachedThreshold={0.5}
+					scrollsToTop={true}
+					onEndReached={() => {
+						this.onEndReached();
+					}}
+					onEndReachedThreshold={0.01}
 					data={historyList}
 					keyExtractor={(item, index) => {
 						return item._id + Math.random();

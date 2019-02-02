@@ -198,7 +198,6 @@ class MyProfile extends MyProfileBase {
 	}
 }
 function mapStateToProps(state) {
-	console.warn('I am the stateeeeeeeeeeeeeeeeeeeeeeeeeeee from myprofile>>>>>>>>>', state);
 	return {
 		user: state.user,
 		token: state.token,
