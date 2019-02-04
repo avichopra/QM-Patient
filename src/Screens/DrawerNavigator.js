@@ -53,5 +53,14 @@ const MyDrawerNavigator = createDrawerNavigator(
 		contentComponent: DrawerContent
 	}
 );
-
-export default createAppContainer(MyDrawerNavigator);
+class DrawerNavigaterRapper extends Component
+{
+	static router = MyDrawerNavigator.router;
+componentWillMount(){
+	
+}
+	render() {
+		return <MyDrawerNavigator navigation={this.props.navigation} />;
+	}
+}
+export default createAppContainer(DrawerNavigaterRapper);
