@@ -6,7 +6,8 @@ import { checkEmpty } from '../utilities/validation';
 import { Alert } from '../../src/ReusableComponents/modal';
 const emptyState = {
 	historyList: [],
-	page: 1
+	page: 1,
+	perPage: 5
 };
 export default class History extends Component {
 	constructor(props) {
@@ -14,9 +15,9 @@ export default class History extends Component {
 		this.state = emptyState;
 	}
 	onEndReached = () => {
-		console.warn('OnEndReached');
+		console.warn('OnEndReached', this.state.page);
 		let data = {
-			perPage: 2,
+			perPage: this.state.perPage,
 			page: this.state.page,
 			fields: {
 				driverId: { vehicleNo: 1, userId: { picture: 1, fullname: 1 } },
@@ -31,8 +32,12 @@ export default class History extends Component {
 		};
 		callApi('post', 'v1/daffo/Trips/get', data, headers)
 			.then((response) => {
-				this.setState({ historyList: this.state.historyList.concat(response.data), page: this.state.page + 1 });
-				console.log('response from On end reached', response.data);
+				if (this.state.count > this.state.page * this.state.perPage) {
+					this.setState({
+						historyList: this.state.historyList.concat(response.data),
+						page: this.state.page + 1
+					});
+				}
 			})
 			.catch((err) => {
 				console.log('error from history get route>>>>>>>>>>>>>>>>>>>>>', err);
@@ -41,7 +46,7 @@ export default class History extends Component {
 	componentDidMount() {
 		console.log('history        >>>>>>>>>>>>>>');
 		let data = {
-			perPage: 2,
+			perPage: this.state.perPage,
 			page: this.state.page,
 			fields: {
 				driverId: { vehicleNo: 1, userId: { picture: 1, fullname: 1 } },
@@ -54,13 +59,22 @@ export default class History extends Component {
 			Accept: 'application/json',
 			authorization: `Bearer ${this.props.token}`
 		};
-		callApi('post', 'v1/daffo/Trips/get', data, headers)
-			.then((response) => {
-				this.setState({ historyList: response.data, page: this.state.page + 1 });
-				console.log('response from historyyyyy', response.data);
+
+		callApi('post', 'v1/daffo/Trips/count', data, headers)
+			.then((result) => {
+				console.log('count>>>>>>>>>>>>>>>>>>>>>>>>>>', result.data.count);
+				this.setState({ count: result.data.count });
+				callApi('post', 'v1/daffo/Trips/get', data, headers)
+					.then((response) => {
+						this.setState({ historyList: response.data, page: this.state.page + 1 });
+						console.log('response from historyyyyy', response.data);
+					})
+					.catch((err) => {
+						console.log('error from history get route>>>>>>>>>>>>>>>>>>>>>', err);
+					});
 			})
 			.catch((err) => {
-				console.log('error from history get route>>>>>>>>>>>>>>>>>>>>>', err);
+				console.log('error from myProfile Base', err.response, err.status, err);
 			});
 	}
 }

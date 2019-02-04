@@ -12,7 +12,6 @@ import {
 import Icon from 'react-native-vector-icons/AntDesign';
 import Textinput from '../../component/CustomComponent/Textinput';
 import style from '../../styles/index';
-import Icon from 'react-native-vector-icons/AntDesign';
 
 import Base from './otpBase';
 export default class OTP extends Base {

@@ -18,18 +18,10 @@ class History extends Base {
 	render() {
 		let historyList = this.state.historyList;
 		return (
-			<View>
+			<View style={{ flex: 1 }}>
 				<Header title={'History'} openDrawer={this.openDrawer} />
-				{consolpe.log('before FlatList')}
+				{console.log('before FlatList')}
 				<FlatList
-					// inverted={true}
-					// onScroll={(e) => {
-					// 	let paddingToBottom = 10;
-					// 	paddingToBottom += e.nativeEvent.layoutMeasurement.height;
-					// 	if (e.nativeEvent.contentOffset.y >= e.nativeEvent.contentSize.height - paddingToBottom) {
-					// 		this.onEndReached();
-					// 	}
-					// }}
 					scrollsToTop={true}
 					onEndReached={() => {
 						this.onEndReached();
@@ -44,7 +36,7 @@ class History extends Base {
 						return (
 							<View
 								style={{
-									height: 400,
+									height: 200,
 									width: '100%',
 									marginTop: 20,
 									borderBottomWidth: 1,
@@ -79,12 +71,12 @@ class History extends Base {
 											height: 22
 										}}
 									>
-										<Text style={{ fontSize: 20, color: 'grey' }} numberOfLines={1}>
+										<Text style={{ fontSize: 18, color: 'grey' }} numberOfLines={1}>
 											{item.driverId.userId.fullname}
 										</Text>
 									</View>
 									<View style={{ width: '40%', marginLeft: 8, height: 22 }}>
-										<Text style={{ fontSize: 20, color: 'grey' }}>{item.driverId.vehicleNo}</Text>
+										<Text style={{ fontSize: 18, color: 'grey' }}>{item.driverId.vehicleNo}</Text>
 									</View>
 								</View>
 								<View style={{ flexDirection: 'row', marginTop: 30 }}>
@@ -93,9 +85,15 @@ class History extends Base {
 										style={{ height: 60, width: 30 }}
 										resizeMode="contain"
 									/>
-									<View style={{ marginLeft: 25 }}>
-										<Text style={{ fontSize: 19, color: 'black' }}>{item.driverAddress}</Text>
-										<Text style={{ fontSize: 19, color: 'black', marginTop: 10 }}>
+									<View
+										style={{
+											marginLeft: 25,
+											width: '82%',
+											marginRight: 3
+										}}
+									>
+										<Text style={{ fontSize: 18, color: 'black' }}>{item.driverAddress}</Text>
+										<Text style={{ fontSize: 18, color: 'black', marginTop: 10 }}>
 											{item.patientAddress}
 										</Text>
 									</View>
