@@ -6,10 +6,16 @@ import Model from './src/ReusableComponents/modal';
 import Switchnavigator from './src/Screens/routes';
 import ModalView from './src/ReusableComponents/modal';
 import SplashScreen from 'react-native-splash-screen';
-console.disableYellowBox = true;
+import {connectToSocket} from "./src/utilities/socket"
+// console.disableYellowBox=true;
 export default class App extends Component {
+	componentWillMount(){
+		connectToSocket()
+		.then(_ => {})
+		.catch(e => {});
+	}
 	componentDidMount() {
-		SplashScreen.hide();
+			SplashScreen.hide();
 	}
 	render() {
 		return (
