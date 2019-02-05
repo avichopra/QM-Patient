@@ -20,17 +20,11 @@ import { callApi } from '../utilities/serverApi';
 import { connect } from 'react-redux';
 import { setPatient } from '../redux/index';
 const { width, height } = Dimensions.get('window');
-
-let screen = Dimensions.get('window');
-const Aspect_Ratio = screen.width / screen.height;
-let latitude_Delta = 0.0922;
-let longitude_Delta = latitude_Delta * Aspect_Ratio;
+// const Aspect_Ratio = width /height;
+// let latitude_Delta = 0.0922;
+// let longitude_Delta = latitude_Delta * Aspect_Ratio;
 import RNGooglePlaces from 'react-native-google-places';
 import MapView, { PROVIDER_GOOGLE, Marker, AnimatedRegion, Polyline } from 'react-native-maps';
-const instructions = Platform.select({
-	ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-	android: 'Double tap R on your keyboard to reload,\n' + 'Shake or press menu button for dev menu'
-});
 import LocationServicesDialogBox from 'react-native-android-location-services-dialog-box';
 import Store from '../redux/store/index';
 import { addLocation } from '../redux/actions/index';
@@ -38,7 +32,6 @@ import Button from '../ReusableComponents/Button';
 import Base from './HomeBase';
 import CallAmbulance from './HomeComponents/CallAmbulance';
 import SearchingNearby from './HomeComponents/SearchingNearby';
-const { width, height } = Dimensions.get('window');
 let latitude_delta,longitude_delta;
 
 // import LocationServicesDialogBox from "react-native-android-location-services-dialog-box";
@@ -46,6 +39,7 @@ let latitude_delta,longitude_delta;
 // import {addLocation} from "../redux/actions/index"
 
 let e;
+
 let response={
 	"geocoded_waypoints": [
 	  {
@@ -357,248 +351,248 @@ let response={
 	
 		
 	class Home extends Base  {
-	constructor() {
-		super();
-		this.state = {
-			latitude: 0,
-			longitude: 0,
-			latitudeDelta: 0.015,
-			longitudeDelta: 0.0121,
-			currentPlace: '',
-			loading:true,
-			pointCoords:[],
-			routeCoordinates: [],
-			coordinate: new AnimatedRegion({
-				latitude: 29.95539,
-				longitude: 78.07513
-			   })
-			   ,
-			  region:null
-		};
-	}
-	componentWillMount()
-	{ 
-		this.requestLocationPermission()
-		// this.getRouteDirection()
-		if(this.props.location!=null)
-		{
-			this.setState({loading:false,latitude:this.props.location.latitude,longitude:this.props.location.longitude})
+	// constructor() {
+	// 	super();
+	// 	this.state = {
+	// 		latitude: 0,
+	// 		longitude: 0,
+	// 		latitudeDelta: 0.015,
+	// 		longitudeDelta: 0.0121,
+	// 		currentPlace: '',
+	// 		loading:true,
+	// 		pointCoords:[],
+	// 		routeCoordinates: [],
+	// 		coordinate: new AnimatedRegion({
+	// 			latitude: 29.95539,
+	// 			longitude: 78.07513
+	// 		   })
+	// 		   ,
+	// 		  region:null
+	// 	};
+	// }
+	// componentWillMount()
+	// { 
+	// 	this.requestLocationPermission()
+	// 	// this.getRouteDirection()
+	// 	if(this.props.location!=null)
+	// 	{
+	// 		this.setState({loading:false,latitude:this.props.location.latitude,longitude:this.props.location.longitude})
                
-		}
-		let headers = {
-			'Content-Type': 'application/json',
-			Accept: 'application/json',
-			authorization: `Bearer ${this.props.token}`
-		};
-		console.warn("token",this.props.token)
-		callApi(
-			'post',
-			'v1/daffo/Patient/getOwn',
-			{ perPage: 1, filter: { userId: this.props.user.id} },
-			headers
-		).then((result) => {
-			console.warn('resultttttttttttttttttttttttttttttt getOwn', result.data[0]);
-			result.data[0] ?  setPatient(result.data[0]) : '';
-		});
-	}
-	componentWillUnmount() {
-		navigator.geolocation.clearWatch(this.watchID);
-	}
-	openDrawer = () => {
-		this.props.navigation.openDrawer();
-	};
-	requestLocationPermission=async ()=>{
-		try {
-		  const granted = await PermissionsAndroid.request(
-			PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-			{
-			  'title': 'Location Permission',
-			  'message': 'This app needs access to your location',
-			}
-		  )
-		  if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-			console.warn("You can use the location")
-		  } else {
-			console.warn("Location permission denied")
-		  }
-		} catch (err) {
-		  console.warn(err)
-		}
-	  }
-	componentDidMount() {
-         
-		LocationServicesDialogBox.checkLocationServicesIsEnabled({ 
-			message: "<h3>Use Location?</h3> \
-						This app wants to change your device settings:<br/><br/>\
-						Use GPS for location<br/><br/>", 
-			ok: "YES", 
-			cancel: "NO" 
-		}).then(() => { 
-			RNGooglePlaces.getCurrentPlace()
-			.then((results) =>{
-				console.log("current location",results)
-				const {latitude,longitude}=results[0];
-				const newCoordinate = {
-					latitude,
-					longitude
-				  };
-               Store.dispatch(addLocation({latitude:results[0].latitude,longitude:results[0].longitude}))
-				this.setState({
-					loading:false,currentPlace: `${results[0].name},${results[0].address}`,latitude:results[0].latitude,longitude:results[0].longitude
-				})
-				// this.getRouteDirection()
-				console.warn("current place",results)
-			})
-			.catch((error) => console.warn(error.message));
-		})
-		this.watchID = navigator.geolocation.watchPosition(
-			(position) => {
-				// Create the object to update this.state.mapRegion through the onRegionChange function
-				let region = {
-					latitude: position.coords.latitude,
-					longitude: position.coords.longitude,
-					latitudeDelta: 0.5,
-					longitudeDelta: 0.5 * (width / height)
-				};
-				const { latitude, longitude } = position.coords;
-
-				const newCoordinate = {
-				  latitude,
-				  longitude
-				};
-				console.log('Region', position);
-				
-				// if (this.marker) {
-				// 	this.marker._component.animateMarkerToCoordinate(
-				// 	  newCoordinate,
-				// 	  500
-				// 	);
-				//   }
-				  this.setState({
-					latitude: position.coords.latitude,
-					longitude: position.coords.longitude,
-					
-				});
-				// this.onRegionChange(region, region.latitude, region.longitude);
-				// this._map.animateToRegion(region, 100);
-			},
-			error => console.log(error),
-			// { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-		);
-		// this.getDirection('29.132963299999993,75.7534505', '29.1328949,75.753995');
-		// this._askForLocationServices();
-		this.requestLocationPermission()
-	}
-	getDirection = async (startLoc, destinationLoc) => {
-		let resp = await fetch(
-			`https://maps.googleapis.com/maps/api/directions/json?origin=${startLoc}&destination=${destinationLoc}&key=AIzaSyASICVTRwAiAnnT_AzZFCqitJ56C8koh3s`
-		);
-		let respJson = await resp.json();
-		// let points = Polyline.decode(respJson.routes[0].overview_polyline.points);
-		console.log(respJson);
-		// let coords = points.map((point, index) => {
-		//   return {
-		//     latitude: point[0],
-		//     longitude: point[1]
-		//   };
-		// });
-		console.log(respJson);
-	};
-	// _askForLocationServices() {
-	// 	PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION, {
-	// 		title: 'question',
-	// 		message: 'gimme that location'
-	// 	}).then((granted) => {
-	// 		console.log('granted', granted);
-	// 		// always returns never_ask_again
+	// 	}
+	// 	let headers = {
+	// 		'Content-Type': 'application/json',
+	// 		Accept: 'application/json',
+	// 		authorization: `Bearer ${this.props.token}`
+	// 	};
+	// 	console.warn("token",this.props.token)
+	// 	callApi(
+	// 		'post',
+	// 		'v1/daffo/Patient/getOwn',
+	// 		{ perPage: 1, filter: { userId: this.props.user.id} },
+	// 		headers
+	// 	).then((result) => {
+	// 		console.warn('resultttttttttttttttttttttttttttttt getOwn', result.data[0]);
+	// 		result.data[0] ?  setPatient(result.data[0]) : '';
 	// 	});
 	// }
-	 e=this;
-	 setUserLocation=(Coordinate)=>{
-	//   console.warn("location changed",Coordinate)
-	  const {latitude,longitude}=Coordinate;
-	  	const newCoordinate = {
-	  		latitude,
-	  		longitude
-			};
-			if (this.marker) {
-						  this.marker._component.animateMarkerToCoordinate(
-							newCoordinate,
-							500
-						  );
-						}
-						// this.getRouteDirection()
-						this.map.animateToRegion({latitude:Coordinate.latitude,longitude:Coordinate.longitude,latitudeDelta:latitude_delta,longitudeDelta:longitude_delta}, 2000);
-						// // this.setState({
-						// 			routeCoordinates: this.state.routeCoordinates.concat([newCoordinate])
-						// 		});
-	 }
-	// _onMapChange=(region)=>{
-	// 	// console.warn("region",region)
-	// 	// const {routeCoordinates}=this.state;
-	// 	// console.warn("route",routeCoordinates)
-	// 	const {latitude,longitude}=region;
-	// 	const newCoordinate = {
-	// 		latitude,
-	// 		longitude
-	// 	  };
-	// 	//   console.warn('Region', newCoordinate);
-		
-	// 	  if (this.marker) {
-	// 		  this.marker._component.animateMarkerToCoordinate(
-	// 			newCoordinate,
-	// 			500
-	// 		  );
+	// componentWillUnmount() {
+	// 	navigator.geolocation.clearWatch(this.watchID);
+	// }
+	// openDrawer = () => {
+	// 	this.props.navigation.openDrawer();
+	// };
+	// requestLocationPermission=async ()=>{
+	// 	try {
+	// 	  const granted = await PermissionsAndroid.request(
+	// 		PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+	// 		{
+	// 		  'title': 'Location Permission',
+	// 		  'message': 'This app needs access to your location',
 	// 		}
-	// 		// this.setState({status:1})
-	// 	this.setState({
-	// 		routeCoordinates: this.state.routeCoordinates.concat([newCoordinate])
-	// 	});
-	// 	// console.warn("region changed", region);
+	// 	  )
+	// 	  if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+	// 		console.warn("You can use the location")
+	// 	  } else {
+	// 		console.warn("Location permission denied")
+	// 	  }
+	// 	} catch (err) {
+	// 	  console.warn(err)
+	// 	}
+	//   }
+	// componentDidMount() {
+         
+	// 	LocationServicesDialogBox.checkLocationServicesIsEnabled({ 
+	// 		message: "<h3>Use Location?</h3> \
+	// 					This app wants to change your device settings:<br/><br/>\
+	// 					Use GPS for location<br/><br/>", 
+	// 		ok: "YES", 
+	// 		cancel: "NO" 
+	// 	}).then(() => { 
+	// 		RNGooglePlaces.getCurrentPlace()
+	// 		.then((results) =>{
+	// 			console.log("current location",results)
+	// 			const {latitude,longitude}=results[0];
+	// 			const newCoordinate = {
+	// 				latitude,
+	// 				longitude
+	// 			  };
+    //            Store.dispatch(addLocation({latitude:results[0].latitude,longitude:results[0].longitude}))
+	// 			this.setState({
+	// 				loading:false,currentPlace: `${results[0].name},${results[0].address}`,latitude:results[0].latitude,longitude:results[0].longitude
+	// 			})
+	// 			// this.getRouteDirection()
+	// 			console.warn("current place",results)
+	// 		})
+	// 		.catch((error) => console.warn(error.message));
+	// 	})
+	// 	this.watchID = navigator.geolocation.watchPosition(
+	// 		(position) => {
+	// 			// Create the object to update this.state.mapRegion through the onRegionChange function
+	// 			let region = {
+	// 				latitude: position.coords.latitude,
+	// 				longitude: position.coords.longitude,
+	// 				latitudeDelta: 0.5,
+	// 				longitudeDelta: 0.5 * (width / height)
+	// 			};
+	// 			const { latitude, longitude } = position.coords;
+
+	// 			const newCoordinate = {
+	// 			  latitude,
+	// 			  longitude
+	// 			};
+	// 			console.log('Region', position);
+				
+	// 			// if (this.marker) {
+	// 			// 	this.marker._component.animateMarkerToCoordinate(
+	// 			// 	  newCoordinate,
+	// 			// 	  500
+	// 			// 	);
+	// 			//   }
+	// 			  this.setState({
+	// 				latitude: position.coords.latitude,
+	// 				longitude: position.coords.longitude,
+					
+	// 			});
+	// 			// this.onRegionChange(region, region.latitude, region.longitude);
+	// 			// this._map.animateToRegion(region, 100);
+	// 		},
+	// 		error => console.log(error),
+	// 		// { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+	// 	);
+	// 	// this.getDirection('29.132963299999993,75.7534505', '29.1328949,75.753995');
+	// 	// this._askForLocationServices();
+	// 	this.requestLocationPermission()
 	// }
+	// getDirection = async (startLoc, destinationLoc) => {
+	// 	let resp = await fetch(
+	// 		`https://maps.googleapis.com/maps/api/directions/json?origin=${startLoc}&destination=${destinationLoc}&key=AIzaSyASICVTRwAiAnnT_AzZFCqitJ56C8koh3s`
+	// 	);
+	// 	let respJson = await resp.json();
+	// 	// let points = Polyline.decode(respJson.routes[0].overview_polyline.points);
+	// 	console.log(respJson);
+	// 	// let coords = points.map((point, index) => {
+	// 	//   return {
+	// 	//     latitude: point[0],
+	// 	//     longitude: point[1]
+	// 	//   };
+	// 	// });
+	// 	console.log(respJson);
+	// };
+	// // _askForLocationServices() {
+	// // 	PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION, {
+	// // 		title: 'question',
+	// // 		message: 'gimme that location'
+	// // 	}).then((granted) => {
+	// // 		console.log('granted', granted);
+	// // 		// always returns never_ask_again
+	// // 	});
+	// // }
+	//  e=this;
+	//  setUserLocation=(Coordinate)=>{
+	// //   console.warn("location changed",Coordinate)
+	//   const {latitude,longitude}=Coordinate;
+	//   	const newCoordinate = {
+	//   		latitude,
+	//   		longitude
+	// 		};
+	// 		if (this.marker) {
+	// 					  this.marker._component.animateMarkerToCoordinate(
+	// 						newCoordinate,
+	// 						500
+	// 					  );
+	// 					}
+	// 					// this.getRouteDirection()
+	// 					this.map.animateToRegion({latitude:Coordinate.latitude,longitude:Coordinate.longitude,latitudeDelta:latitude_delta,longitudeDelta:longitude_delta}, 2000);
+	// 					// // this.setState({
+	// 					// 			routeCoordinates: this.state.routeCoordinates.concat([newCoordinate])
+	// 					// 		});
+	//  }
+	// // _onMapChange=(region)=>{
+	// // 	// console.warn("region",region)
+	// // 	// const {routeCoordinates}=this.state;
+	// // 	// console.warn("route",routeCoordinates)
+	// // 	const {latitude,longitude}=region;
+	// // 	const newCoordinate = {
+	// // 		latitude,
+	// // 		longitude
+	// // 	  };
+	// // 	//   console.warn('Region', newCoordinate);
+		
+	// // 	  if (this.marker) {
+	// // 		  this.marker._component.animateMarkerToCoordinate(
+	// // 			newCoordinate,
+	// // 			500
+	// // 		  );
+	// // 		}
+	// // 		// this.setState({status:1})
+	// // 	this.setState({
+	// // 		routeCoordinates: this.state.routeCoordinates.concat([newCoordinate])
+	// // 	});
+	// // 	// console.warn("region changed", region);
+	// // }
 	
-	getRouteDirection=()=>{
-		try{
-            //   const response=await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${this.state.latitude},${this.state.longitude}&destination=Universal+Studios+Hollywood&key=AIzaSyD9fameWCeX54X9WwqIKmp6x_S13v9a49g`)
+	// getRouteDirection=()=>{
+	// 	try{
+    //         //   const response=await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${this.state.latitude},${this.state.longitude}&destination=Universal+Studios+Hollywood&key=AIzaSyD9fameWCeX54X9WwqIKmp6x_S13v9a49g`)
 			
-			//   const json=response.json();
-			//   console.log("response for map")
-			//   console.log("in json",json)
-			  const points=PolyLine.decode(response.routes[0].overview_polyline.points);
-			  console.log("Polyline points",points)
-			  const pointCoords=points.map(point=>{
-				  return {latitude:point[0],longitude:point[1]}
-			  });
-			//   console.log("state for route",this.state.pointCoords)
-			  this.setState({pointCoords})
-			  console.log("points coord",pointCoords)
-			  this.map.fitToCoordinates(pointCoords)
-			}
-		catch(error)
-		{
-			console.log(error)
-		}
-	}
-	onRegionChangeComplete=(region)=>{
-		latitude_delta=region.latitudeDelta;
-		longitude_delta=region.longitudeDelta;
-	//  console.warn("Completed region",region)
-	//  this.setState({latitudeDelta:region.latitudeDelta,longitudeDelta:region.longitudeDelta})
-	}
-	AutoCom = () => {
-		RNGooglePlaces.openAutocompleteModal({ country: 'IN', radius: 100 })
-			.then((place) => {
-				this.setState({
-					currentPlace: place.address,
-					latitude: place.latitude,
-					longitude: place.longitude
-				});
-				console.log(place.latitude);
-				// place represents user's selection from the
-				// suggestions and it is a simplified Google Place object.
-			})
-			.catch((error) => console.log(error.message));
-	};
+	// 		//   const json=response.json();
+	// 		//   console.log("response for map")
+	// 		//   console.log("in json",json)
+	// 		  const points=PolyLine.decode(response.routes[0].overview_polyline.points);
+	// 		  console.log("Polyline points",points)
+	// 		  const pointCoords=points.map(point=>{
+	// 			  return {latitude:point[0],longitude:point[1]}
+	// 		  });
+	// 		//   console.log("state for route",this.state.pointCoords)
+	// 		  this.setState({pointCoords})
+	// 		  console.log("points coord",pointCoords)
+	// 		  this.map.fitToCoordinates(pointCoords)
+	// 		}
+	// 	catch(error)
+	// 	{
+	// 		console.log(error)
+	// 	}
+	// }
+	// onRegionChangeComplete=(region)=>{
+	// 	latitude_delta=region.latitudeDelta;
+	// 	longitude_delta=region.longitudeDelta;
+	// //  console.warn("Completed region",region)
+	// //  this.setState({latitudeDelta:region.latitudeDelta,longitudeDelta:region.longitudeDelta})
+	// }
+	// AutoCom = () => {
+	// 	RNGooglePlaces.openAutocompleteModal({ country: 'IN', radius: 100 })
+	// 		.then((place) => {
+	// 			this.setState({
+	// 				currentPlace: place.address,
+	// 				latitude: place.latitude,
+	// 				longitude: place.longitude
+	// 			});
+	// 			console.log(place.latitude);
+	// 			// place represents user's selection from the
+	// 			// suggestions and it is a simplified Google Place object.
+	// 		})
+	// 		.catch((error) => console.log(error.message));
+	// };
 	render() {
 		console.log('Current position', this.state.latitude, this.state.longitude);
 		return (
@@ -626,7 +620,7 @@ let response={
 					onRegionChangeComplete={this.onRegionChangeComplete.bind(this)}
 					onUserLocationChange={locationChangedResult => this.setUserLocation(locationChangedResult.nativeEvent.coordinate)}
 				>
-				 {this.state.pointCoords?<Polyline coordinates={this.state.pointCoords} strokeColor={"red"} strokeWidth={5} />:""}
+				 <Polyline coordinates={this.state.pointCoords} strokeColor={"red"} strokeWidth={5} />
           <Marker.Animated 
             ref={marker => {
               this.marker = marker;

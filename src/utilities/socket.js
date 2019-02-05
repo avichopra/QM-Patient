@@ -49,6 +49,10 @@ export function connectToSocket() {
     socket.on("connect_failed", err => {
       reject(err);
     });
+    socket.on("updateInRow", socketData => {
+        // let { group } = socketData;
+      alert("data received",socketData);
+      });
   });
 }
 
@@ -86,16 +90,9 @@ export function saveSubscriptionInfo(viewName, groupIds) {
   }
   
   export function onSocketData(groupId, viewName, onData) {
-    socket.on("updateInRow", socketData => {
-      let { group } = socketData;
-  
-      if (group === groupId) {
-        return onData(socketData);
-      }
-    });
-  }
 
-function subscribeGroups(groups) {
+  }
+export function subscribeGroups(groups) {
   socket.emit("subscribe", groups)
 }
 function unSubscribeGroups(groups) {
