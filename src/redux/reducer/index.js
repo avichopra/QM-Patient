@@ -4,7 +4,8 @@ export const initialState = {
 	token: null,
 	patient: null,
 	driver: null,
-	showDriver: false
+	showDriver: false,
+	Location:null
 };
 export default function(state = {}, action) {
 	switch (action.type) {

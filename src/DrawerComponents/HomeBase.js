@@ -462,7 +462,7 @@ export default class HomeBase extends Component {
 		call(args).catch(console.error);
 	};
 	componentWillMount() {
-		// this.requestLocationPermission();
+		// this.requestLocationPermission()
 		// this.getRouteDirection()
 		if (this.props.location != null) {
 			this.setState({
@@ -561,7 +561,7 @@ export default class HomeBase extends Component {
 				//   }
 				this.setState({
 					latitude: position.coords.latitude,
-					longitude: position.coords.longitude
+					longitude: position.coords.longitude,
 				});
 				// this.onRegionChange(region, region.latitude, region.longitude);
 				// this._map.animateToRegion(region, 100);
@@ -571,7 +571,8 @@ export default class HomeBase extends Component {
 		);
 		// this.getDirection('29.132963299999993,75.7534505', '29.1328949,75.753995');
 		// this._askForLocationServices();
-		// this.requestLocationPermission();
+		// this.requestLocationPermission()
+		
 	}
 	getDirection = async (startLoc, destinationLoc) => {
 		let resp = await fetch(
@@ -588,15 +589,6 @@ export default class HomeBase extends Component {
 		// });
 		console.log(respJson);
 	};
-	// _askForLocationServices() {
-	// 	PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION, {
-	// 		title: 'question',
-	// 		message: 'gimme that location'
-	// 	}).then((granted) => {
-	// 		console.log('granted', granted);
-	// 		// always returns never_ask_again
-	// 	});
-	// }
 	// onRegionChange(region) {
 	// 	// this.setState({
 	// 	//   latitude: region.latitude,

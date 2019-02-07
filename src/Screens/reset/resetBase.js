@@ -27,7 +27,8 @@ export default class resetBase extends Component {
     if (this.checkAllMandatoryField()) {
       this.setState({loading:true})
       let data = {
-        email: this.state.email
+        email: this.state.email.trim().toLowerCase(),
+        role:"Patient"
       };
       callApi('post', 'v1/auth/forget', data)
         .then(response => {
@@ -52,7 +53,11 @@ export default class resetBase extends Component {
           if (error.response.data.code === 400) {
             this.setState({ emailerror: 'user not found',loading:false });
           }
-          console.log('Error', error.response.data);
+          else if(error.response.data.code===401)
+          {
+            console.log('Error', error.response.data);
+            this.setState({emailerror:"Unauthorised User",loading:false})
+          } 
         });
     } else {
       console.log('error');
