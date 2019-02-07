@@ -6,8 +6,8 @@ import {
 	createStackNavigator,
 	createSwitchNavigator
 } from 'react-navigation';
-import {subscribeGroups,saveSubscriptionInfo} from "../utilities/socket"
-import { connect } from "react-redux";
+import { subscribeGroups, saveSubscriptionInfo, unSubscribeSockets } from '../utilities/socket';
+import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/Foundation';
 import Home from '../DrawerComponents/Home';
 import History from '../DrawerComponents/History';
@@ -54,21 +54,23 @@ const MyDrawerNavigator = createDrawerNavigator(
 		contentComponent: DrawerContent
 	}
 );
-class DrawerNavigaterRapper extends Component
-{
+class DrawerNavigaterRapper extends Component {
 	static router = MyDrawerNavigator.router;
-componentWillMount(){
-	console.log("user id",this.props.user.id)
-	saveSubscriptionInfo("DrawerNavigater",[this.props.user.id])
-}
+	componentWillMount() {
+		console.log('user id', this.props.user.id);
+		saveSubscriptionInfo('DrawerNavigater', [ this.props.user.id ]);
+	}
+	// componentWillUnmount() {
+	// 	unSubscribeSockets('DrawerNavigater');
+	// }
 	render() {
 		return <MyDrawerNavigator navigation={this.props.navigation} />;
 	}
 }
-function mapStateToProps(state){
-	console.log("user in state of drawernavigater",state)
+function mapStateToProps(state) {
+	console.log('user in state of drawernavigater', state);
 	return {
-		user:state.user
-	}
+		user: state.user
+	};
 }
 export default connect(mapStateToProps)(DrawerNavigaterRapper);
