@@ -54,8 +54,9 @@ export default class LoginBase extends Component {
 		const { navigate } = this.props.navigation;
 		if (this.checkAllField()) {
 			let data = {
-				email: this.state.email.trim(),
+				email: this.state.email.trim().toLowerCase(),
 				password: this.state.password.trim(),
+				role:"Patient"
 			};
 			this.setState({ loading: true });
 			callApi('post', 'v1/auth/login', data)
@@ -76,7 +77,7 @@ export default class LoginBase extends Component {
 						this.setState({ emailerror: 'Incorrect email' });
 					} else if (error.response.data.message === 'Incorrect password')
 						this.setState({ passworderror: 'Incorrect password' });
-					else if (!error.response.data.message.emailVerified) {
+					else if (error.response.data.message.emailVerified===false) {
 						console.log('inside verify modal',error.response.data.message);
 
 						Alert({
@@ -96,9 +97,16 @@ export default class LoginBase extends Component {
 								}
 							]
 						});
-					} else if (!error.response.data.message.phoneVerified)
+					} else if (error.response.data.message.phoneVerified===false)
 						navigate('OTP', { email: error.response.data.message.email, routeName: 'Drawer',currentRoute:"Login" });
-				});
+					else
+					{
+						console.warn("error in login",error.response.data.message)
+						this.setState({emailerror:"Unauthorised User"})
+
+					}
+					    
+					});
 		} else {
 			console.log('error in validation');
 		}

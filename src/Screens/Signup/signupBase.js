@@ -91,7 +91,7 @@ export default class signupBase extends Component {
 			this.setState({ loading: true });
 			let data = {
 				fullname: this.state.FullName.trim(),
-				email: this.state.Email.trim(),
+				email: this.state.Email.trim().toLocaleLowerCase(),
 				contactNo: this.state.contactnumber.trim(),
 				emergencycontactnumber: this.state.emergencycontactnumber.trim(),
 				password: this.state.password.trim(),

@@ -731,6 +731,7 @@ const styles = StyleSheet.create({
 	}
 });
 function mapStateToProps(state) {
+	console.log('I am the stateeeeeeeeeeeeeeeeeeeeeeeeeeee', state);
 	return {
 		user: state.user,
 		patient: state.patient,
