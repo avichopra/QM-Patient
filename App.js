@@ -7,6 +7,8 @@ import Switchnavigator from './src/Screens/routes';
 import ModalView from './src/ReusableComponents/modal';
 import SplashScreen from 'react-native-splash-screen';
 import { connectToSocket } from './src/utilities/socket';
+import * as Storage from "./src/utilities/asyncStorage"
+import {callApi} from "./src/utilities/serverApi"
 // console.disableYellowBox=true;
 export default class App extends Component {
 	componentWillMount(){
