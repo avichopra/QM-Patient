@@ -9,7 +9,8 @@ export default (ShowDriver = (props) => {
 			picture: '',
 			contactNo: ''
 		},
-		Call = () => {}
+		Call = () => {},
+		onShowReasons = () => {}
 	} = props;
 	return (
 		<View
@@ -64,7 +65,12 @@ export default (ShowDriver = (props) => {
 			</View>
 			<View style={{ height: 1, backgroundColor: 'rgba(215,219,221,0.7)', width: '100%' }} />
 			<View style={{ width: '100%', alignItems: 'center', justifyContent: 'center', height: 60 }}>
-				<View style={{ flexDirection: 'row', alignSelf: 'center', marginRight: 5 }}>
+				<TouchableOpacity
+					style={{ flexDirection: 'row', alignSelf: 'center', marginRight: 5 }}
+					onPress={() => {
+						onShowReasons(true);
+					}}
+				>
 					<Image
 						source={{ uri: 'mipmap/cancel' }}
 						style={{
@@ -86,7 +92,7 @@ export default (ShowDriver = (props) => {
 					>
 						Cancel
 					</Text>
-				</View>
+				</TouchableOpacity>
 			</View>
 		</View>
 	);

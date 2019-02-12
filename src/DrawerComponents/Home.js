@@ -1,47 +1,16 @@
 import React, { Component } from 'react';
 import Header from './Header';
 import PolyLine from '@mapbox/polyline';
-import {
-	Platform,
-	StyleSheet,
-	PermissionsAndroid,
-	Text,
-	View,
-	Dimensions,
-	TextInput,
-	Image,
-	TouchableOpacity,
-	ScrollView,
-	ActivityIndicator,
-	Animated
-} from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, ActivityIndicator } from 'react-native';
 import _ from 'lodash';
-import { connectToSocket } from '../utilities/socket';
-import { callApi } from '../utilities/serverApi';
 import { connect } from 'react-redux';
-import { setPatient } from '../redux/index';
-const { width, height } = Dimensions.get('window');
-// const Aspect_Ratio = width /height;
-// let latitude_Delta = 0.0922;
-// let longitude_Delta = latitude_Delta * Aspect_Ratio;
-import RNGooglePlaces from 'react-native-google-places';
 import MapView, { PROVIDER_GOOGLE, Marker, AnimatedRegion, Polyline } from 'react-native-maps';
-import LocationServicesDialogBox from 'react-native-android-location-services-dialog-box';
-import Store from '../redux/store/index';
-import { addLocation } from '../redux/actions/index';
 import Button from '../ReusableComponents/Button';
 import Base from './HomeBase';
 import CallAmbulance from './HomeComponents/CallAmbulance';
 import SearchingNearby from './HomeComponents/SearchingNearby';
 import ShowDriver from './HomeComponents/ShowDriver';
-let latitude_delta, longitude_delta;
-
-// import LocationServicesDialogBox from "react-native-android-location-services-dialog-box";
-// import Store from "../redux/store/index"
-// import {addLocation} from "../redux/actions/index"
-
-let e;
-
+import ReasonOfCancellation from './HomeComponents/ReasonOfCancellation';
 // let response = {
 // 	geocoded_waypoints: [
 // 		{
@@ -602,118 +571,172 @@ class Home extends Base {
 		//   });
 		console.log('Current position', this.state.latitude, this.state.longitude);
 		return (
-			<View style={{ flex: 1 }}>
-				<Header title={'Quick Medic'} openDrawer={this.openDrawer} />
+			// <View>
+			this.state.showReasons === true ? (
+				<ReasonOfCancellation onShowReasons={this.onShowReasons} onSubmit={this.onSubmit} />
+			) : (
+				<View style={{ flex: 1 }}>
+					<Header title={'Quick Medic'} openDrawer={this.openDrawer} />
 
-				{this.state.loading ? (
-					<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-						<ActivityIndicator size="large" color="#000" />
-					</View>
-				) : (
-					<MapView
-						provider={PROVIDER_GOOGLE}
-						style={[ styles.map ]}
-						showsUserLocation={true}
-						mapType="standard"
-						followsUserLocation={true}
-						showsBuildings={true}
-						showsTraffic={true}
-						loadingEnabled={true}
-						ref={(map) => {
-							this.map = map;
-						}}
-						initialRegion={{
-							latitude: this.state.latitude,
-							longitude: this.state.longitude,
-							latitudeDelta: 0.015,
-							longitudeDelta: 0.0121
-						}}
-						zoomEnabled={true}
-						onRegionChangeComplete={this.onRegionChangeComplete.bind(this)}
-						onUserLocationChange={(locationChangedResult) =>
-							this.setUserLocation(locationChangedResult.nativeEvent.coordinate)}
-					>
-						{this.state.pointCoords && <Polyline coordinates={this.state.pointCoords} strokeColor={'#1d78e2'} strokeWidth={8} />}
-						<Marker.Animated
-							ref={(marker) => {
-								this.marker = marker;
+					{this.state.loading ? (
+						<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+							<ActivityIndicator size="large" color="#000" />
+						</View>
+					) : (
+						<MapView
+							provider={PROVIDER_GOOGLE}
+							style={[ styles.map ]}
+							showsUserLocation={true}
+							mapType="standard"
+							followsUserLocation={true}
+							showsBuildings={true}
+							showsTraffic={true}
+							loadingEnabled={true}
+							ref={(map) => {
+								this.map = map;
 							}}
-							coordinate={this.state.coordinate}
-							title={"Origin"}
-						/>
-				{this.state.showdes && <Marker.Animated  ref={(desmarker) => {
-								this.desmarker = desmarker;
-							}} coordinate={this.state.destination} description={"destination"} rotate={90}>
-		<Image source={{uri:'mipmap/ambulance'}} style={{width:100,height:30}} resizeMode={"contain"}/>
-		</Marker.Animated>}
-					</MapView>
-				)}
-				<View
-					style={{
-						flexDirection: 'row',
-						width: window.width,
-						// margin: 30,
-						height: 50,
-						padding: 5,
-						alignItems: 'center',
-						justifyContent: 'center',
-						borderRadius: 5,
-						backgroundColor: '#fff',
-						elevation: 20,
-						position: 'absolute',
-						marginTop: 60,
-						// marginLeft: 20,
-						// marginRight: 20,
-						alignSelf: 'center'
-					}}
-				>
-					<ScrollView
-						contentContainerStyle={{ alignItems: 'center' }}
-						style={{ width: '90%' }}
-						horizontal={true}
-						showsHorizontalScrollIndicator={false}
-					>
-						<Text
-							style={{
-								borderBottomWidth: 2,
-								borderBottomColor: '#507CFC',
-								fontSize: 18
+							initialRegion={{
+								latitude: this.state.latitude,
+								longitude: this.state.longitude,
+								latitudeDelta: 0.015,
+								longitudeDelta: 0.0121
 							}}
-							onLongPress={this.AutoCom}
+							zoomEnabled={true}
+							onRegionChangeComplete={this.onRegionChangeComplete.bind(this)}
+							onUserLocationChange={(locationChangedResult) =>
+								this.setUserLocation(locationChangedResult.nativeEvent.coordinate)}
 						>
-							{this.state.currentPlace}
-						</Text>
-					</ScrollView>
-					<View style={{ whidth: '10%' }}>
-						<Image source={{ uri: 'mipmap/map' }} style={{ height: 19, width: 19 }} resizeMode="contain" />
-					</View>
-				</View>
-				{this.state.callAmbulance === false ? (
+							{this.state.pointCoords && (
+								<Polyline
+									coordinates={this.state.pointCoords}
+									strokeColor={'#1d78e2'}
+									strokeWidth={8}
+								/>
+							)}
+							<Marker.Animated
+								ref={(marker) => {
+									this.marker = marker;
+								}}
+								coordinate={this.state.coordinate}
+								title={'Origin'}
+							/>
+							{this.state.showdes && (
+								<Marker.Animated
+									ref={(desmarker) => {
+										this.desmarker = desmarker;
+									}}
+									coordinate={this.state.destination}
+									description={'destination'}
+									rotate={90}
+								>
+									<Image
+										source={{ uri: 'mipmap/ambulance' }}
+										style={{ width: 100, height: 30 }}
+										resizeMode={'contain'}
+									/>
+								</Marker.Animated>
+							)}
+						</MapView>
+					)}
 					<View
 						style={{
+							flexDirection: 'row',
+							width: window.width,
+							// margin: 30,
+							height: 50,
+							padding: 5,
+							alignItems: 'center',
+							justifyContent: 'center',
+							borderRadius: 5,
+							backgroundColor: '#fff',
+							elevation: 20,
 							position: 'absolute',
-							alignSelf: 'flex-end',
-							bottom: 0,
-							marginVertical: 10,
-							width: '100%'
+							marginTop: 60,
+							// marginLeft: 20,
+							// marginRight: 20,
+							alignSelf: 'center'
 						}}
 					>
-						<Button title={'Call Ambulance'} backgroundColor={'#f6263f'} onSave={this.callAmbulance} />
+						<View
+							style={{
+								flexDirection: 'row',
+								width: window.width,
+								// margin: 30,
+								height: 50,
+								padding: 5,
+								alignItems: 'center',
+								justifyContent: 'center',
+								borderRadius: 5,
+								backgroundColor: '#fff',
+								elevation: 20,
+								position: 'absolute',
+								marginTop: 60,
+								// marginLeft: 20,
+								// marginRight: 20,
+								alignSelf: 'center'
+							}}
+						>
+							<ScrollView
+								contentContainerStyle={{ alignItems: 'center' }}
+								style={{ width: '90%' }}
+								horizontal={true}
+								showsHorizontalScrollIndicator={false}
+							>
+								<Text
+									style={{
+										borderBottomWidth: 2,
+										borderBottomColor: '#507CFC',
+										fontSize: 18
+									}}
+									onPress={this.AutoCom}
+								>
+									{this.state.currentPlace}
+								</Text>
+							</ScrollView>
+							<View style={{ whidth: '10%' }}>
+								<Image
+									source={{ uri: 'mipmap/map' }}
+									style={{ height: 19, width: 19 }}
+									resizeMode="contain"
+								/>
+							</View>
+						</View>
+						{this.state.callAmbulance === false && this.props.requestAmbulance !== true ? (
+							<View
+								style={{
+									position: 'absolute',
+									alignSelf: 'flex-end',
+									bottom: 0,
+									marginVertical: 10,
+									width: '100%'
+								}}
+							>
+								<Button
+									title={'Call Ambulance'}
+									backgroundColor={'#f6263f'}
+									onSave={this.callAmbulance}
+								/>
+							</View>
+						) : this.props.requestAmbulance === true ? this.props.showDriver === true ? (
+							<ShowDriver
+								driver={this.props.driver}
+								Call={this.Call}
+								onShowReasons={this.onShowReasons}
+							/>
+						) : (
+							<SearchingNearby onCancelRequest={this.onCancelRequest} />
+						) : (
+							<CallAmbulance
+								advancedSupport={this.state.advancedSupport}
+								basicSupport={this.state.basicSupport}
+								onAdvancedSupport={this.onAdvancedSupport}
+								onBasicSupport={this.onBasicSupport}
+								onRequestAmbulance={this.onRequestAmbulance}
+							/>
+						)}
 					</View>
-				) : this.state.requestAmbulance === true ? this.props.showDriver === true ? (
-					<ShowDriver driver={this.props.driver} Call={this.Call} />
-				) : (
-					<SearchingNearby />
-				) : (
-					<CallAmbulance
-						advancedSupport={this.state.advancedSupport}
-						basicSupport={this.state.basicSupport}
-						onAdvancedSupport={this.onAdvancedSupport}
-						onBasicSupport={this.onBasicSupport}
-						onRequestAmbulance={this.onRequestAmbulance}
-					/>
-				)}
-			</View>
+				</View>
+			)
 		);
 	}
 }
@@ -736,7 +759,6 @@ const styles = StyleSheet.create({
 		marginBottom: 5
 	},
 	map: {
-		// ...StyleSheet.absoluteFillObject
 		flexGrow: 1
 	}
 });
@@ -748,7 +770,8 @@ function mapStateToProps(state) {
 		token: state.token,
 		location: state.Location,
 		driver: state.driver,
-		showDriver: state.showDriver
+		showDriver: state.showDriver,
+		requestAmbulance: state.requestAmbulance
 	};
 }
 export default connect(mapStateToProps)(Home);

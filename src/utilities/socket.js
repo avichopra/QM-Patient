@@ -6,6 +6,7 @@ import config from '../config/index';
  * */
 import Store from '../redux/store/index';
 import { addDriver } from '../redux/actions';
+import store from '../utilities/store';
 let ViewIdSubscriptionMap = {};
 let socket = undefined;
 let debugger_socket = undefined;
@@ -49,12 +50,12 @@ export function connectToSocket() {
 			reject(err);
 		});
 		socket.on('updateInRow', (socketData) => {
-			console.warn('patient socket dataaaaaaaaaaaaaaaaaaaaaaaa', JSON.stringify(socketData, null, 3));
+			console.warn('patient socket dataaaaaaaaaaaaaaaaaaaaaaaa', store.getInstance().getKey('CurrentScreen'));
 			if (socketData.data.filter === 'onAccept') {
 				Store.dispatch(addDriver(true, socketData.data.driver));
 			}
 			// let { group } = socketData;
-			alert('data received', socketData);
+			// alert('data received', socketData);
 		});
 	});
 }

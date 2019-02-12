@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, Image } from 'react-native';
 
 export default (CallAmbulance = (props) => {
-	const {} = props;
+	const { onCancelRequest = () => {} } = props;
 	return (
 		<View
 			style={{
@@ -15,7 +15,10 @@ export default (CallAmbulance = (props) => {
 				borderColor: 'rgba(215,219,221,0.7)'
 			}}
 		>
-			<View style={{ flexDirection: 'row', alignSelf: 'center', marginRight: 5, marginTop: 5 }}>
+			<TouchableOpacity
+				style={{ flexDirection: 'row', alignSelf: 'center', marginRight: 5, marginTop: 5 }}
+				onPress={onCancelRequest}
+			>
 				<Image
 					source={{ uri: 'mipmap/cancel' }}
 					style={{
@@ -38,7 +41,7 @@ export default (CallAmbulance = (props) => {
 				>
 					Cancel Request
 				</Text>
-			</View>
+			</TouchableOpacity>
 			<View style={{ marginTop: 20 }}>
 				<Button title={'Searching Nearby...'} backgroundColor={'#f6263f'} />
 			</View>
