@@ -54,10 +54,10 @@ const MyDrawerNavigator = createDrawerNavigator(
 		contentComponent: DrawerContent
 	}
 );
-class DrawerNavigaterRapper extends Component {
+class DrawerNavigaterWrapper extends Component {
 	static router = MyDrawerNavigator.router;
 	componentWillMount() {
-		console.log('user id', this.props.user.id);
+		console.warn('user id', this.props.user.id);
 		saveSubscriptionInfo('DrawerNavigater', [ this.props.user.id ]);
 	}
 	// componentWillUnmount() {
@@ -73,4 +73,4 @@ function mapStateToProps(state) {
 		user: state.user
 	};
 }
-export default connect(mapStateToProps)(DrawerNavigaterRapper);
+export default connect(mapStateToProps)(DrawerNavigaterWrapper);

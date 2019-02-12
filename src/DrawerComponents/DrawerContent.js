@@ -10,13 +10,16 @@ import Octicons from 'react-native-vector-icons/Octicons';
 import { callApi } from '../utilities/serverApi';
 import Svg, { Path, Ellipse } from 'react-native-svg';
 const width = Dimensions.get('window').width;
-import config from "../config/index"
+import config from '../config/index';
+import store from '../utilities/store';
 class DrawerContent extends Component {
 	navigateToScreen = (route) => {
 		const navigateAction = StackActions.reset({
 			index: 0,
 			actions: [ NavigationActions.navigate({ routeName: route }) ]
 		});
+		store.getInstance().setKeyWithRef('CurrentScreen', route);
+
 		this.props.navigation.dispatch(navigateAction);
 		this.props.navigation.closeDrawer();
 	};
@@ -122,7 +125,7 @@ class DrawerContent extends Component {
 					</TouchableOpacity>
 					<View style={{ width: '50%', alignItems: 'center' }}>
 						<Text style={{ color: 'black' }} numberOfLines={1}>
-							{this.props.user.fullname ? this.props.user.fullname.split(" ")[0] : ''}
+							{this.props.user.fullname ? this.props.user.fullname.split(' ')[0] : ''}
 						</Text>
 					</View>
 				</View>

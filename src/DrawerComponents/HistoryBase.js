@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Keyboard } from 'react-native';
-import Axios from 'axios';
 import { callApi } from '../utilities/serverApi';
-import { checkEmpty } from '../utilities/validation';
-import { Alert } from '../../src/ReusableComponents/modal';
 const emptyState = {
 	historyList: [],
 	page: 1,
@@ -12,7 +8,7 @@ const emptyState = {
 export default class History extends Component {
 	constructor(props) {
 		super(props);
-		this.state = emptyState;
+		this.state = { ...emptyState };
 	}
 	onEndReached = () => {
 		console.warn('OnEndReached', this.state.page);
@@ -44,6 +40,10 @@ export default class History extends Component {
 			});
 	};
 	componentDidMount() {
+		this.state.page = 'yoooooooooooooooooooooooooooooooo achaaaaaaaaaaaaaa';
+		this.setState({}, () => {
+			console.warn('EMPTY ==', emptyState);
+		});
 		console.log('history        >>>>>>>>>>>>>>');
 		let data = {
 			perPage: this.state.perPage,
@@ -59,7 +59,6 @@ export default class History extends Component {
 			Accept: 'application/json',
 			authorization: `Bearer ${this.props.token}`
 		};
-
 		callApi('post', 'v1/daffo/Trips/count', data, headers)
 			.then((result) => {
 				console.log('count>>>>>>>>>>>>>>>>>>>>>>>>>>', result.data.count);

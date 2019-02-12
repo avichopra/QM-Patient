@@ -7,8 +7,7 @@ import SplashScreen from 'react-native-splash-screen';
 import ImagePicker from 'react-native-image-picker';
 import { setUser, setPatient } from '../redux/index';
 import { Alert } from '../ReusableComponents/modal';
-import {checkEmpty} from "../utilities/validation"
-import Axios from 'axios';
+import { checkEmpty } from '../utilities/validation';
 export default class MyProfile extends Component {
 	constructor(props) {
 		super(props);
@@ -35,7 +34,7 @@ export default class MyProfile extends Component {
 			picture: '',
 			userName: '',
 			loading: false,
-			contactNoError:""
+			contactNoError: ''
 		};
 	}
 
@@ -76,12 +75,10 @@ export default class MyProfile extends Component {
 			routeName: 'MyProfile'
 		});
 	};
-	clearName=()=>
-	{
-		this.setState({userName:""})
-	}
+	clearName = () => {
+		this.setState({ userName: '' });
+	};
 	componentDidMount() {
-		console.warn(this.props.patient);
 		this.state.userName = this.props.user.fullname;
 		this.state.GeneralInfo.email = this.props.user.email;
 		this.state.GeneralInfo.contactNo = this.props.user.contactNo;
@@ -99,20 +96,20 @@ export default class MyProfile extends Component {
 		}, 2000);
 	}
 	checkLength = () => {
-        if (this.state.GeneralInfo.contactNo.length !==10) {
-            this.setState({ contactNoError: 'Contact No length should be equal to  10' });
-            return true;
-        } else {
-            return false;
-        }
-    };
+		if (this.state.GeneralInfo.contactNo.length !== 10) {
+			this.setState({ contactNoError: 'Contact No length should be equal to  10' });
+			return true;
+		} else {
+			return false;
+		}
+	};
 
 	onSave = () => {
 		Keyboard.dismiss();
-		let  contactNo  = this.state.GeneralInfo.contactNo;
-        let contactNoError = checkEmpty(contactNo);
-        contactNoError && true ? this.setState({ contactNoError: 'Contact Number Cannot be empty' }) : '';
-        contactNoError === false ? (contactNoError = this.checkLength()) : '';
+		let contactNo = this.state.GeneralInfo.contactNo;
+		let contactNoError = checkEmpty(contactNo);
+		contactNoError && true ? this.setState({ contactNoError: 'Contact Number Cannot be empty' }) : '';
+		contactNoError === false ? (contactNoError = this.checkLength()) : '';
 		// console.log('on save being called>>>>>>>>>>>>>>>>>>>>>>>>>>.');
 		// let contactNoError, emergencyContactNoError;
 		// if (
@@ -136,74 +133,73 @@ export default class MyProfile extends Component {
 		// 	emergencyContactNoError = false;
 		// }
 		// if (emergencyContactNoError && contactNoError === false) {
-			if(contactNoError===false)
-			{
-		let headers = {
-			'Content-Type': 'application/json',
-			Accept: 'application/json',
-			authorization: `Bearer ${this.props.token}`
-		};
-		if (this.state.GeneralInfo.contactNo !== this.props.user.contactNo) {
-			let data = {
-				fullname: this.state.userName,
-				email: this.state.GeneralInfo.email,
-				newContactNo: this.state.GeneralInfo.contactNo,
-				phoneVerified: false,
-				emergencycontactnumber: this.state.GeneralInfo.emergencyContactNo,
-				address: this.state.AdditionalInfo.address,
-				bloodGroup: this.state.AdditionalInfo.bloodGroup,
-				realtionWithPatient: this.state.AdditionalInfo.relationWithPatient,
-				emergencyContactNo: this.state.AdditionalInfo.emergencyContactNo,
-				picture: this.state.picture
+		if (contactNoError === false) {
+			let headers = {
+				'Content-Type': 'application/json',
+				Accept: 'application/json',
+				authorization: `Bearer ${this.props.token}`
 			};
-			console.warn('token before save', this.props.token);
+			if (this.state.GeneralInfo.contactNo !== this.props.user.contactNo) {
+				let data = {
+					fullname: this.state.userName,
+					email: this.state.GeneralInfo.email,
+					newContactNo: this.state.GeneralInfo.contactNo,
+					phoneVerified: false,
+					emergencycontactnumber: this.state.GeneralInfo.emergencyContactNo,
+					address: this.state.AdditionalInfo.address,
+					bloodGroup: this.state.AdditionalInfo.bloodGroup,
+					realtionWithPatient: this.state.AdditionalInfo.relationWithPatient,
+					emergencyContactNo: this.state.AdditionalInfo.emergencyContactNo,
+					picture: this.state.picture
+				};
+				console.warn('token before save', this.props.token);
 
-			this.setState({ loading: true });
-			callApi('post', 'v1/daffo/dispatch/updatePatient', data, headers)
-				// Axios.patch('http://192.168.100.141:3000/v1/daffo/User/updateOwn', data, { headers })
-				.then((result) => {
-					console.log('useeeeeeeeeeeeeeeeeeeeeeeeee', result);
-					this.setState({ loading: false });
-					setUser(result.data.updatedUser);
-					setPatient(result.data.updatedPatient);
-					this.props.navigation.navigate('OTP', {
-						contactNo: this.state.GeneralInfo.contactNo,
-						email: this.state.GeneralInfo.email,
-						routeName: 'MyProfile'
+				this.setState({ loading: true });
+				callApi('post', 'v1/daffo/dispatch/updatePatient', data, headers)
+					// Axios.patch('http://192.168.100.141:3000/v1/daffo/User/updateOwn', data, { headers })
+					.then((result) => {
+						console.log('useeeeeeeeeeeeeeeeeeeeeeeeee', result);
+						this.setState({ loading: false });
+						setUser(result.data.updatedUser);
+						setPatient(result.data.updatedPatient);
+						this.props.navigation.navigate('OTP', {
+							contactNo: this.state.GeneralInfo.contactNo,
+							email: this.state.GeneralInfo.email,
+							routeName: 'MyProfile'
+						});
+					})
+					.catch((err) => {
+						console.warn('error from myProfile Base ', err.response, err.status, err);
 					});
-				})
-				.catch((err) => {
-					console.warn('error from myProfile Base ', err.response, err.status, err);
-				});
-		} else {
-			let data = {
-				fullname: this.state.userName,
-				email: this.state.GeneralInfo.email,
-				// newContactNo: this.state.GeneralInfo.contactNo,
-				emergencycontactnumber: this.state.GeneralInfo.emergencyContactNo,
-				address: this.state.AdditionalInfo.address,
-				bloodGroup: this.state.AdditionalInfo.bloodGroup,
-				realtionWithPatient: this.state.AdditionalInfo.relationWithPatient,
-				emergencyContactNo: this.state.AdditionalInfo.emergencyContactNo,
-				picture: this.state.picture
-			};
-			console.warn('token before save', this.props.token);
+			} else {
+				let data = {
+					fullname: this.state.userName,
+					email: this.state.GeneralInfo.email,
+					// newContactNo: this.state.GeneralInfo.contactNo,
+					emergencycontactnumber: this.state.GeneralInfo.emergencyContactNo,
+					address: this.state.AdditionalInfo.address,
+					bloodGroup: this.state.AdditionalInfo.bloodGroup,
+					realtionWithPatient: this.state.AdditionalInfo.relationWithPatient,
+					emergencyContactNo: this.state.AdditionalInfo.emergencyContactNo,
+					picture: this.state.picture
+				};
+				console.warn('token before save', this.props.token);
 
-			this.setState({ loading: true });
-			callApi('post', 'v1/daffo/dispatch/updatePatient', data, headers)
-				// Axios.patch('http://192.168.100.141:3000/v1/daffo/User/updateOwn', data, { headers })
-				.then((result) => {
-					console.log('useeeeeeeeeeeeeeeeeeeeeeeeee', result);
-					this.setState({ loading: false });
-					setUser(result.data.updatedUser);
-					setPatient(result.data.updatedPatient);
-				})
-				.catch((err) => {
-					console.warn('error from myProfile Base ', err.response, err.status, err);
-				});
+				this.setState({ loading: true });
+				callApi('post', 'v1/daffo/dispatch/updatePatient', data, headers)
+					// Axios.patch('http://192.168.100.141:3000/v1/daffo/User/updateOwn', data, { headers })
+					.then((result) => {
+						console.log('useeeeeeeeeeeeeeeeeeeeeeeeee', result);
+						this.setState({ loading: false });
+						setUser(result.data.updatedUser);
+						setPatient(result.data.updatedPatient);
+					})
+					.catch((err) => {
+						console.warn('error from myProfile Base ', err.response, err.status, err);
+					});
+			}
+			// }
 		}
-		// }
-	}
 	};
 	cameraClicked = () => {
 		console.log('avatarrrrrrrrrrrrrrr clicked called>>>>>>>>>>>>>>>>>>>>>>>>>>>');

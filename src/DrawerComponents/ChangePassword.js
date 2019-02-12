@@ -39,7 +39,7 @@ class ChangePassword extends Base {
 								width: '50%'
 							}}
 						>
-							<Image source={{ uri: 'mipmap/aid' }} style={{ height: height * 0.227, width: '100%' }} />
+							<Image source={{ uri: 'mipmap/aid' }} style={{ height: 140, width: '100%' }} />
 						</View>
 						<View
 							style={{
@@ -77,7 +77,6 @@ class ChangePassword extends Base {
 								error={this.state.newPasswordError}
 								secureTextEntry={true}
 								fieldValue={this.state.newPassword}
-
 							/>
 							<TextField
 								placeholder={'Confirm New Password'}
@@ -87,7 +86,6 @@ class ChangePassword extends Base {
 								error={this.state.confirmNewPasswordError}
 								secureTextEntry={true}
 								fieldValue={this.state.confirmNewPassword}
-
 							/>
 						</View>
 						<View
