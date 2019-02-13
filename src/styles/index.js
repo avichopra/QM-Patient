@@ -105,7 +105,8 @@ export default StyleSheet.create({
 		backgroundColor: 'blue'
 	},
 	fr: {
-		flexDirection: 'row'
+		flexDirection: 'row',
+		alignSelf: 'center'
 	},
 	headerIcon: { height: 30, width: '19%', marginTop: 10, marginLeft: 5 },
 	HText: { height: 30, width: '60%', alignItems: 'center', marginTop: 10 },
@@ -149,5 +150,8 @@ export default StyleSheet.create({
 		color: 'white',
 		fontSize: 16
 	},
-	close: { height: 10, width: 10, alignSelf: 'flex-end', marginVertical: 10 }
+	close: { height: 10, width: 10, alignSelf: 'flex-end', marginVertical: 10 },
+	icon19: { height: 19, width: 19 },
+	icon19: { height: 40, width: 40 },
+	f18: { fontSize: 18, color: 'black' }
 });

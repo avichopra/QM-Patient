@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
+import { DeviceEventEmitter } from 'react-native';
+
 import { Text, View, Dimensions, PermissionsAndroid, Animated } from 'react-native';
 // import Geolib from "geo-lib"
 import PolyLine from '@mapbox/polyline';
 import { callApi } from '../utilities/serverApi';
 import { setPatient } from '../redux/index';
 import RNGooglePlaces from 'react-native-google-places';
-import getDirections from 'react-native-google-maps-directions';
 import { AnimatedRegion } from 'react-native-maps';
 let screen = Dimensions.get('window');
-const { width, height } = Dimensions.get('window');
 import call from 'react-native-phone-call';
 const Aspect_Ratio = screen.width / screen.height;
 let latitude_Delta = 0.0922;
@@ -19,9 +19,7 @@ import _ from 'lodash';
 import LocationServicesDialogBox from 'react-native-android-location-services-dialog-box';
 import Store from '../redux/store/index';
 import { addLocation, addDriver, requestAmbulance } from '../redux/actions/index';
-// import { saveSubscriptionInfo, onSocketData, unSubscribeSockets } from '../utilities/socket';
-import { isArray } from 'lodash';
-import { combineReducers } from 'redux';
+
 let response = {
 	geocoded_waypoints: [
 		{
@@ -357,8 +355,6 @@ export default class HomeBase extends Component {
 			setter: {
 				$set: {
 					cancellationMessage: value,
-					// patientId: this.props.patient._id,
-					// driverId: this.props.driver._id,
 					cancelledBy: this.props.user.id
 				}
 			},
@@ -379,6 +375,45 @@ export default class HomeBase extends Component {
 		call(args).catch(console.error);
 	};
 	componentWillMount() {
+		DeviceEventEmitter.addListener('locationProviderStatusChange', function(status) {
+			// only trigger when "providerListener" is enabled
+			if (status.status === 'disabled') {
+				LocationServicesDialogBox.checkLocationServicesIsEnabled({
+					message:
+						'<h3>Use Location?</h3> \
+								This app wants to change your device settings:<br/><br/>\
+								Use GPS for location<br/><br/>',
+					ok: 'YES',
+					cancel: 'NO',
+					providerListener: true
+				}).then(() => {
+					RNGooglePlaces.getCurrentPlace()
+						.then((results) => {
+							console.log('current location', results);
+							const { latitude, longitude } = results[0];
+							Store.dispatch(
+								addLocation({
+									latitude: results[0].latitude,
+									longitude: results[0].longitude
+								})
+							);
+							this.setState({
+								loading: false,
+								currentPlace: `${results[0].name},${results[0].address}`,
+								latitude: results[0].latitude,
+								longitude: results[0].longitude
+							});
+							// this.getRouteDirection();
+							console.log('current place', results);
+						})
+						.catch((error) => console.warn(error.message));
+				});
+			}
+		});
+		// LocationServicesDialogBox.addEventListener('changeeeeeeee', () => {
+		// 	console.warn('changeeeeeeeeeeeeeeeeeeeeed');
+		// });
+
 		if (this.props.location != null) {
 			this.setState({
 				loading: false,
@@ -421,7 +456,8 @@ export default class HomeBase extends Component {
 						This app wants to change your device settings:<br/><br/>\
 						Use GPS for location<br/><br/>',
 			ok: 'YES',
-			cancel: 'NO'
+			cancel: 'NO',
+			providerListener: true
 		}).then(() => {
 			RNGooglePlaces.getCurrentPlace()
 				.then((results) => {
@@ -468,6 +504,7 @@ export default class HomeBase extends Component {
 		console.warn('destination', this.state.destination);
 	}
 	e = this;
+
 	setUserLocation = (Coordinate) => {
 		//   console.warn("location changed",Coordinate)
 		const { latitude, longitude } = Coordinate;
