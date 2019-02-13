@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Dimensions, StyleSheet, Text, View, TextInput, Image, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import config from "../config/index"
+import config from '../config/index';
 export default class Header extends Component {
 	constructor(props) {
 		super(props);
@@ -14,7 +14,7 @@ export default class Header extends Component {
 			name = '',
 			onHandleChange = () => {},
 			fieldValue,
-			clearName=()=>{}
+			clearName = () => {}
 		} = this.props;
 		return (
 			<View
@@ -50,7 +50,7 @@ export default class Header extends Component {
 						<TouchableOpacity style={styles.cameraContainer} onPress={cameraClicked}>
 							<Image source={{ uri: 'mipmap/camera' }} style={styles.cameraIcon} />
 						</TouchableOpacity>
-						<View style={styles.nameContainer} >
+						<View style={styles.nameContainer}>
 							<TextInput
 								style={styles.name}
 								onChangeText={(text) => {
@@ -60,8 +60,8 @@ export default class Header extends Component {
 								editable={true}
 							/>
 							<TouchableOpacity onPress={clearName}>
-							<Image style={styles.close} source={{ uri: 'mipmap/close' }}  />
-						</TouchableOpacity>
+								<Image style={styles.close} source={{ uri: 'mipmap/close' }} />
+							</TouchableOpacity>
 						</View>
 					</View>
 				) : null}
@@ -88,9 +88,9 @@ const styles = StyleSheet.create({
 	},
 	HTitle: { color: 'white', fontSize: 18 },
 	circle: {
-		height: 95,
-		width: 95,
-		borderRadius: 50
+		height: 90,
+		width: 90,
+		borderRadius: 45
 	},
 	circleBorder: {
 		borderWidth: 1.5,
