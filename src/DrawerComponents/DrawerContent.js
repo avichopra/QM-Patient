@@ -4,9 +4,6 @@ import { ScrollView, Text, View, StyleSheet, Dimensions, TouchableOpacity, Image
 import DrawerItem from '../ReusableComponents/DrawerItem';
 import { connect } from 'react-redux';
 import * as Storage from '../utilities/asyncStorage';
-import Foundation from 'react-native-vector-icons/Foundation';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Octicons from 'react-native-vector-icons/Octicons';
 import { callApi } from '../utilities/serverApi';
 import Svg, { Path, Ellipse } from 'react-native-svg';
 const width = Dimensions.get('window').width;
@@ -107,7 +104,7 @@ class DrawerContent extends Component {
 						<Image
 							source={{
 								uri:
-									picture === ''
+									picture === '' || picture === null
 										? 'asset:/images/def.png'
 										: `${config.SERVER_URL}/v1/daffo/file/${picture}`
 							}}

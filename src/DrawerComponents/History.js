@@ -4,6 +4,7 @@ import Header from './Header';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Base from './HistoryBase';
 import { connect } from 'react-redux';
+import styles from '../styles/index';
 class History extends Base {
 	static navigationOptions = {
 		drawerLabel: 'History',
@@ -47,21 +48,22 @@ class History extends Base {
 								<View style={{ flexDirection: 'row' }}>
 									<Image
 										source={{ uri: 'mipmap/amb_history' }}
-										style={{ height: 40, width: 40 }}
+										style={[ styles.icon40 ]}
 										resizeMode={'contain'}
 									/>
-									<Text style={{ fontSize: 20, color: 'black', marginLeft: 20, marginTop: 5 }}>
+									<Text style={[ styles.f18, { marginLeft: 20, marginTop: 5 } ]}>
 										Today, 05:21 AM
 									</Text>
 								</View>
 								<View
-									style={{
-										flexDirection: 'row',
-										width: '72%',
-										alignSelf: 'center',
-										height: 20,
-										alignItems: 'center'
-									}}
+									style={[
+										styles.fr,
+										{
+											width: '72%',
+											height: 20,
+											alignItems: 'center'
+										}
+									]}
 								>
 									<View
 										style={{
@@ -92,10 +94,8 @@ class History extends Base {
 											marginRight: 3
 										}}
 									>
-										<Text style={{ fontSize: 18, color: 'black' }}>{item.driverAddress}</Text>
-										<Text style={{ fontSize: 18, color: 'black', marginTop: 10 }}>
-											{item.patientAddress}
-										</Text>
+										<Text style={[ styles.f18 ]}>{item.driverAddress}</Text>
+										<Text style={[ styles.f18, { marginTop: 10 } ]}>{item.patientAddress}</Text>
 									</View>
 								</View>
 							</View>
@@ -107,7 +107,6 @@ class History extends Base {
 	}
 }
 function mapStateToProps(state) {
-	console.log('I am the stateeeeeeeeeeeeeeeeeeeeeeeeeeee', state);
 	return {
 		user: state.user,
 		token: state.token,

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Text, View, Modal, Alert, TouchableOpacity, Dimensions } from 'react-native';
 import ModalDropdown from 'react-native-modal-dropdown';
 const height = Dimensions.get('window').height;
-// import { Alert } from '../../ReusableComponents/modal';
 import { Reasons } from '../../config/constants';
 
 export default class ReasonOfCancellation extends Component {
@@ -123,6 +122,7 @@ export default class ReasonOfCancellation extends Component {
 						>
 							<Text>Cancel</Text>
 						</TouchableOpacity>
+						{console.warn('In selected reason')}
 						<TouchableOpacity
 							style={{
 								height: 35,
@@ -136,13 +136,13 @@ export default class ReasonOfCancellation extends Component {
 							}}
 							onPress={() => onSubmit(this.state.selectedReason)}
 							// disabled={this.state.selectedReason !== ''}
+							disabled={this.state.selectedReason == ''}
 						>
 							<Text>Submit</Text>
 						</TouchableOpacity>
 					</View>
 				</View>
 			</View>
-			// </Modal>
 		);
 	}
 }

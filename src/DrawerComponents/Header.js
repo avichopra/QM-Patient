@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Dimensions, StyleSheet, Text, View, TextInput, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import config from '../config/index';
 export default class Header extends Component {
@@ -40,7 +40,7 @@ export default class Header extends Component {
 							<Image
 								source={{
 									uri:
-										avatarSource === ''
+										avatarSource === '' || avatarSource === null
 											? 'asset:/images/def.png'
 											: `${config.SERVER_URL}/v1/daffo/file/${avatarSource}`
 								}}
