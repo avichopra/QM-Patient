@@ -17,7 +17,8 @@ class MyProfile extends MyProfileBase {
 		const { GeneralInfoPressed, AdditionalInfoPressed } = this.state;
 		let { bloodGroup = '', address = '', relationWithPatient = '', emergencyContactNo } = this.state.AdditionalInfo;
 		let { username = '', email = '', picture = '' } = this.props.user;
-		let ECN = this.state.GeneralInfo.emergencyContactNo,ECn=this.state.AdditionalInfo.emergencyContactNo;
+		let ECN = this.state.GeneralInfo.emergencyContactNo,
+			ECn = this.state.AdditionalInfo.emergencyContactNo;
 		return (
 			<KeyboardAvoidingView style={styles.fg}>
 				<ScrollView contentContainerStyle={styles.fg} keyboardShouldPersistTaps="always">
@@ -81,7 +82,7 @@ class MyProfile extends MyProfileBase {
 									width: '80%',
 									borderWidth: 3,
 									borderRadius: 2,
-									borderColor: 'rgba(178,186,187 	,0.1)',
+									borderColor: 'rgba(178,186,187,0.1)',
 									borderBottomWidth: 0,
 									elevation: 5,
 									marginVertical: 10,
@@ -171,10 +172,16 @@ class MyProfile extends MyProfileBase {
 								/>
 							</View>
 						)}
-						{this.props.user.phoneVerified===false?<Text style={{color:"red",alignSelf:"center"}} onPress={()=>
-						{
-							this.goToOtp()
-						}}>Click to verify your number</Text>:null}
+						{this.props.user.phoneVerified === false ? (
+							<Text
+								style={{ color: 'red', alignSelf: 'center' }}
+								onPress={() => {
+									this.goToOtp();
+								}}
+							>
+								Click to verify your number
+							</Text>
+						) : null}
 						<View
 							style={{
 								flexGrow: 1,

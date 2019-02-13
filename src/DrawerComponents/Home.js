@@ -638,6 +638,7 @@ class Home extends Base {
 							)}
 						</MapView>
 					)}
+
 					<View
 						style={{
 							flexDirection: 'row',
@@ -657,84 +658,56 @@ class Home extends Base {
 							alignSelf: 'center'
 						}}
 					>
+						<ScrollView
+							contentContainerStyle={{ alignItems: 'center' }}
+							style={{ width: '90%' }}
+							horizontal={true}
+							showsHorizontalScrollIndicator={false}
+						>
+							<Text
+								style={{
+									borderBottomWidth: 2,
+									borderBottomColor: '#507CFC',
+									fontSize: 18
+								}}
+								onPress={this.AutoCom}
+							>
+								{this.state.currentPlace}
+							</Text>
+						</ScrollView>
+						<View style={{ whidth: '10%' }}>
+							<Image
+								source={{ uri: 'mipmap/map' }}
+								style={{ height: 19, width: 19 }}
+								resizeMode="contain"
+							/>
+						</View>
+					</View>
+					{this.state.callAmbulance === false && this.props.requestAmbulance !== true ? (
 						<View
 							style={{
-								flexDirection: 'row',
-								width: window.width,
-								// margin: 30,
-								height: 50,
-								padding: 5,
-								alignItems: 'center',
-								justifyContent: 'center',
-								borderRadius: 5,
-								backgroundColor: '#fff',
-								elevation: 20,
 								position: 'absolute',
-								marginTop: 60,
-								// marginLeft: 20,
-								// marginRight: 20,
-								alignSelf: 'center'
+								alignSelf: 'flex-end',
+								bottom: 0,
+								marginVertical: 10,
+								width: '100%'
 							}}
 						>
-							<ScrollView
-								contentContainerStyle={{ alignItems: 'center' }}
-								style={{ width: '90%' }}
-								horizontal={true}
-								showsHorizontalScrollIndicator={false}
-							>
-								<Text
-									style={{
-										borderBottomWidth: 2,
-										borderBottomColor: '#507CFC',
-										fontSize: 18
-									}}
-									onPress={this.AutoCom}
-								>
-									{this.state.currentPlace}
-								</Text>
-							</ScrollView>
-							<View style={{ whidth: '10%' }}>
-								<Image
-									source={{ uri: 'mipmap/map' }}
-									style={{ height: 19, width: 19 }}
-									resizeMode="contain"
-								/>
-							</View>
+							<Button title={'Call Ambulance'} backgroundColor={'#f6263f'} onSave={this.callAmbulance} />
 						</View>
-						{this.state.callAmbulance === false && this.props.requestAmbulance !== true ? (
-							<View
-								style={{
-									position: 'absolute',
-									alignSelf: 'flex-end',
-									bottom: 0,
-									marginVertical: 10,
-									width: '100%'
-								}}
-							>
-								<Button
-									title={'Call Ambulance'}
-									backgroundColor={'#f6263f'}
-									onSave={this.callAmbulance}
-								/>
-							</View>
-						) : this.props.requestAmbulance === true ? this.props.showDriver === true ? (
-							<ShowDriver
-								driver={this.props.driver}
-								Call={this.Call}
-								onShowReasons={this.onShowReasons}
-							/>
-						) : (
-							<SearchingNearby onCancelRequest={this.onCancelRequest} />
-						) : (
-							<CallAmbulance
-								advancedSupport={this.state.advancedSupport}
-								basicSupport={this.state.basicSupport}
-								onAdvancedSupport={this.onAdvancedSupport}
-								onBasicSupport={this.onBasicSupport}
-								onRequestAmbulance={this.onRequestAmbulance}
-							/>
-						)}
-					</View>
+					) : this.props.requestAmbulance === true ? this.props.showDriver === true ? (
+						<ShowDriver driver={this.props.driver} Call={this.Call} onShowReasons={this.onShowReasons} />
+					) : (
+						<SearchingNearby onCancelRequest={this.onCancelRequest} />
+					) : (
+						<CallAmbulance
+							advancedSupport={this.state.advancedSupport}
+							basicSupport={this.state.basicSupport}
+							onAdvancedSupport={this.onAdvancedSupport}
+							onBasicSupport={this.onBasicSupport}
+							onRequestAmbulance={this.onRequestAmbulance}
+						/>
+					)}
 				</View>
 			)
 		);
@@ -763,7 +736,6 @@ const styles = StyleSheet.create({
 	}
 });
 function mapStateToProps(state) {
-	console.log('I am the stateeeeeeeeeeeeeeeeeeeeeeeeeeee', state);
 	return {
 		user: state.user,
 		patient: state.patient,

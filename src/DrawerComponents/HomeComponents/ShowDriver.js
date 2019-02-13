@@ -4,10 +4,10 @@ import config from '../../config/index';
 export default (ShowDriver = (props) => {
 	const {
 		driver = {
-			fullname: '',
-			vehicleNo: '',
-			picture: '',
-			contactNo: ''
+			fullname: 'Naveksha Jain',
+			vehicleNo: 'DLCPA 30309',
+			picture: 'public/1549363727367.JPEG',
+			contactNo: '1234567891'
 		},
 		Call = () => {},
 		onShowReasons = () => {}
@@ -24,28 +24,30 @@ export default (ShowDriver = (props) => {
 				borderColor: 'rgba(215,219,221,0.7)'
 			}}
 		>
-			{console.warn('driverrrrrrrrrrrrrrrrrrrrrrrrr', driver.picture)}
 			<View
 				style={{
 					flexDirection: 'row',
-					width: '90%',
+					width: '96%',
 					alignSelf: 'center',
 					height: 80,
-					marginTop: 10
+					marginTop: 10,
+					justifyContent: 'space-between'
 				}}
 			>
-				<Image
-					source={{ uri: `${config.SERVER_URL}/v1/daffo/file/${driver.picture}` }}
-					style={{ height: 60, width: 60, borderRadius: 30 }}
-				/>
-				<View style={{ marginTop: 8, marginLeft: 5 }}>
-					<Text style={{ fontSize: 15, marginBottom: 5 }}>{driver.fullname}</Text>
-					<Text style={{ fontSize: 15 }}>{driver.vehicleNo}</Text>
+				<View style={{ width: '50%', flexDirection: 'row' }}>
+					<Image
+						source={{ uri: `${config.SERVER_URL}/v1/daffo/file/${driver.picture}` }}
+						style={{ height: 60, width: 60, borderRadius: 30 }}
+					/>
+					<View style={{ marginTop: 8, marginLeft: 8 }}>
+						<Text style={{ fontSize: 15, marginBottom: 5 }}>{driver.fullname}</Text>
+						<Text style={{ fontSize: 15 }}>{driver.vehicleNo}</Text>
+					</View>
 				</View>
 				<TouchableOpacity
 					style={{
 						height: 30,
-						width: '25%',
+						width: 80,
 						backgroundColor: '#76d015',
 						borderRadius: 30,
 						flexDirection: 'row',
