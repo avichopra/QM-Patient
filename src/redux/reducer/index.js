@@ -4,7 +4,8 @@ import {
 	ADD_PATIENT,
 	ADD_USER_LOCATION,
 	ADD_DRIVER,
-	REQUEST_AMBULANCE
+	REQUEST_AMBULANCE,
+	ADD_DRIVER_LOCATION
 } from '../actions/index';
 export const initialState = {
 	user: null,
@@ -13,7 +14,8 @@ export const initialState = {
 	driver: null,
 	showDriver: false,
 	Location: null,
-	requestAmbulance: false
+	requestAmbulance: false,
+	driverLocation:null
 };
 export default function(state = {}, action) {
 	switch (action.type) {
@@ -36,6 +38,8 @@ export default function(state = {}, action) {
 			return { ...state, requestAmbulance: action.data };
 		case ADD_USER_LOCATION:
 			return { ...state, Location: action.data };
+			case ADD_DRIVER_LOCATION:
+			return {...state,driverLocation:action.data}
 		// case CHANGE_STATE:
 		// 	return { ...state, [action.data.field]: action.data.value };
 		default:

@@ -134,6 +134,7 @@ export default class ReasonOfCancellation extends Component {
 								marginBottom: 30
 								// marginVertical: 20
 							}}
+							disabled={this.state.selectedReason===""}
 							onPress={() => onSubmit(this.state.selectedReason)}
 							// disabled={this.state.selectedReason !== ''}
 							disabled={this.state.selectedReason == ''}

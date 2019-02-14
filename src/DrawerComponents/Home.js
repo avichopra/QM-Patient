@@ -577,64 +577,71 @@ class Home extends Base {
 			<View style={[ styles.f2 ]}>
 				<Header title={'Quick Medic'} openDrawer={this.openDrawer} />
 
-				{this.state.loading ? (
-					<View style={[ styles.f2, styles.center ]}>
+					{this.state.loading ? (
+						<View style={[ styles.f2, styles.center ]}>
 						<ActivityIndicator size="large" color="#000" />
 					</View>
-				) : (
-					<MapView
-						provider={PROVIDER_GOOGLE}
-						style={[ styles.map ]}
-						showsUserLocation={true}
-						mapType="standard"
-						followsUserLocation={true}
-						showsBuildings={true}
-						showsTraffic={true}
-						loadingEnabled={true}
-						ref={(map) => {
-							this.map = map;
-						}}
-						initialRegion={{
-							latitude: this.state.latitude,
-							longitude: this.state.longitude,
-							latitudeDelta: 0.015,
-							longitudeDelta: 0.0121
-						}}
-						zoomEnabled={true}
-						onRegionChangeComplete={this.onRegionChangeComplete.bind(this)}
-						onUserLocationChange={(locationChangedResult) =>
-							this.setUserLocation(locationChangedResult.nativeEvent.coordinate)}
-					>
-						{this.state.pointCoords && (
-							<Polyline coordinates={this.state.pointCoords} strokeColor={'#1d78e2'} strokeWidth={8} />
-						)}
-						<Marker.Animated
-							ref={(marker) => {
-								this.marker = marker;
+					) : (
+						<MapView
+							provider={PROVIDER_GOOGLE}
+							style={[ styles.map ]}
+							showsUserLocation={true}
+							mapType="standard"
+							followsUserLocation={true}
+							showsBuildings={true}
+							showsTraffic={true}
+							loadingEnabled={true}
+							ref={(map) => {
+								this.map = map;
 							}}
-							coordinate={this.state.coordinate}
-							title={'Origin'}
-						/>
-						{this.state.showdes && (
+							initialRegion={{
+								latitude: this.state.latitude,
+								longitude: this.state.longitude,
+								latitudeDelta: 0.009,
+								longitudeDelta: 0.009
+							}}
+							zoomEnabled={true}
+							onRegionChangeComplete={this.onRegionChangeComplete.bind(this)}
+							onUserLocationChange={(locationChangedResult) =>
+								this.setUserLocation(locationChangedResult.nativeEvent.coordinate)}
+						>
+							{this.state.pointCoords &&  (
+								<Polyline
+									coordinates={this.state.pointCoords}
+									strokeColor={'#1d78e2'}
+									strokeWidth={8}
+								/>
+							)}
 							<Marker.Animated
 								ref={(desmarker) => {
 									this.desmarker = desmarker;
 								}}
-								coordinate={this.state.destination}
-								description={'destination'}
-								rotate={90}
-							>
-								<Image
-									source={{ uri: 'mipmap/ambulance' }}
-									style={{ width: 100, height: 30 }}
-									resizeMode={'contain'}
-								/>
-							</Marker.Animated>
-						)}
-					</MapView>
-				)}
-
-				<View
+								coordinate={this.state.coordinate}
+								title={'Your Location'}
+							/>
+							{this.state.pickupLocation.latitude!=null && <Marker
+							  coordinate={this.state.pickupLocation}
+							  title={`PickUp Location,${this.state.currentPlace}`}
+							  ><Image source={{ uri: 'mipmap/currentlocation' }} style={{width:50,height:50}}/></Marker>}
+							{this.props.requestAmbulance && this.props.showDriver && (
+								<Marker.Animated
+									ref={(desmarker) => {
+										this.desmarker = desmarker;
+									}}
+									coordinate={this.state.destination}
+									title={`Driver Location,${this.props.driverLocation!=null && this.props.driverLocation.currentPlace}`}
+									rotate={90}
+								>
+									<Image
+										source={{ uri: 'mipmap/ambulance' }}
+										style={{ width: 100, height: 30 }}
+										resizeMode={'contain'}
+									/>
+								</Marker.Animated>
+							)}
+						</MapView>
+					)}
+					<View
 					style={[
 						styles.center,
 						styles.fr,
@@ -656,7 +663,8 @@ class Home extends Base {
 						horizontal={true}
 						showsHorizontalScrollIndicator={false}
 					>
-						<Text
+						
+						<View
 							style={{
 								borderBottomWidth: 2,
 								borderBottomColor: '#507CFC',
@@ -664,8 +672,10 @@ class Home extends Base {
 							}}
 							onPress={this.AutoCom}
 						>
+						<Text>
 							{this.state.currentPlace}
 						</Text>
+						</View>
 					</ScrollView>
 					<View style={{ width: '10%' }}>
 						<Image source={{ uri: 'mipmap/map' }} style={[ styles.icon19 ]} resizeMode="contain" />
@@ -723,6 +733,7 @@ class Home extends Base {
 // 	}
 // });
 function mapStateToProps(state) {
+	console.warn('I am the stateeeeeeeeeeeeeeeeeeeeeeeeeeee', state);
 	return {
 		user: state.user,
 		patient: state.patient,
@@ -730,7 +741,8 @@ function mapStateToProps(state) {
 		location: state.Location,
 		driver: state.driver,
 		showDriver: state.showDriver,
-		requestAmbulance: state.requestAmbulance
+		requestAmbulance: state.requestAmbulance,
+		driverLocation:state.driverLocation
 	};
 }
 export default connect(mapStateToProps)(Home);

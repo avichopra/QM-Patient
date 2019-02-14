@@ -4,6 +4,7 @@ export const ADD_PATIENT = 'ADD_PATIENT';
 export const ADD_USER_LOCATION = 'ADD_USER_LOCATION';
 export const ADD_DRIVER = 'ADD_DRIVER';
 export const REQUEST_AMBULANCE = 'REQUEST_AMBULANCE';
+export const ADD_DRIVER_LOCATION="ADD_DRIVER_LOCATION";
 export function addUser(user) {
 	return { type: ADD_USER, data: user };
 }
@@ -23,4 +24,7 @@ export function addUserToken(token) {
 export function addLocation(location) {
 	console.log('Location ', location);
 	return { type: ADD_USER_LOCATION, data: location };
+}
+export function addDriverLocation(location){
+	return {type:ADD_DRIVER_LOCATION,data:location}
 }
