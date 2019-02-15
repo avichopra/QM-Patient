@@ -5,7 +5,7 @@ import config from '../config/index';
  *  ViewIdSubscriptionMap = {"viewName":[groupIds]}
  * */
 import Store from '../redux/store/index';
-import { addDriver } from '../redux/actions';
+import { addDriver,addDriverLocation ,pickedUpPatient,markComplete} from '../redux/actions';
 import store from '../utilities/store';
 let ViewIdSubscriptionMap = {};
 let socket = undefined;
@@ -51,8 +51,19 @@ export function connectToSocket() {
 		});
 		socket.on('updateInRow', (socketData) => {
 			console.warn('patient socket dataaaaaaaaaaaaaaaaaaaaaaaa', store.getInstance().getKey('CurrentScreen'));
+			console.warn("socket data",socketData)
 			if (socketData.data.filter === 'onAccept') {
 				Store.dispatch(addDriver(true, socketData.data.driver));
+				Store.dispatch(addDriverLocation(socketData.data.location))
+			}
+			if(socketData.data.filter==="pickedUpPatient")
+			{
+
+				Store.dispatch(pickedUpPatient(true))
+			}
+			if(socketData.data.filter==="Mark Complete")
+			{
+				Store.dispatch(markComplete(true))
 			}
 			// let { group } = socketData;
 			// alert('data received', socketData);

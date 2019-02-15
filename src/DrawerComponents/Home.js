@@ -5,6 +5,7 @@ import { Text, View, Image, ScrollView, ActivityIndicator } from 'react-native';
 import _ from 'lodash';
 import styles from '../styles/index';
 import { connect } from 'react-redux';
+import {PickedPatient } from './HomeComponents/HomeComponent';
 import MapView, { PROVIDER_GOOGLE, Marker, AnimatedRegion, Polyline } from 'react-native-maps';
 import Button from '../ReusableComponents/Button';
 import Base from './HomeBase';
@@ -571,75 +572,83 @@ class Home extends Base {
 		// 	outputRange: ['0deg', '90deg'],
 		//   });
 		console.log('Current position', this.state.latitude, this.state.longitude);
-		return this.state.showReasons === true ? (
+		return (
+		this.state.showReasons === true ? (
 			<ReasonOfCancellation onShowReasons={this.onShowReasons} onSubmit={this.onSubmit} />
 		) : (
 			<View style={[ styles.f2 ]}>
 				<Header title={'Quick Medic'} openDrawer={this.openDrawer} />
 
-				{this.state.loading ? (
-					<View style={[ styles.f2, styles.center ]}>
+					{this.state.loading ? (
+						<View style={[ styles.f2, styles.center ]}>
 						<ActivityIndicator size="large" color="#000" />
 					</View>
-				) : (
-					<MapView
-						provider={PROVIDER_GOOGLE}
-						style={[ styles.map ]}
-						showsUserLocation={true}
-						mapType="standard"
-						followsUserLocation={true}
-						showsBuildings={true}
-						showsTraffic={true}
-						loadingEnabled={true}
-						ref={(map) => {
-							this.map = map;
-						}}
-						initialRegion={{
-							latitude: this.state.latitude,
-							longitude: this.state.longitude,
-							latitudeDelta: 0.015,
-							longitudeDelta: 0.0121
-						}}
-						zoomEnabled={true}
-						onRegionChangeComplete={this.onRegionChangeComplete.bind(this)}
-						onUserLocationChange={(locationChangedResult) =>
-							this.setUserLocation(locationChangedResult.nativeEvent.coordinate)}
-					>
-						{this.state.pointCoords && (
-							<Polyline coordinates={this.state.pointCoords} strokeColor={'#1d78e2'} strokeWidth={8} />
-						)}
-						<Marker.Animated
-							ref={(marker) => {
-								this.marker = marker;
+					) : (
+						<MapView
+							provider={PROVIDER_GOOGLE}
+							style={[ styles.map ]}
+							showsUserLocation={true}
+							mapType="standard"
+							followsUserLocation={true}
+							showsBuildings={true}
+							showsTraffic={true}
+							loadingEnabled={true}
+							ref={(map) => {
+								this.map = map;
 							}}
-							coordinate={this.state.coordinate}
-							title={'Origin'}
-						/>
-						{this.state.showdes && (
-							<Marker.Animated
-								ref={(desmarker) => {
-									this.desmarker = desmarker;
-								}}
-								coordinate={this.state.destination}
-								description={'destination'}
-								rotate={90}
-							>
-								<Image
-									source={{ uri: 'mipmap/ambulance' }}
-									style={{ width: 100, height: 30 }}
-									resizeMode={'contain'}
+							initialRegion={{
+								latitude: this.state.latitude,
+								longitude: this.state.longitude,
+								latitudeDelta: 0.009,
+								longitudeDelta: 0.009
+							}}
+							zoomEnabled={true}
+							onRegionChangeComplete={this.onRegionChangeComplete.bind(this)}
+							onUserLocationChange={(locationChangedResult) =>
+								this.setUserLocation(locationChangedResult.nativeEvent.coordinate)}
+						>
+							{this.state.pointCoords &&  (
+								<Polyline
+									coordinates={this.state.pointCoords}
+									strokeColor={'#1d78e2'}
+									strokeWidth={8}
 								/>
-							</Marker.Animated>
-						)}
-					</MapView>
-				)}
-
-				<View
+							)}
+							<Marker.Animated
+								ref={(marker) => {
+									this.marker = marker;
+								}}
+								coordinate={this.state.coordinate}
+								title={'Your Location'}
+							/>
+							{this.state.pickupLocation.latitude!=null && <Marker
+							  coordinate={this.state.pickupLocation}
+							  title={`PickUp Location,${this.state.currentPlace}`}
+							  ><Image source={{ uri: 'mipmap/currentlocation' }} style={{width:50,height:50}}/></Marker>}
+							{this.props.requestAmbulance && this.props.showDriver && (
+								<Marker.Animated
+									ref={(desmarker) => {
+										this.desmarker = desmarker;
+									}}
+									coordinate={this.state.destination}
+									title={`Driver Location,${this.props.driverLocation!=null && this.props.driverLocation.currentPlace}`}
+									rotate={90}
+								>
+									<Image
+										source={{ uri: 'mipmap/ambulance' }}
+										style={{ width: 100, height: 30 }}
+										resizeMode={'contain'}
+									/>
+								</Marker.Animated>
+							)}
+						</MapView>
+					)}
+					<View
 					style={[
 						styles.center,
 						styles.fr,
 						{
-							width: window.width,
+							width: "96%",
 							height: 50,
 							padding: 5,
 							borderRadius: 5,
@@ -652,10 +661,11 @@ class Home extends Base {
 				>
 					<ScrollView
 						contentContainerStyle={{ alignItems: 'center' }}
-						style={{ width: '90%' }}
+						style={{ width: '90%',marginRight:5 }}
 						horizontal={true}
 						showsHorizontalScrollIndicator={false}
 					>
+						
 						<Text
 							style={{
 								borderBottomWidth: 2,
@@ -664,6 +674,7 @@ class Home extends Base {
 							}}
 							onPress={this.AutoCom}
 						>
+						
 							{this.state.currentPlace}
 						</Text>
 					</ScrollView>
@@ -671,7 +682,7 @@ class Home extends Base {
 						<Image source={{ uri: 'mipmap/map' }} style={[ styles.icon19 ]} resizeMode="contain" />
 					</View>
 				</View>
-				{this.state.callAmbulance === false && this.props.requestAmbulance !== true ? (
+				{this.props.callAmbulance === false && this.props.requestAmbulance !== true ? (
 					<View
 						style={{
 							position: 'absolute',
@@ -683,11 +694,11 @@ class Home extends Base {
 					>
 						<Button title={'Call Ambulance'} backgroundColor={'#f6263f'} onSave={this.callAmbulance} />
 					</View>
-				) : this.props.requestAmbulance === true ? this.props.showDriver === true ? (
+				) : this.props.requestAmbulance === true ? this.props.showDriver === true && this.props.pickedUpPatient===false ? (
 					<ShowDriver driver={this.props.driver} Call={this.Call} onShowReasons={this.onShowReasons} />
-				) : (
+				) : this.props.pickedUpPatient===false?(
 					<SearchingNearby onCancelRequest={this.onCancelRequest} />
-				) : (
+				):(<PickedPatient patient={this.props.driver}/>) : (
 					<CallAmbulance
 						advancedSupport={this.state.advancedSupport}
 						basicSupport={this.state.basicSupport}
@@ -697,7 +708,7 @@ class Home extends Base {
 					/>
 				)}
 			</View>
-		);
+		))
 	}
 }
 // const styles = StyleSheet.create({
@@ -723,6 +734,7 @@ class Home extends Base {
 // 	}
 // });
 function mapStateToProps(state) {
+	console.warn('I am the stateeeeeeeeeeeeeeeeeeeeeeeeeeee', state);
 	return {
 		user: state.user,
 		patient: state.patient,
@@ -730,7 +742,10 @@ function mapStateToProps(state) {
 		location: state.Location,
 		driver: state.driver,
 		showDriver: state.showDriver,
-		requestAmbulance: state.requestAmbulance
+		requestAmbulance: state.requestAmbulance,
+		driverLocation:state.driverLocation,
+		pickedUpPatient:state.pickedUpPatient,
+		callAmbulance:state.callAmbulance
 	};
 }
 export default connect(mapStateToProps)(Home);

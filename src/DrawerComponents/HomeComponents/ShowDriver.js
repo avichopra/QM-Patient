@@ -39,9 +39,9 @@ export default (ShowDriver = (props) => {
 						source={{ uri: `${config.SERVER_URL}/v1/daffo/file/${driver.picture}` }}
 						style={{ height: 60, width: 60, borderRadius: 30 }}
 					/>
-					<View style={{ marginTop: 8, marginLeft: 8 }}>
-						<Text style={{ fontSize: 15, marginBottom: 5 }}>{driver.fullname}</Text>
-						<Text style={{ fontSize: 15 }}>{driver.vehicleNo}</Text>
+					<View style={{ marginTop: 8, marginLeft: 10 }}>
+						<Text style={{ fontSize: 18, marginBottom: 5 }}>{driver.fullname}</Text>
+						<Text style={{ fontSize: 18 }}>{driver.vehicleNo}</Text>
 					</View>
 				</View>
 				<TouchableOpacity

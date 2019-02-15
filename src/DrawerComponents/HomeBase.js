@@ -18,7 +18,7 @@ let latitude_delta = 0.009,
 import _ from 'lodash';
 import LocationServicesDialogBox from 'react-native-android-location-services-dialog-box';
 import Store from '../redux/store/index';
-import { addLocation, addDriver, requestAmbulance } from '../redux/actions/index';
+import { addLocation, addDriver, requestAmbulance ,cancelCallAmbulance} from '../redux/actions/index';
 
 let response = {
 	geocoded_waypoints: [
@@ -303,13 +303,22 @@ export default class HomeBase extends Component {
 				longitude: 75.75666079999999
 			}),
 			showdes: false,
-			showReasons: false
+			showReasons: false,
+			pickupLocation:{latitude:null,longitude:null}
 		};
 		this.timer = null;
 		// this.RotateValueHolder = new Animated.Value(0);
 	}
+	Call = (Type) => {
+		const args = {
+			number: Type === 'CN' ? this.props.patient.contactNo : this.props.patient.emergencyContactNo, // String value with the number to call
+			prompt: false // Optional boolean property. Determines if the user should be prompt prior to the call
+		};
+		call(args).catch(console.error);
+	};
 	onCancelRequest = () => {
-		this.setState({ callAmbulance: false, advancedSupport: false, basicSupport: false });
+		Store.dispatch(cancelCallAmbulance(false))
+		this.setState({ advancedSupport: false, basicSupport: false });
 		Store.dispatch(requestAmbulance(false));
 		let headers = {
 			'Content-Type': 'application/json',
@@ -364,9 +373,57 @@ export default class HomeBase extends Component {
 			console.warn('resultttttttttttttttttttttttttttttt getOwn', result.data);
 		});
 	};
+	async componentWillReceiveProps(nextProps){
+	  if(nextProps.requestAmbulance && nextProps.showDriver && nextProps.driverLocation!=null && this.props.pickedUpPatient===false)
+	  {  
+		  console.warn("driver location",nextProps.driverLocation)
+		  await this.setState({destination:{latitude: nextProps.driverLocation.latitude,longitude:nextProps.driverLocation.longitude }})
+	  console.warn("driver ",this.state.destination)
+		  this.getRouteDirection();
+		}
+		else if(this.props.pickedUpPatient)
+		{
+			this.setState({destination:{latitude:response.routes[0].legs[0].end_location.lat,longitude:response.routes[0].legs[0].end_location.lng}})
+			this.getRouteDirection();
+		}
+		
+	}
 	callAmbulance = () => {
-		this.setState({ callAmbulance: !this.state.callAmbulance });
+		// this.setState({ callAmbulance: !this.state.callAmbulance });
+		Store.dispatch(cancelCallAmbulance(true))
 	};
+	animateAmbulace=()=>{
+		let i = 0;
+		this.timer = setInterval(() => {
+			if(this.props.pickedUpPatient===false)
+			{
+				this.desmarker &&
+				this.state.pointCoords[i] &&
+					this.desmarker._component.animateMarkerToCoordinate(
+						{
+							latitude: this.state.pointCoords[i].latitude,
+							longitude: this.state.pointCoords[i].longitude
+						},
+						2000
+					);
+			}
+		else if(this.props.pickedUpPatient)
+		{let point=[...this.state.pointCoords].reverse();
+			this.desmarker &&
+			point[i] &&
+				this.desmarker._component.animateMarkerToCoordinate(
+					{
+						latitude: point[i].latitude,
+						longitude: point[i].longitude
+					},
+					2000
+				);
+		}
+			// console.warn("inside timer",pointcoord[i]);
+			if (this.state.pointCoords[i] === undefined) clearInterval(this.timer);
+			i++;
+		}, 3000);
+	}
 	Call = (contactNo) => {
 		const args = {
 			number: contactNo,
@@ -418,7 +475,8 @@ export default class HomeBase extends Component {
 			this.setState({
 				loading: false,
 				latitude: this.props.location.latitude,
-				longitude: this.props.location.longitude
+				longitude: this.props.location.longitude,
+				pickupLocation:{latitude:this.props.latitude,longitude:this.props.longitude}
 			});
 		}
 		let headers = {
@@ -518,7 +576,7 @@ export default class HomeBase extends Component {
 		//    this.map.fitToCoordinates(this.state.pointCoords)
 		// this.getRouteDirection()
 
-		//   this.map.animateToRegion({latitude:Coordinate.latitude,longitude:Coordinate.longitude,latitudeDelta:latitude_delta,longitudeDelta:longitude_delta}, 2000)
+		  
 		// // this.setState({
 		// 			routeCoordinates: this.state.routeCoordinates.concat([newCoordinate])
 		// 		});
@@ -550,29 +608,15 @@ export default class HomeBase extends Component {
 				// console.warn("destintion",response.routes[0].legs[0].end_location)
 				this.setState({
 					currentPlace: place.address,
-					showdes: true
+					showdes: true,
+					latitude:place.latitude,
+					longitude:place.longitude,
+					pickupLocation:{latitude:place.latitude,longitude:place.longitude}
 				});
 				this.getRouteDirection();
 				// this.StartImageRotateFunction();
 				console.warn('destination', this.state.destination);
-				// const data = {
-				// 	source: {
-				// 	 latitude: this.state.latitude,
-				// 	 longitude: this.state.longitude
-				//    },
-				//    destination: {
-				// 	 latitude: place.latitude,
-				// 	 longitude: place.longitude
-				//    },
-				//    params: [
-				// 	 {
-				// 	   key: "travelmode",
-				// 	   value: "driving"        // may be "walking", "bicycling" or "transit" as well
-				// 	 }
-				//    ]
-				//  }
-
-				//  getDirections(data)
+			
 				// let result=Geolib.distance([[this.state.latitude,this.state.longitude],[place.latitude,place.longitude]])
 				// console.warn("distance between these two points is",result);
 				// place represents user's selection from the
@@ -604,23 +648,25 @@ export default class HomeBase extends Component {
 			console.log('points coords in state', this.state.pointCoords);
 			console.log('points coord', pointCoords);
 			this.map.fitToCoordinates(pointCoords);
-			let pointcoord = [ ...pointCoords ].reverse();
-			// pointcoord.map((points,index)=>{
-			let i = 0;
-			this.timer = setInterval(() => {
-				this.desmarker &&
-					pointcoord[i] &&
-					this.desmarker._component.animateMarkerToCoordinate(
-						{
-							latitude: pointcoord[i].latitude,
-							longitude: pointcoord[i].longitude
-						},
-						2000
-					);
-				// console.warn("inside timer",pointcoord[i]);
-				if (pointcoord[i] === undefined) clearInterval(this.timer);
-				i++;
-			}, 2000);
+			if(this.props.requestAmbulance && this.props.showDriver)
+			   this.animateAmbulace()
+			// let pointcoord = [ ...pointCoords ].reverse();
+			// // pointcoord.map((points,index)=>{
+			// let i = 0;
+			// this.timer = setInterval(() => {
+			// 	this.desmarker &&
+			// 	pointCoords[i] &&
+			// 		this.desmarker._component.animateMarkerToCoordinate(
+			// 			{
+			// 				latitude: pointCoords[i].latitude,
+			// 				longitude: pointCoords[i].longitude
+			// 			},
+			// 			2000
+			// 		);
+			// 	// console.warn("inside timer",pointcoord[i]);
+			// 	if (pointCoords[i] === undefined) clearInterval(this.timer);
+			// 	i++;
+			// }, 3000);
 			//   console.warn("inside map timer", +new Date());
 			// })
 		} catch (error) {
