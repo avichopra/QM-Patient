@@ -5,6 +5,7 @@ import { Text, View, Image, ScrollView, ActivityIndicator } from 'react-native';
 import _ from 'lodash';
 import styles from '../styles/index';
 import { connect } from 'react-redux';
+import {PickedPatient } from './HomeComponents/HomeComponent';
 import MapView, { PROVIDER_GOOGLE, Marker, AnimatedRegion, Polyline } from 'react-native-maps';
 import Button from '../ReusableComponents/Button';
 import Base from './HomeBase';
@@ -571,7 +572,8 @@ class Home extends Base {
 		// 	outputRange: ['0deg', '90deg'],
 		//   });
 		console.log('Current position', this.state.latitude, this.state.longitude);
-		return this.state.showReasons === true ? (
+		return (
+		this.state.showReasons === true ? (
 			<ReasonOfCancellation onShowReasons={this.onShowReasons} onSubmit={this.onSubmit} />
 		) : (
 			<View style={[ styles.f2 ]}>
@@ -613,8 +615,8 @@ class Home extends Base {
 								/>
 							)}
 							<Marker.Animated
-								ref={(desmarker) => {
-									this.desmarker = desmarker;
+								ref={(marker) => {
+									this.marker = marker;
 								}}
 								coordinate={this.state.coordinate}
 								title={'Your Location'}
@@ -646,7 +648,7 @@ class Home extends Base {
 						styles.center,
 						styles.fr,
 						{
-							width: window.width,
+							width: "96%",
 							height: 50,
 							padding: 5,
 							borderRadius: 5,
@@ -659,12 +661,12 @@ class Home extends Base {
 				>
 					<ScrollView
 						contentContainerStyle={{ alignItems: 'center' }}
-						style={{ width: '90%' }}
+						style={{ width: '90%',marginRight:5 }}
 						horizontal={true}
 						showsHorizontalScrollIndicator={false}
 					>
 						
-						<View
+						<Text
 							style={{
 								borderBottomWidth: 2,
 								borderBottomColor: '#507CFC',
@@ -672,16 +674,15 @@ class Home extends Base {
 							}}
 							onPress={this.AutoCom}
 						>
-						<Text>
+						
 							{this.state.currentPlace}
 						</Text>
-						</View>
 					</ScrollView>
 					<View style={{ width: '10%' }}>
 						<Image source={{ uri: 'mipmap/map' }} style={[ styles.icon19 ]} resizeMode="contain" />
 					</View>
 				</View>
-				{this.state.callAmbulance === false && this.props.requestAmbulance !== true ? (
+				{this.props.callAmbulance === false && this.props.requestAmbulance !== true ? (
 					<View
 						style={{
 							position: 'absolute',
@@ -693,11 +694,11 @@ class Home extends Base {
 					>
 						<Button title={'Call Ambulance'} backgroundColor={'#f6263f'} onSave={this.callAmbulance} />
 					</View>
-				) : this.props.requestAmbulance === true ? this.props.showDriver === true ? (
+				) : this.props.requestAmbulance === true ? this.props.showDriver === true && this.props.pickedUpPatient===false ? (
 					<ShowDriver driver={this.props.driver} Call={this.Call} onShowReasons={this.onShowReasons} />
-				) : (
+				) : this.props.pickedUpPatient===false?(
 					<SearchingNearby onCancelRequest={this.onCancelRequest} />
-				) : (
+				):(<PickedPatient patient={this.props.driver}/>) : (
 					<CallAmbulance
 						advancedSupport={this.state.advancedSupport}
 						basicSupport={this.state.basicSupport}
@@ -707,7 +708,7 @@ class Home extends Base {
 					/>
 				)}
 			</View>
-		);
+		))
 	}
 }
 // const styles = StyleSheet.create({
@@ -742,7 +743,9 @@ function mapStateToProps(state) {
 		driver: state.driver,
 		showDriver: state.showDriver,
 		requestAmbulance: state.requestAmbulance,
-		driverLocation:state.driverLocation
+		driverLocation:state.driverLocation,
+		pickedUpPatient:state.pickedUpPatient,
+		callAmbulance:state.callAmbulance
 	};
 }
 export default connect(mapStateToProps)(Home);

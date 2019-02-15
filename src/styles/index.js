@@ -1,6 +1,39 @@
 import { StyleSheet, Dimensions } from 'react-native';
 const { width, height } = Dimensions.get('window');
+export const Palette = {
+	hB: '#f6263f',
+	w: 'white'
+};
 export default StyleSheet.create({
+	h200: { height: 200 },
+	call: {
+		height: 30,
+		width: 80,
+		backgroundColor: '#76d015',
+		borderRadius: 30,
+		flexDirection: 'row'
+	},
+	bold: { fontFamily: 'NunitoSans-SemiBold' },
+	wbg: { position: 'absolute', bottom: 0, width: '100%', backgroundColor: 'white' },
+	map:{
+flexGrow:1
+	},
+	frSelf: { flexDirection: 'row', alignSelf: 'center' },
+	divider: {
+		height: 0.8,
+		backgroundColor: 'rgba(215,219,221,0.7)',
+		width: '100%'
+	},
+	circle50: {
+		height: 50,
+		width: 50,
+		borderRadius: 50 / 2,
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	center:{
+     justifyContent:"center",alignItems:"center"
+	},
 	f8: {
 		flex: 8
 	},
@@ -152,6 +185,6 @@ export default StyleSheet.create({
 	},
 	close: { height: 10, width: 10, alignSelf: 'flex-end', marginVertical: 10 },
 	icon19: { height: 19, width: 19 },
-	icon19: { height: 40, width: 40 },
+	icon40: { height: 40, width: 40 },
 	f18: { fontSize: 18, color: 'black' }
 });
