@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import Header from './Header';
 import PolyLine from '@mapbox/polyline';
-import { Text, View, Image, ScrollView, ActivityIndicator } from 'react-native';
+import { Text, View, Image, ScrollView, ActivityIndicator, Dimensions } from 'react-native';
 import _ from 'lodash';
 import styles from '../styles/index';
 import { connect } from 'react-redux';
-import {PickedPatient } from './HomeComponents/HomeComponent';
+import { PickedPatient } from './HomeComponents/HomeComponent';
 import MapView, { PROVIDER_GOOGLE, Marker, AnimatedRegion, Polyline } from 'react-native-maps';
 import Button from '../ReusableComponents/Button';
 import Base from './HomeBase';
@@ -13,6 +13,8 @@ import CallAmbulance from './HomeComponents/CallAmbulance';
 import SearchingNearby from './HomeComponents/SearchingNearby';
 import ShowDriver from './HomeComponents/ShowDriver';
 import ReasonOfCancellation from './HomeComponents/ReasonOfCancellation';
+import { CirclesLoader, PulseLoader, TextLoader, DotsLoader, RippleLoader } from 'react-native-indicator';
+const height = Dimensions.get('window').height;
 // let response = {
 // 	geocoded_waypoints: [
 // 		{
@@ -572,83 +574,84 @@ class Home extends Base {
 		// 	outputRange: ['0deg', '90deg'],
 		//   });
 		console.log('Current position', this.state.latitude, this.state.longitude);
-		return (
-		this.state.showReasons === true ? (
+		return this.state.showReasons === true ? (
 			<ReasonOfCancellation onShowReasons={this.onShowReasons} onSubmit={this.onSubmit} />
 		) : (
 			<View style={[ styles.f2 ]}>
 				<Header title={'Quick Medic'} openDrawer={this.openDrawer} />
 
-					{this.state.loading ? (
-						<View style={[ styles.f2, styles.center ]}>
+				{this.state.loading ? (
+					<View style={[ styles.f2, styles.center ]}>
 						<ActivityIndicator size="large" color="#000" />
 					</View>
-					) : (
-						<MapView
-							provider={PROVIDER_GOOGLE}
-							style={[ styles.map ]}
-							showsUserLocation={true}
-							mapType="standard"
-							followsUserLocation={true}
-							showsBuildings={true}
-							showsTraffic={true}
-							loadingEnabled={true}
-							ref={(map) => {
-								this.map = map;
+				) : (
+					<MapView
+						provider={PROVIDER_GOOGLE}
+						style={[ styles.map ]}
+						showsUserLocation={true}
+						mapType="standard"
+						followsUserLocation={true}
+						showsBuildings={true}
+						showsTraffic={true}
+						loadingEnabled={true}
+						ref={(map) => {
+							this.map = map;
+						}}
+						initialRegion={{
+							latitude: this.state.latitude,
+							longitude: this.state.longitude,
+							latitudeDelta: 0.009,
+							longitudeDelta: 0.009
+						}}
+						zoomEnabled={true}
+						onRegionChangeComplete={this.onRegionChangeComplete.bind(this)}
+						onUserLocationChange={(locationChangedResult) =>
+							this.setUserLocation(locationChangedResult.nativeEvent.coordinate)}
+					>
+						{this.state.pointCoords && (
+							<Polyline coordinates={this.state.pointCoords} strokeColor={'#1d78e2'} strokeWidth={8} />
+						)}
+						<Marker.Animated
+							ref={(marker) => {
+								this.marker = marker;
 							}}
-							initialRegion={{
-								latitude: this.state.latitude,
-								longitude: this.state.longitude,
-								latitudeDelta: 0.009,
-								longitudeDelta: 0.009
-							}}
-							zoomEnabled={true}
-							onRegionChangeComplete={this.onRegionChangeComplete.bind(this)}
-							onUserLocationChange={(locationChangedResult) =>
-								this.setUserLocation(locationChangedResult.nativeEvent.coordinate)}
-						>
-							{this.state.pointCoords &&  (
-								<Polyline
-									coordinates={this.state.pointCoords}
-									strokeColor={'#1d78e2'}
-									strokeWidth={8}
-								/>
-							)}
+							coordinate={this.state.coordinate}
+							title={'Your Location'}
+						/>
+						{this.state.pickupLocation.latitude != null && (
+							<Marker
+								coordinate={this.state.pickupLocation}
+								title={`PickUp Location,${this.state.currentPlace}`}
+							>
+								<Image source={{ uri: 'mipmap/currentlocation' }} style={{ width: 50, height: 50 }} />
+							</Marker>
+						)}
+						{this.props.requestAmbulance &&
+						this.props.showDriver && (
 							<Marker.Animated
-								ref={(marker) => {
-									this.marker = marker;
+								ref={(desmarker) => {
+									this.desmarker = desmarker;
 								}}
-								coordinate={this.state.coordinate}
-								title={'Your Location'}
-							/>
-							{this.state.pickupLocation.latitude!=null && <Marker
-							  coordinate={this.state.pickupLocation}
-							  title={`PickUp Location,${this.state.currentPlace}`}
-							  ><Image source={{ uri: 'mipmap/currentlocation' }} style={{width:50,height:50}}/></Marker>}
-							{this.props.requestAmbulance && this.props.showDriver && (
-								<Marker.Animated
-									ref={(desmarker) => {
-										this.desmarker = desmarker;
-									}}
-									coordinate={this.state.destination}
-									title={`Driver Location,${this.props.driverLocation!=null && this.props.driverLocation.currentPlace}`}
-									rotate={90}
-								>
-									<Image
-										source={{ uri: 'mipmap/ambulance' }}
-										style={{ width: 100, height: 30 }}
-										resizeMode={'contain'}
-									/>
-								</Marker.Animated>
-							)}
-						</MapView>
-					)}
-					<View
+								coordinate={this.state.destination}
+								title={`Driver Location,${this.props.driverLocation != null &&
+									this.props.driverLocation.currentPlace}`}
+								rotate={90}
+							>
+								<Image
+									source={{ uri: 'mipmap/ambulance' }}
+									style={{ width: 100, height: 30 }}
+									resizeMode={'contain'}
+								/>
+							</Marker.Animated>
+						)}
+					</MapView>
+				)}
+				<View
 					style={[
 						styles.center,
 						styles.fr,
 						{
-							width: "96%",
+							width: '96%',
 							height: 50,
 							padding: 5,
 							borderRadius: 5,
@@ -661,11 +664,10 @@ class Home extends Base {
 				>
 					<ScrollView
 						contentContainerStyle={{ alignItems: 'center' }}
-						style={{ width: '90%',marginRight:5 }}
+						style={{ width: '90%', marginRight: 5 }}
 						horizontal={true}
 						showsHorizontalScrollIndicator={false}
 					>
-						
 						<Text
 							style={{
 								borderBottomWidth: 2,
@@ -674,7 +676,6 @@ class Home extends Base {
 							}}
 							onPress={this.AutoCom}
 						>
-						
 							{this.state.currentPlace}
 						</Text>
 					</ScrollView>
@@ -682,6 +683,7 @@ class Home extends Base {
 						<Image source={{ uri: 'mipmap/map' }} style={[ styles.icon19 ]} resizeMode="contain" />
 					</View>
 				</View>
+
 				{this.props.callAmbulance === false && this.props.requestAmbulance !== true ? (
 					<View
 						style={{
@@ -694,11 +696,14 @@ class Home extends Base {
 					>
 						<Button title={'Call Ambulance'} backgroundColor={'#f6263f'} onSave={this.callAmbulance} />
 					</View>
-				) : this.props.requestAmbulance === true ? this.props.showDriver === true && this.props.pickedUpPatient===false ? (
+				) : this.props.requestAmbulance === true ? this.props.showDriver === true &&
+				this.props.pickedUpPatient === false ? (
 					<ShowDriver driver={this.props.driver} Call={this.Call} onShowReasons={this.onShowReasons} />
-				) : this.props.pickedUpPatient===false?(
+				) : this.props.pickedUpPatient === false ? (
 					<SearchingNearby onCancelRequest={this.onCancelRequest} />
-				):(<PickedPatient patient={this.props.driver}/>) : (
+				) : (
+					<PickedPatient patient={this.props.driver} />
+				) : (
 					<CallAmbulance
 						advancedSupport={this.state.advancedSupport}
 						basicSupport={this.state.basicSupport}
@@ -707,8 +712,30 @@ class Home extends Base {
 						onRequestAmbulance={this.onRequestAmbulance}
 					/>
 				)}
+				{/* <View > */}
+				{/* </View> */}
+				{this.props.requestAmbulance === true &&
+				this.props.showDriver === false &&
+				this.props.pickedUpPatient === false ? (
+					<View
+						style={{
+							width: '100%',
+							position: 'absolute',
+							// alignSelf: 'center',
+							// marginVertical: 200,
+							alignItems: 'center',
+							justifyContent: 'center',
+							backgroundColor: 'rgba(174,182,191,0.8)',
+							height: height - 190,
+							top: 50
+							// bottom: 120
+						}}
+					>
+						<RippleLoader size={350} strokeWidth={10} />
+					</View>
+				) : null}
 			</View>
-		))
+		);
 	}
 }
 // const styles = StyleSheet.create({
@@ -743,9 +770,9 @@ function mapStateToProps(state) {
 		driver: state.driver,
 		showDriver: state.showDriver,
 		requestAmbulance: state.requestAmbulance,
-		driverLocation:state.driverLocation,
-		pickedUpPatient:state.pickedUpPatient,
-		callAmbulance:state.callAmbulance
+		driverLocation: state.driverLocation,
+		pickedUpPatient: state.pickedUpPatient,
+		callAmbulance: state.callAmbulance
 	};
 }
 export default connect(mapStateToProps)(Home);
