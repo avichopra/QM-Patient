@@ -19,7 +19,6 @@ import _ from 'lodash';
 import LocationServicesDialogBox from 'react-native-android-location-services-dialog-box';
 import Store from '../redux/store/index';
 import { addLocation, addDriver, requestAmbulance ,cancelCallAmbulance} from '../redux/actions/index';
-
 let response = {
 	geocoded_waypoints: [
 		{
@@ -432,41 +431,6 @@ export default class HomeBase extends Component {
 		call(args).catch(console.error);
 	};
 	componentWillMount() {
-		DeviceEventEmitter.addListener('locationProviderStatusChange', function(status) {
-			// only trigger when "providerListener" is enabled
-			if (status.status === 'disabled') {
-				LocationServicesDialogBox.checkLocationServicesIsEnabled({
-					message:
-						'<h3>Use Location?</h3> \
-								This app wants to change your device settings:<br/><br/>\
-								Use GPS for location<br/><br/>',
-					ok: 'YES',
-					cancel: 'NO',
-					providerListener: true
-				}).then(() => {
-					RNGooglePlaces.getCurrentPlace()
-						.then((results) => {
-							console.log('current location', results);
-							const { latitude, longitude } = results[0];
-							Store.dispatch(
-								addLocation({
-									latitude: results[0].latitude,
-									longitude: results[0].longitude
-								})
-							);
-							this.setState({
-								loading: false,
-								currentPlace: `${results[0].name},${results[0].address}`,
-								latitude: results[0].latitude,
-								longitude: results[0].longitude
-							});
-							// this.getRouteDirection();
-							console.log('current place', results);
-						})
-						.catch((error) => console.warn(error.message));
-				});
-			}
-		});
 		// LocationServicesDialogBox.addEventListener('changeeeeeeee', () => {
 		// 	console.warn('changeeeeeeeeeeeeeeeeeeeeed');
 		// });
@@ -508,6 +472,41 @@ export default class HomeBase extends Component {
 		this.props.navigation.openDrawer();
 	};
 	componentDidMount() {
+		// DeviceEventEmitter.addListener('locationProviderStatusChange', function(status) {
+		// 	// only trigger when "providerListener" is enabled
+		// 	if (status.status === 'disabled') {
+		// 		LocationServicesDialogBox.checkLocationServicesIsEnabled({
+		// 			message:
+		// 				'<h3>Use Location?</h3> \
+		// 						This app wants to change your device settings:<br/><br/>\
+		// 						Use GPS for location<br/><br/>',
+		// 			ok: 'YES',
+		// 			cancel: 'NO',
+		// 			providerListener: true
+		// 		}).then(() => {
+		// 			RNGooglePlaces.getCurrentPlace()
+		// 				.then((results) => {
+		// 					console.log('current location', results);
+		// 					const { latitude, longitude } = results[0];
+		// 					Store.dispatch(
+		// 						addLocation({
+		// 							latitude: results[0].latitude,
+		// 							longitude: results[0].longitude
+		// 						})
+		// 					);
+		// 					this.setState({
+		// 						loading: false,
+		// 						currentPlace: `${results[0].name},${results[0].address}`,
+		// 						latitude: results[0].latitude,
+		// 						longitude: results[0].longitude
+		// 					});
+		// 					// this.getRouteDirection();
+		// 					console.log('current place', results);
+		// 				})
+		// 				.catch((error) => console.warn(error.message));
+		// 		});
+		// 	}
+		// });
 		LocationServicesDialogBox.checkLocationServicesIsEnabled({
 			message:
 				'<h3>Use Location?</h3> \
@@ -541,7 +540,7 @@ export default class HomeBase extends Component {
 		this.watchID = navigator.geolocation.watchPosition(
 			(position) => {
 				// Create the object to update this.state.mapRegion through the onRegionChange function
-				console.warn('Region', position);
+				console.log('Region', position);
 
 				// if (this.marker) {
 				// 	this.marker._component.animateMarkerToCoordinate(
