@@ -9,6 +9,8 @@ import Svg, { Path, Ellipse } from 'react-native-svg';
 const width = Dimensions.get('window').width;
 import config from '../config/index';
 import store from '../utilities/store';
+import Store from '../redux/store/index';
+import {cancelAllRequest} from "../redux/actions/index"
 class DrawerContent extends Component {
 	navigateToScreen = (route) => {
 		const navigateAction = StackActions.reset({
@@ -28,6 +30,7 @@ class DrawerContent extends Component {
 		});
 		await Storage.remove('token');
 		await Storage.remove('user');
+		Store.dispatch(cancelAllRequest())
 		let data = { email: email, status: false };
 		callApi('post', 'v1/daffo/dispatch/updateOnlinestatus', data)
 			.then((response) => {

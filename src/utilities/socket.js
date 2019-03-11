@@ -4,8 +4,9 @@ import config from '../config/index';
  * creates a JSON of socket subscription over each view/list
  *  ViewIdSubscriptionMap = {"viewName":[groupIds]}
  * */
+import {gps_Data} from "../DrawerComponents/HomeBase"
 import Store from '../redux/store/index';
-import { addDriver,addDriverLocation ,pickedUpPatient,markComplete} from '../redux/actions';
+import { addDriver,addDriverLocation ,pickedUpPatient,markComplete,addGPSData,addTrip,cancelAllRequest} from '../redux/actions';
 import store from '../utilities/store';
 let ViewIdSubscriptionMap = {};
 let socket = undefined;
@@ -31,39 +32,41 @@ export function connectToSocket() {
 		socket.on('disconnect', () => {
 			console.warn('disconected');
 		});
-
 		socket.on('subscription_id', (data) => {
-			//   LOG("[websocket] Acknowledgement : ", { data });
 			console.warn('socket id', data);
 			resolve(data);
 		});
-
 		socket.on('error', (err) => {
 			reject(err);
 		});
-
 		socket.on('connect_error', (err) => {
 			reject(err);
 		});
-
 		socket.on('connect_failed', (err) => {
 			reject(err);
 		});
 		socket.on('updateInRow', (socketData) => {
 			console.warn('patient socket dataaaaaaaaaaaaaaaaaaaaaaaa', store.getInstance().getKey('CurrentScreen'));
-			console.warn("socket data",socketData)
+			console.log("socket data on Patient App",socketData)
 			if (socketData.data.filter === 'onAccept') {
-				Store.dispatch(addDriver(true, socketData.data.driver));
-				Store.dispatch(addDriverLocation(socketData.data.location))
+				// Store.dispatch(addDriver(true, socketData.data.driver));
+				// Store.dispatch(addDriverLocation(socketData.data.location))
+				saveSubscriptionInfo("OnAccept",[socketData.data.trip.deviceId])
+				Store.dispatch(addTrip(socketData.data.trip))
 			}
 			if(socketData.data.filter==="pickedUpPatient")
 			{
-
-				Store.dispatch(pickedUpPatient(true))
+				console.warn("Data received",socketData)
+				Store.dispatch(addTrip(socketData.data.trip))
 			}
-			if(socketData.data.filter==="Mark Complete")
+			if(socketData.data.filter==="MarkComplete")
 			{
-				Store.dispatch(markComplete(true))
+				Store.dispatch(cancelAllRequest())
+			}
+			 if(socketData.data.filter==="Gps_Device_Data")
+			{
+				console.warn("socket data>>",socketData.data.data)
+				Store.dispatch(addGPSData(socketData.data.data))
 			}
 			// let { group } = socketData;
 			// alert('data received', socketData);

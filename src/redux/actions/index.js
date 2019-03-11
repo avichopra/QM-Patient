@@ -2,17 +2,16 @@ export const ADD_USER = 'ADD_USER';
 export const ADD_USER_TOKEN = 'ADD_USER_TOKEN';
 export const ADD_PATIENT = 'ADD_PATIENT';
 export const ADD_USER_LOCATION = 'ADD_USER_LOCATION';
-export const ADD_DRIVER = 'ADD_DRIVER';
 export const REQUEST_AMBULANCE = 'REQUEST_AMBULANCE';
-export const ADD_DRIVER_LOCATION="ADD_DRIVER_LOCATION";
-export const PICKED_UP_PATIENT="PICKED_UP_PATIENT";
-export const PICKED_UP_PATIENT_COMPLETE="PICKED_UP_PATIENT_COMPLETE";
 export const CANCEL_CALL_AMBULANCE="CANCEL_CALL_AMBULANCE";
+export const ADD_GPS_DATA="ADD_GPS_DATA"
+export const ADD_AMBULANCE_REQUEST="ADD_AMBULANCE_REQUEST"
+export const ADD_TRIP="ADD_TRIP"
+export const CANCEL_ALL_REQUEST="CANCEL_ALL_REQUEST"
+export const ADD_PATIENT_LOCATION_COORD="ADD_PATIENT_LOCATION_COORD"
+export const ADD_HOSPITAL_LOCATION_COORD="ADD_HOSPITAL_LOCATION_COORD"
 export function addUser(user) {
 	return { type: ADD_USER, data: user };
-}
-export function addDriver(showDriver, driver) {
-	return { type: ADD_DRIVER, data: { showDriver: showDriver, driver: driver } };
 }
 export function requestAmbulance(value) {
 	return { type: REQUEST_AMBULANCE, data: value };
@@ -28,18 +27,28 @@ export function addLocation(location) {
 	console.log('Location ', location);
 	return { type: ADD_USER_LOCATION, data: location };
 }
-export function addDriverLocation(location){
-	return {type:ADD_DRIVER_LOCATION,data:location}
-}
-export function pickedUpPatient(status)
-{
-	console.warn("Pickedup called")
-	return {type:PICKED_UP_PATIENT,data:status}
-}
-export function markComplete(cancelAll){
-	return {type:PICKED_UP_PATIENT_COMPLETE,data:cancelAll}
-}
 export function cancelCallAmbulance(status)
 {
 	return {type:CANCEL_CALL_AMBULANCE,data:status}
+}
+export function addGPSData(gps_data)
+{
+	return {type:ADD_GPS_DATA,data:gps_data}
+}
+export function addAmbulanceRequest(requestData)
+{
+	return {type:ADD_AMBULANCE_REQUEST,data:requestData}
+}
+export function addTrip(tripData){
+	return {type:ADD_TRIP,data:tripData}
+}
+export function cancelAllRequest()
+{
+	return {type:CANCEL_ALL_REQUEST}
+}
+export function addPatientLocationCoord(pickedLocation,duration){
+	return {type:ADD_PATIENT_LOCATION_COORD,data:{pickedLocation:pickedLocation,duration:duration}}
+}
+export function addHospitalLocationCoord(hospitalLocation,duration){
+	return {type:ADD_HOSPITAL_LOCATION_COORD,data:{hospitalLocation:hospitalLocation,duration:duration}}
 }

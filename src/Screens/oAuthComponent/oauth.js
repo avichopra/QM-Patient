@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Store from '../../redux/store/index';
 import store from "../../utilities/store"
+import {  saveSubscriptionInfo } from '../../utilities/socket';
 import { setUserToken, setUser, setPatient,setUserRefreshToken } from '../../redux/index';
+import {addAmbulanceRequest,addTrip} from '../../redux/actions';
 import { Platform, Linking, View, Text, AppState } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import * as Storage from '../../utilities/asyncStorage';
@@ -85,7 +87,8 @@ componentWillUnmount(){
 					'content-type': 'application/json',
 					Accept: 'application/json',
 					authorization: `Bearer ${token}`
-				};
+				};	
+				let fields={"patientId":{"userId":{"_id":1,"fullname": 1,"email": 1,"emergencycontactnumber":1,"contactNo":1,"picture":1}},"pickedPatient":1,"vehicleNo":1,"patientAddress":1,"driverAddress":1,"hospitalName":1,"hospitalAddress":1,"hospitalNo":1,"deviceId":1,"hospitalLocation":{"lat":1,"long":1},"patientLocation":{"lat":1,"long":1},"driverLocation":{"lat":1,"long":1},"driverId":{"userId":{"deleted":1,"role":1,"createdAt":1,"fullname":1,"email":1,"contactNo":1,"emailVerificationCode":1,"phoneVerified":1,"online":1,"deviceId":1,"picture":1}}}
 					 if(timeCalculate(expireTime))
 					 {
 						 let data={"email":email,"refreshToken":refreshToken}
@@ -95,13 +98,28 @@ componentWillUnmount(){
 								Accept: 'application/json',
 								authorization: `Bearer ${response.data.accessToken}`
 							};
-							   console.log("refresh token",response)
+							   console.log("rsefresh token",response)
 							 setUserToken(response.data.accessToken);
 					 setUserRefreshToken(response.data)
 					callApi('get', 'v1/auth/isLogin', {}, headers)
 					.then((response) => {
-						setUser(response.data.userTransformed);
-						// Store.dispatch(addUser(response.data.userTransformed));
+						console.log(">>>>>>>>>>>>>>>>>>>>>>>>",response)
+						console.warn('token', this.props.token);
+						Promise.all([callApi(
+							'post',
+							'v1/daffo/Trips/getOwn',
+							{ perPage: 1,fields:fields,filter: { status:"Progress",patientId: response.data.userTransformed.id } },
+							headers
+						),callApi("post","v1/daffo/Requests/getOwn",{perPage:1,filter:{status:"Pending",requestedBy:response.data.userTransformed.id}},headers)]).then((response)=>{
+							console.log("Response>>>>>>>>>>",response)
+							response[0].data.length!=0 &&  Store.dispatch(addTrip(response[0].data[0]))
+							response[1].data.length!=0 && Store.dispatch(addAmbulanceRequest(response[1].data[0]))
+						console.log('response in auth', response);
+						   navigate('Drawer');
+						}).catch((error)=>{
+							console.log("error>>>>>",error)
+						})
+					setUser(response.data.userTransformed);
 						console.log('response in auth', response);
 						navigate('Drawer');
 					})
@@ -111,23 +129,32 @@ componentWillUnmount(){
 						console.log('Error', error);
 					});
 						}).catch((error)=>{
+							
 							console.log("error in refresh token",error)
 						})
-					
 					 }
 					else
 					{
 						callApi('get', 'v1/auth/isLogin', {}, headers)
 						.then((response) => {
+							console.log(">>>>>>>>>>>>>>>>>>>>>>>>",response)
 							Store.dispatch(addUser(response.data.userTransformed));
 							Store.dispatch(addUserToken(token))
-						// Storage.get("token").then(async (token)=>
-						// {
-						
-						// 	await Store.dispatch(addUserToken(token));
-						// })
+							Promise.all([callApi(
+								'post',
+								'v1/daffo/Trips/getOwn',
+								{ perPage: 1,fields:fields,filter: { status:"Progress",patientId: response.data.userTransformed.id } },
+								headers
+							),callApi("post","v1/daffo/Requests/getOwn",{perPage:1,filter:{status:"Pending",requestedBy:response.data.userTransformed.id}},headers)]).then((response)=>{
+								console.log("Response>>>>>>>>>>",response)
+								response[0].data.length!=0 &&  Store.dispatch(addTrip(response[0].data[0]))
+								response[1].data.length!=0 && Store.dispatch(addAmbulanceRequest(response[1].data[0]))
 							console.log('response in auth', response);
-							navigate('Drawer');
+							   navigate('Drawer');
+							}).catch((error)=>{
+								console.log("error>>>>>",error)
+							})
+								console.log("Trips data",result)
 						})
 						.catch((error) => {
 							console.log("error token expired",error)
