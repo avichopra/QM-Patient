@@ -38,7 +38,7 @@ export default (TextField = (props) => {
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
                     style={{ width: '82%' }}
-                > */}
+				> */}
 				<TextInput
 					style={{ width: '82%', fontSize: 15, color: 'black' }}
 					placeholder={placeholder}

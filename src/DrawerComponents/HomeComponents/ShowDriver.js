@@ -1,17 +1,14 @@
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, Image } from 'react-native';
 import config from '../../config/index';
+import {get} from "lodash";
 export default (ShowDriver = (props) => {
 	const {
-		driver = {
-			fullname: 'Naveksha Jain',
-			vehicleNo: 'DLCPA 30309',
-			picture: 'public/1549363727367.JPEG',
-			contactNo: '1234567891'
-		},
+		driverDetails = {vehicleNo:"2DFR456"},
 		Call = () => {},
 		onShowReasons = () => {}
 	} = props;
+	let driverData=get(driverDetails,"driverId.userId",{fullname:'Naveksha Jain',picture: 'public/1549363727367.JPEG',contactNo: '1234567891'})
 	return (
 		<View
 			style={{
@@ -36,12 +33,12 @@ export default (ShowDriver = (props) => {
 			>
 				<View style={{ width: '50%', flexDirection: 'row' }}>
 					<Image
-						source={{ uri: `${config.SERVER_URL}/v1/daffo/file/${driver.picture}` }}
+						source={{ uri: driverData.picture?`${config.SERVER_URL}/v1/daffo/file/${driverData.picture}`:'asset:/icon/def.png'}}
 						style={{ height: 60, width: 60, borderRadius: 30 }}
 					/>
 					<View style={{ marginTop: 8, marginLeft: 10 }}>
-						<Text style={{ fontSize: 18, marginBottom: 5 }}>{driver.fullname}</Text>
-						<Text style={{ fontSize: 18 }}>{driver.vehicleNo}</Text>
+						<Text style={{ fontSize: 18, marginBottom: 5 }}>{driverData.fullname}</Text>
+						<Text style={{ fontSize: 18 }}>{driverDetails.vehicleNo}</Text>
 					</View>
 				</View>
 				<TouchableOpacity
@@ -56,7 +53,7 @@ export default (ShowDriver = (props) => {
 						marginLeft: 70,
 						marginTop: 10
 					}}
-					onPress={() => Call(driver.contactNo)}
+					onPress={() => Call(driverData.contactNo)}
 				>
 					<Image
 						source={{ uri: 'mipmap/telephone' }}

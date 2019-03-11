@@ -57,12 +57,13 @@ const MyDrawerNavigator = createDrawerNavigator(
 class DrawerNavigaterWrapper extends Component {
 	static router = MyDrawerNavigator.router;
 	componentWillMount() {
-		console.warn('user id', this.props.user.id);
+		console.log('deviceId>>>>>>>>>>>>>>>>>>>>>>>>>>', this.props);
 		saveSubscriptionInfo('DrawerNavigater', [ this.props.user.id ]);
+		this.props.trip!=null && saveSubscriptionInfo("OnAccept",[this.props.trip.deviceId])
 	}
-	// componentWillUnmount() {
-	// 	unSubscribeSockets('DrawerNavigater');
-	// }
+	componentWillUnmount() {
+		unSubscribeSockets('DrawerNavigater');
+	}
 	render() {
 		return <MyDrawerNavigator navigation={this.props.navigation} />;
 	}
@@ -70,7 +71,8 @@ class DrawerNavigaterWrapper extends Component {
 function mapStateToProps(state) {
 	console.log('user in state of drawernavigater', state);
 	return {
-		user: state.user
+		user: state.user,
+		trip:state.trip
 	};
 }
 export default connect(mapStateToProps)(DrawerNavigaterWrapper);

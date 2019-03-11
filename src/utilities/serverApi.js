@@ -33,14 +33,14 @@ const callApi = (
     };
     if (method === 'get') delete options['data'];
     axios({ ...options })
-      .then(response => resolve(response))
+      .then(response =>{console.log("inside callApi response",response); resolve(response)})
       .catch(error => {
          console.log("error inside callApi",error.response)
          if(error.response.status===401)
          {
            console.log("status 401")
            Storage.remove('token');
-          Storage.remove('user');
+           Storage.remove('user');
           store.getInstance().getKey("Login").navigate("Login")
          }
         reject(error);

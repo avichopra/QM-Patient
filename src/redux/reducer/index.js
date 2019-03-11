@@ -3,24 +3,29 @@ import {
 	ADD_USER_TOKEN,
 	ADD_PATIENT,
 	ADD_USER_LOCATION,
-	ADD_DRIVER,
 	REQUEST_AMBULANCE,
-	ADD_DRIVER_LOCATION,
-	PICKED_UP_PATIENT,
-	PICKED_UP_PATIENT_COMPLETE,
-	CANCEL_CALL_AMBULANCE
+	CANCEL_CALL_AMBULANCE,
+	ADD_GPS_DATA,
+	ADD_AMBULANCE_REQUEST,
+	ADD_TRIP,
+	CANCEL_ALL_REQUEST,
+	ADD_HOSPITAL_LOCATION_COORD,
+	ADD_PATIENT_LOCATION_COORD,
 } from '../actions/index';
 export const initialState = {
 	user: null,
 	token: null,
 	patient: null,
-	driver: null,
-	showDriver: false,
 	Location: null,
 	requestAmbulance: false,
-	driverLocation:null,
-	pickedUpPatient:false,
-	callAmbulance:false
+	callAmbulance:true,
+	gpsData:null,
+	ambulanceRequested:null,
+	trip:null,
+	pickedLocationCoord:null,
+	hospitalLocationCoord:null,
+	pickedDuration:null,
+	hospitalDuration:null
 };
 export default function(state = {}, action) {
 	switch (action.type) {
@@ -35,24 +40,22 @@ export default function(state = {}, action) {
 		case ADD_PATIENT:
 			console.log('User token added in redux state', action.data);
 			return { ...state, patient: action.data };
-		case ADD_DRIVER:
-			return {
-				...state,
-				showDriver: action.data.showDriver,
-				driver: action.data.driver.id ? action.data.driver : null
-			};
 		case REQUEST_AMBULANCE:
 			return { ...state, requestAmbulance: action.data };
 		case ADD_USER_LOCATION:
 			return { ...state, Location: action.data };
-			case ADD_DRIVER_LOCATION:
-			return {...state,driverLocation:action.data}
-			case PICKED_UP_PATIENT:
-			return {...state,pickedUpPatient:action.data}
-			case PICKED_UP_PATIENT_COMPLETE:
-			return {...state,callAmbulance:false,pickedUpPatient:false,driverLocation:null,requestAmbulance:false,showDriver:false,driver:null}
-			// case CHANGE_STATE:
-		// 	return { ...state, [action.data.field]: action.data.value };
+		case ADD_GPS_DATA:
+		return {...state,gpsData:action.data}	
+		case ADD_AMBULANCE_REQUEST:
+		return {...state,ambulanceRequested:action.data}
+		case ADD_TRIP:
+		return {...state,trip:action.data}
+		case CANCEL_ALL_REQUEST:
+		return {...state,callAmbulance:true,ambulanceRequested:null,trip:null,pickedLocationCoord:null,hospitalLocationCoord:null}
+		case ADD_PATIENT_LOCATION_COORD:
+		return {...state,pickedLocationCoord:action.data.pickedLocation,pickedDuration:action.data.duration}
+		case ADD_HOSPITAL_LOCATION_COORD:
+		return {...state,hospitalLocationCoord:action.data.hospitalLocation,hospitalDuration:action.data.duration}
 		default:
 			return { ...state };
 	}

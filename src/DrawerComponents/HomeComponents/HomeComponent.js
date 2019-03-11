@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, Image } from 'react-native';
 import config from '../../config/index';
 import styles, { Palette } from '../../styles/index';
+import {get} from "lodash"
 const Calls = (props) => {
 	const {Call=()=>{}}=props;
 	return (
@@ -12,8 +13,10 @@ const Calls = (props) => {
 	);
 };
 export const PickedPatient = (props) => {
-	const {onClickPickPatient=()=>{},showHospital=false,patient = {}}=props
-const { fullname='', picture= '' }=patient
+	const {patient = {},Call = () => {}}=props
+// const { fullname='', picture= '' }=patient.patientId.userId
+let patientData=get(patient,"patientId.userId",{fullname:"",picture:""})
+const {hospitalNo='',hospitalName='Fortris Hospital',hospitalAddress='Sector 30, Gurgaon'}=patient
 	return (
 		<View style={[ styles.h200, styles.wbg ]}>
 			<View
@@ -28,12 +31,12 @@ const { fullname='', picture= '' }=patient
 			>
 				<View style={[ styles.circle50, { marginRight: 15 } ]}>
 					<Image
-						source={{ uri: `${config.SERVER_URL}/v1/daffo/file/${picture}` }}
+						source={{ uri: patientData.picture?`${config.SERVER_URL}/v1/daffo/file/${patientData.picture}`:'asset:/icon/def.png' }}
 						style={[ styles.circle50 ]}
 					/>
 				</View>
 
-				<Text style={{ fontSize: 18, color: 'black' }}>{fullname}</Text>
+				<Text style={{ fontSize: 18, color: 'black' }}>{patientData.fullname}</Text>
 			</View>
 			<View style={styles.divider} />
 			<View
@@ -61,13 +64,16 @@ const { fullname='', picture= '' }=patient
 						}}
 						numberOfLines={1}
 					>
-						Fortris Hospital
+						{hospitalName}
 					</Text>
 					<Text style={{ fontSize: 18, color: 'grey', width: '98%', fontFamily: 'NunitoSans-SemiBold' }}>
-						Sector 30, Gurgaon
+					{hospitalAddress}
 					</Text>
 				</View>
-				<Calls  />
+				<TouchableOpacity style={[ styles.center, styles.call ]} onPress={() => Call(hospitalNo)}>
+			<Image source={{ uri: 'mipmap/telephone' }} style={[ styles.icon19, { marginRight: 10 } ]} />
+			<Text style={[ styles.f18, styles.bold, { color: 'white' } ]}>Call</Text>
+		</TouchableOpacity>
 			</View>
 		</View>
 	);

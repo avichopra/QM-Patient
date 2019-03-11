@@ -9,7 +9,7 @@ import SplashScreen from 'react-native-splash-screen';
 import { connectToSocket } from './src/utilities/socket';
 import * as Storage from './src/utilities/asyncStorage';
 import { callApi } from './src/utilities/serverApi';
-console.disableYellowBox = true;
+// console.disableYellowBox = true;
 export default class App extends Component {
 	componentWillMount() {
 		AppState.addEventListener('change', this._handleAppstatechange);
