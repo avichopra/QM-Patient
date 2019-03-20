@@ -13,7 +13,6 @@ import SearchingNearby from './HomeComponents/SearchingNearby';
 import ShowDriver from './HomeComponents/ShowDriver';
 import ReasonOfCancellation from './HomeComponents/ReasonOfCancellation';
 import { RippleLoader } from 'react-native-indicator';
-import TempStorage from '../utilities/tempStorage';
 const height = Dimensions.get('window').height;
 class Home extends Base {
 	render() {
@@ -53,42 +52,28 @@ class Home extends Base {
 						onUserLocationChange={(locationChangedResult) =>
 							this.setUserLocation(locationChangedResult.nativeEvent.coordinate)}
 					>
-					    {/* <View style={{position:"absolute"}}> */}
 						{this.props.pickedLocationCoord!=null && (
 							<Polyline  coordinates={this.props.pickedLocationCoord} strokeColor={'#1d78e2'} strokeWidth={8} />
 						)}
 						{this.props.hospitalLocationCoord!=null && (
 							<Polyline  coordinates={this.props.hospitalLocationCoord} strokeColor={'#1d78e2'} strokeWidth={8}/>
 						)}
-						{this.props.pickedLocationCoord!=null && (
-							<MapView.Circle fillColor="gray" center={this.props.pickedLocationCoord[this.props.pickedLocationCoord.length-1]} radius={20} strokeColor="#FFFFFF" strokeWidth={8}/>
-						)}
-						{this.props.pickedLocationCoord!=null && (
-							<MapView.Circle fillColor="gray" center={this.props.pickedLocationCoord[0]} radius={20} strokeColor="#FFFFFF" strokeWidth={8}/>
-						)}
-						{this.props.pickedLocationCoord!=null && (
-							<Marker flat={true} title={"Picked Location Distance,Time"} coordinate={this.props.pickedLocationCoord[this.props.pickedLocationCoord.length/2]} >
+							{this.props.pickedLocationCoord!=null && (
+							<Marker flat={true} title={"Picked Location Distance,Time"} coordinate={this.props.pickedLocationCoord[parseInt(this.props.pickedLocationCoord.length/2)]} >
                              <View style={{width:"100%",height:"100%",backgroundColor:"#FFFFFF",borderRadius:5,borderColor:"black",display:"flex",flexDirection:"row"}}>
                              <Image source={{uri:'mipmap/ambulance'}}style={{width:20,height:20,margin:10}} resizeMode={'contain'}/>
 							<Text style={{margin:10}}>{this.props.pickedDuration.distance},{this.props.pickedDuration.duration}</Text>
 							 </View>
 							</Marker>
 						)}
-							{this.props.hospitalLocationCoord!=null && (
-							<MapView.Circle fillColor="gray" center={this.props.hospitalLocationCoord[this.props.hospitalLocationCoord.length-1]} radius={20} strokeColor="#FFFFFF" strokeWidth={8}/>
-						)}
 						{this.props.hospitalLocationCoord!=null && (
-							<MapView.Circle fillColor="gray" center={this.props.hospitalLocationCoord[0]} radius={20} strokeColor="#FFFFFF" strokeWidth={8}/>
-						)}
-						{this.props.hospitalLocationCoord!=null && (
-							<Marker flat={true} title={"Hospital Location Distance,Time"} coordinate={this.props.hospitalLocationCoord[this.props.hospitalLocationCoord.length/2]} >
+							<Marker flat={true} title={"Hospital Location Distance,Time"} coordinate={this.props.hospitalLocationCoord[0]} >
                              <View style={{width:"100%",height:"100%",backgroundColor:"#FFFFFF",borderRadius:5,borderColor:"black",display:"flex",flexDirection:"row"}}>
                             <Image source={{uri:'mipmap/hospital'}}style={{width:20,height:20,margin:10}} resizeMode={'contain'}/>
 							<Text style={{margin:10}}>{this.props.hospitalDuration.distance},{this.props.hospitalDuration.duration}</Text>
 							 </View>
 							</Marker>
 						)}
-						{/* </View> */}
 						{this.props.hospitalLocationCoord!=null && (
 								<Marker
 								coordinate={{latitude:parseFloat(this.props.trip.hospitalLocation.lat),longitude:parseFloat(this.props.trip.hospitalLocation.long)}}
@@ -118,7 +103,6 @@ class Home extends Base {
 							<Marker.Animated
 								ref={(desmarker) => {
 									this.desmarker = desmarker;
-									// TempStorage.getInstance().setKey("desmarker", desmarker)
 								}}
 								coordinate={{latitude:parseFloat(this.props.trip.driverLocation.lat),longitude:parseFloat(this.props.trip.driverLocation.long)}}
 								title={`Driver Location,${this.props.trip.driverAddress}`}
