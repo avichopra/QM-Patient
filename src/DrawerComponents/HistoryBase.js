@@ -25,7 +25,7 @@ export default class History extends Component {
 			},
 			filter:{
 				status:"Complete",
-				patientId:this.props.user._id
+				patientId:this.props.user.id
 			}
 		};
 		let headers = {
@@ -54,11 +54,11 @@ export default class History extends Component {
 		}
 	};
 	componentDidMount() {
-		// console.log('history >>>>>>>>>>>>>>>>>>>>>>>>>>>>       >>>>>>>>>>>>>>', this.props.driver._id);
+		console.log('history >>>>>>>>>>>>>>>>>>>>>>>>>>>>       >>>>>>>>>>>>>>', this.props.user);
 		let data = {
 			page:this.state.page,
 			perPage: 5,
-			filter: { status:"Complete",patientId: this.props.user._id },
+			filter: { status:"Complete",patientId: this.props.user.id },
 			fields: {
 				driverId: { userId: { picture: 1, fullname: 1 } },
 				patientAddress: 1,
