@@ -19,7 +19,6 @@ export default class Textinput extends Component {
           color: 'white',
           fontFamily: 'Nunito Regular'
         }}
-        
         {...props}
       />
     );

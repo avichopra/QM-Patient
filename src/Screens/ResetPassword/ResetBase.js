@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
-import { isValidConfirmPassword, isValidPassword, checkField } from '../../utilities/validation';
+import {
+  isValidConfirmPassword,
+  isValidPassword,
+  checkField
+} from '../../utilities/validation';
 import { callApi } from '../../utilities/serverApi';
 import { setUserToken, setUser } from '../../redux/index';
 import { get } from 'lodash';
@@ -14,14 +18,20 @@ export default class LoginBase extends Component {
       let password = checkField('Password', this.state.password.trim());
       this.setState({ passworderror: password });
     } else if (name === 'confirmpassword') {
-      let cnfpassword = checkField('Confirm Password', this.state.confirmpassword.trim());
+      let cnfpassword = checkField(
+        'Confirm Password',
+        this.state.confirmpassword.trim()
+      );
       this.setState({ confirmpassworderror: cnfpassword });
     }
   };
   checkAllField = () => {
     console.log(this.state.email);
     var password = isValidPassword(this.state.password);
-    var confirmpassword = isValidConfirmPassword(this.state.password, this.state.confirmpassword);
+    var confirmpassword = isValidConfirmPassword(
+      this.state.password,
+      this.state.confirmpassword
+    );
     // console.log(email, password);
     // if (email === false) email = 'Enter Valid Email id';
     this.setState({
@@ -36,7 +46,7 @@ export default class LoginBase extends Component {
   onSubmit = () => {
     // const { navigate } = this.props.navigation;
     if (this.checkAllField()) {
-      this.setState({loading:true})
+      this.setState({ loading: true });
       let data = {
         email: this.state.email,
         resetPasswordToken: this.state.token,
@@ -44,18 +54,23 @@ export default class LoginBase extends Component {
       };
       callApi('post', 'v1/auth/resetPassword', data)
         .then(response => {
-          if (response.status === 200) Alert({ title: 'Reset Password',message: 'Password Reset successfully' ,	buttons: [
-            {
-              title: 'Ok',
-              icon: false,
-              backgroundColor: 'blue'
-            }
-          ]});
-          this.setState({loading:false})
+          if (response.status === 200)
+            Alert({
+              title: 'Reset Password',
+              message: 'Password Reset successfully',
+              buttons: [
+                {
+                  title: 'Ok',
+                  icon: false,
+                  backgroundColor: 'blue'
+                }
+              ]
+            });
+          this.setState({ loading: false });
           this.props.navigation.navigate('Login');
         })
         .catch(error => {
-          this.setState({loading:false})
+          this.setState({ loading: false });
           console.log(error.response);
         });
     } else {

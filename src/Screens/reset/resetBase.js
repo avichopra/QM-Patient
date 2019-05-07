@@ -25,24 +25,25 @@ export default class resetBase extends Component {
   };
   onSubmit = () => {
     if (this.checkAllMandatoryField()) {
-      this.setState({loading:true})
+      this.setState({ loading: true });
       let data = {
         email: this.state.email.trim().toLowerCase(),
-        role:"Patient"
+        role: 'Patient'
       };
       callApi('post', 'v1/auth/forget', data)
         .then(response => {
           if (response.status === 200) {
-            this.setState({email:"",loading:false})
+            this.setState({ email: '', loading: false });
             Alert({
               title: 'Reset Password',
-              message: 'Password reset link has been sent to your email',	buttons: [
-								{
-									title: 'Ok',
-									icon: false,
-									backgroundColor: 'blue'
-								}
-							]
+              message: 'Password reset link has been sent to your email',
+              buttons: [
+                {
+                  title: 'Ok',
+                  icon: false,
+                  backgroundColor: 'blue'
+                }
+              ]
             });
             console.log('response', response);
             // alert('Password Reset Link has been sent to your email');
@@ -51,13 +52,11 @@ export default class resetBase extends Component {
         })
         .catch(error => {
           if (error.response.data.code === 400) {
-            this.setState({ emailerror: 'user not found',loading:false });
-          }
-          else if(error.response.data.code===401)
-          {
+            this.setState({ emailerror: 'user not found', loading: false });
+          } else if (error.response.data.code === 401) {
             console.log('Error', error.response.data);
-            this.setState({emailerror:"Unauthorised User",loading:false})
-          } 
+            this.setState({ emailerror: 'Unauthorised User', loading: false });
+          }
         });
     } else {
       console.log('error');

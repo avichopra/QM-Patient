@@ -1,23 +1,21 @@
 export default class TempStorage {
-    static _instance = null;
+  static _instance = null;
 
-    _keys = {};
+  _keys = {};
 
-    static getInstance = () => {
-        if (TempStorage._instance == null) {
-            TempStorage._instance = new TempStorage();
-        }
-
-        return TempStorage._instance;
-
+  static getInstance = () => {
+    if (TempStorage._instance == null) {
+      TempStorage._instance = new TempStorage();
     }
 
-    setKey = (key, value) => {
-        this._keys[key] = value;
-    }
+    return TempStorage._instance;
+  };
 
-    getKey = (key) => {
-        return this._keys[key];
-    }
+  setKey = (key, value) => {
+    this._keys[key] = value;
+  };
 
+  getKey = key => {
+    return this._keys[key];
+  };
 }

@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { Modal, Text, TouchableHighlight, TouchableWithoutFeedback, View, Dimensions } from 'react-native';
+import {
+  Modal,
+  Text,
+  TouchableHighlight,
+  TouchableWithoutFeedback,
+  View,
+  Dimensions
+} from 'react-native';
 import Events from 'react-native-simple-events';
 
 // import { Image } from '../components';
@@ -11,185 +18,211 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 // import TempStorage from '../utilities/tempStorage';
 
 export function Alert(data = {}) {
-	let {
-		emotion = 'normal',
+  let {
+    emotion = 'normal',
 
-		title = 'Alert',
+    title = 'Alert',
 
-		message = 'Your custom message',
+    message = 'Your custom message',
 
-		buttons = [
-			{
-				title: 'CANCEL',
+    buttons = [
+      {
+        title: 'CANCEL',
 
-				onPress: () => {},
+        onPress: () => {},
 
-				icon: false,
+        icon: false,
 
-				backgroundColor: 'blue'
-			},
+        backgroundColor: 'blue'
+      },
 
-			{
-				title: 'OK',
+      {
+        title: 'OK',
 
-				onPress: () => {},
+        onPress: () => {},
 
-				icon: false,
+        icon: false,
 
-				backgroundColor: 'blue'
-			}
-		],
+        backgroundColor: 'blue'
+      }
+    ],
 
-		...otherProps
-	} = data;
+    ...otherProps
+  } = data;
 
-	Events.trigger('showAlert', {
-		message,
+  Events.trigger('showAlert', {
+    message,
 
-		title,
+    title,
 
-		buttons,
+    buttons,
 
-		emotion,
+    emotion,
 
-		...otherProps
-	});
+    ...otherProps
+  });
 }
 
 export default class ModalView extends Component {
-	constructor(props) {
-		super(props);
+  constructor(props) {
+    super(props);
 
-		let { title = false, message = false, buttons = false, show = false, emotion = false } = props || {};
+    let {
+      title = false,
+      message = false,
+      buttons = false,
+      show = false,
+      emotion = false
+    } = props || {};
 
-		this.state = {
-			title: title || 'Alert',
+    this.state = {
+      title: title || 'Alert',
 
-			message: message || 'Your custom message',
+      message: message || 'Your custom message',
 
-			buttons: buttons || [
-				{
-					title: 'CANCEL',
+      buttons: buttons || [
+        {
+          title: 'CANCEL',
 
-					onPress: () => {},
+          onPress: () => {},
 
-					icon: false,
+          icon: false,
 
-					backgroundColor: '#1A5276'
-				},
+          backgroundColor: '#1A5276'
+        },
 
-				{
-					title: 'OK',
+        {
+          title: 'OK',
 
-					onPress: () => {},
+          onPress: () => {},
 
-					icon: false,
+          icon: false,
 
-					backgroundColor: '#1A5276'
-				}
-			],
+          backgroundColor: '#1A5276'
+        }
+      ],
 
-			show: show,
+      show: show,
 
-			emotion: emotion || 'normal'
-		};
-	}
+      emotion: emotion || 'normal'
+    };
+  }
 
-	componentWillMount() {
-		let { id = null } = this.props;
+  componentWillMount() {
+    let { id = null } = this.props;
 
-		Events.on('showAlert', id ? id : '123456789', this.onRequest);
+    Events.on('showAlert', id ? id : '123456789', this.onRequest);
 
-		Events.on('upDateAlert', id ? id : '123456789', this.upDateAlert);
-	}
+    Events.on('upDateAlert', id ? id : '123456789', this.upDateAlert);
+  }
 
-	componentWillUnmount() {
-		let { id = null } = this.props;
+  componentWillUnmount() {
+    let { id = null } = this.props;
 
-		Events.remove('showAlert', id ? id : '123456789');
+    Events.remove('showAlert', id ? id : '123456789');
 
-		Events.remove('upDateAlert', id ? id : '123456789');
-	}
+    Events.remove('upDateAlert', id ? id : '123456789');
+  }
 
-	onRequest = (options) => {
-		let { message, title, show = true, buttons = [], emotion = 'normal' } = options;
+  onRequest = options => {
+    let {
+      message,
+      title,
+      show = true,
+      buttons = [],
+      emotion = 'normal'
+    } = options;
 
-		if (message) {
-			this.setState({ title, message, buttons, show, emotion });
-		}
-	};
+    if (message) {
+      this.setState({ title, message, buttons, show, emotion });
+    }
+  };
 
-	upDateAlert = (options) => {
-		this.setState({ ...options });
-	};
+  upDateAlert = options => {
+    this.setState({ ...options });
+  };
 
-	closeModal = () => {
-		this.setState({ show: false });
-	};
+  closeModal = () => {
+    this.setState({ show: false });
+  };
 
-	render() {
-		let { backgroundColor, animationType } = this.props;
+  render() {
+    let { backgroundColor, animationType } = this.props;
 
-		let { title, message, buttons, show, emotion = 'normal' } = this.state;
+    let { title, message, buttons, show, emotion = 'normal' } = this.state;
 
-		const height = Dimensions.get('window').height;
+    const height = Dimensions.get('window').height;
 
-		let alertGuy = [ 'angry', 'confused', 'happy', 'normal', 'sad', 'surprized' ].includes(emotion)
-			? `icon_guy_${emotion}`
-			: 'icon_guy_normal';
+    let alertGuy = [
+      'angry',
+      'confused',
+      'happy',
+      'normal',
+      'sad',
+      'surprized'
+    ].includes(emotion)
+      ? `icon_guy_${emotion}`
+      : 'icon_guy_normal';
 
-		return (
-			<Modal transparent visible={show} animationType={animationType || 'fade'} onRequestClose={this.closeModal}>
-				<TouchableWithoutFeedback>
-					<View
-						style={{
-							height: height,
-							backgroundColor: 'rgba(128,128,128,0.9)',
-							width: '100%',
-							alignItems: 'center',
-							justifyContent: 'center'
-						}}
-					>
-						<View
-							style={[
-								{
-									// borderWidth: 5,
-									// borderColor: 'grey',
-									// elevation: 10,
-									borderRadius:15,
-									width: '90%',
+    return (
+      <Modal
+        transparent
+        visible={show}
+        animationType={animationType || 'fade'}
+        onRequestClose={this.closeModal}
+      >
+        <TouchableWithoutFeedback>
+          <View
+            style={{
+              height: height,
+              backgroundColor: 'rgba(128,128,128,0.9)',
+              width: '100%',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <View
+              style={[
+                {
+                  // borderWidth: 5,
+                  // borderColor: 'grey',
+                  // elevation: 10,
+                  borderRadius: 15,
+                  width: '90%',
 
-									height: height - 200,
+                  height: height - 200,
 
-									backgroundColor: '#FDFEFE'
-								}
-							]}
-						>
-							<View
-								style={{
-									// elevation: 24,
+                  backgroundColor: '#FDFEFE'
+                }
+              ]}
+            >
+              <View
+                style={{
+                  // elevation: 24,
 
-									// shadowColor: "#000",
+                  // shadowColor: "#000",
 
-									// shadowOffset: { height: 12, width: 6 },
+                  // shadowOffset: { height: 12, width: 6 },
 
-									// shadowRadius: 12,
+                  // shadowRadius: 12,
 
-									// shadowOpacity: 0.5,
+                  // shadowOpacity: 0.5,
 
-									justifyContent: 'center',
+                  justifyContent: 'center',
 
-									alignItems: 'center',
-									padding: 0,
-									margin: 0,
-									flex: 1
-								}}
-							>
-								<View style={{ height: 50 }} />
-								<View style={{ padding: 24, flex: 1 }}>
-									<View style={{ flex: 0.5 }} />
-									<View style={{ justifyContent: 'center', alignItems: 'center' }}>
-										{/* <Image
+                  alignItems: 'center',
+                  padding: 0,
+                  margin: 0,
+                  flex: 1
+                }}
+              >
+                <View style={{ height: 50 }} />
+                <View style={{ padding: 24, flex: 1 }}>
+                  <View style={{ flex: 0.5 }} />
+                  <View
+                    style={{ justifyContent: 'center', alignItems: 'center' }}
+                  >
+                    {/* <Image
 										source={{ uri: alertGuy }}
 										style={{
 											height: 96,
@@ -199,110 +232,113 @@ export default class ModalView extends Component {
 											borderColor: '#ccc'
 										}}
 									/> */}
-									</View>
+                  </View>
 
-									{/* -------------------------- Title --------------------------------- */}
-									<View
-										style={{
-											justifyContent: 'center',
-											alignItems: 'center',
-											flex: 1,
-											marginBottom: 40
-										}}
-									>
-										<Text style={[ { textAlign: 'center', color: 'grey', fontSize: 25 } ]}>
-											{title}
-										</Text>
-									</View>
-									{/* -------------------------- message --------------------------------- */}
-									<View style={{ flex: 4 }}>
-										<Text
-											style={{
-												color: '#616161',
-												fontSize: 20,
-												fontFamily: 'Roboto-Regular',
-												lineHeight: 24,
-												paddingHorizontal: 24,
-												textAlign: 'center'
-											}}
-										>
-											{message}
-										</Text>
-									</View>
-								</View>
-							</View>
+                  {/* -------------------------- Title --------------------------------- */}
+                  <View
+                    style={{
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      flex: 1,
+                      marginBottom: 40
+                    }}
+                  >
+                    <Text
+                      style={[
+                        { textAlign: 'center', color: 'grey', fontSize: 25 }
+                      ]}
+                    >
+                      {title}
+                    </Text>
+                  </View>
+                  {/* -------------------------- message --------------------------------- */}
+                  <View style={{ flex: 4 }}>
+                    <Text
+                      style={{
+                        color: '#616161',
+                        fontSize: 20,
+                        fontFamily: 'Roboto-Regular',
+                        lineHeight: 24,
+                        paddingHorizontal: 24,
+                        textAlign: 'center'
+                      }}
+                    >
+                      {message}
+                    </Text>
+                  </View>
+                </View>
+              </View>
 
-							{/* -------------------------- Actions --------------------------------- */}
-							<View
-								style={{
-									flexDirection: 'row',
-									justifyContent: 'center',
-									paddingVertical: 8,
-									marginHorizontal: 24,
-									marginBottom: 46
-									// backgroundColor: 'blue'
-								}}
-							>
-								{buttons.map(
-									(button, index) =>
-										button.icon ? (
-											<TouchableHighlight
-												key={index}
-												activeOpacity={0.7}
-												style={{
-													width: 60,
-													height: 60,
-													borderRadius: 20,
-													marginHorizontal: 8,
-													marginBottom: 8,
-													justifyContent: 'center',
-													alignItems: 'center',
-													backgroundColor: '#21618C',
-													borderRadius:20
-												}}
-												onPress={() => {
-													this.closeModal();
-												}}
-											>
-												<Icon size={24} name={button.icon} color={'#fff'} />
-											</TouchableHighlight>
-										) : (
-											<TouchableHighlight
-												key={index}
-												// underlayColor={'#e6e6e6'}
-												onPress={() => {
-													button.onPress ? button.onPress() : {};
-													this.closeModal();
-												}}
-												style={{
-													height: 40,
-													minWidth: 70,
-													paddingHorizontal: 10,
-													justifyContent: 'center',
-													marginRight: 8,
-													alignItems: 'center',
-													backgroundColor: '#21618C',
-													borderRadius:20
-												}}
-											>
-												<View>
-													<Text
-														style={{
-															color: 'white',
-															fontSize: 18
-														}}
-													>
-														{button.title}
-													</Text>
-												</View>
-											</TouchableHighlight>
-										)
-								)}
-							</View>
-						</View>
-					</View>
-				</TouchableWithoutFeedback>
-			</Modal>
-		);
-	}
+              {/* -------------------------- Actions --------------------------------- */}
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  paddingVertical: 8,
+                  marginHorizontal: 24,
+                  marginBottom: 46
+                  // backgroundColor: 'blue'
+                }}
+              >
+                {buttons.map((button, index) =>
+                  button.icon ? (
+                    <TouchableHighlight
+                      key={index}
+                      activeOpacity={0.7}
+                      style={{
+                        width: 60,
+                        height: 60,
+                        borderRadius: 20,
+                        marginHorizontal: 8,
+                        marginBottom: 8,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: '#21618C',
+                        borderRadius: 20
+                      }}
+                      onPress={() => {
+                        this.closeModal();
+                      }}
+                    >
+                      <Icon size={24} name={button.icon} color={'#fff'} />
+                    </TouchableHighlight>
+                  ) : (
+                    <TouchableHighlight
+                      key={index}
+                      // underlayColor={'#e6e6e6'}
+                      onPress={() => {
+                        button.onPress ? button.onPress() : {};
+                        this.closeModal();
+                      }}
+                      style={{
+                        height: 40,
+                        minWidth: 70,
+                        paddingHorizontal: 10,
+                        justifyContent: 'center',
+                        marginRight: 8,
+                        alignItems: 'center',
+                        backgroundColor: '#21618C',
+                        borderRadius: 20
+                      }}
+                    >
+                      <View>
+                        <Text
+                          style={{
+                            color: 'white',
+                            fontSize: 18
+                          }}
+                        >
+                          {button.title}
+                        </Text>
+                      </View>
+                    </TouchableHighlight>
+                  )
+                )}
+              </View>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
+    );
+  }
 }
