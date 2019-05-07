@@ -44,15 +44,14 @@ public class MainApplication extends Application implements ReactApplication {
             new AppCenterReactNativeCrashesPackage(MainApplication.this, getResources().getString(R.string.appCenterCrashes_whenToSendCrashes)),
             new AppCenterReactNativeAnalyticsPackage(MainApplication.this, getResources().getString(R.string.appCenterAnalytics_whenToEnableAnalytics)),
             new AppCenterReactNativePackage(MainApplication.this),
-            
-                        new RNGooglePlacesPackage(),
-
+            new RNGooglePlacesPackage(),
             new ImageResizerPackage(),
             new ImagePickerPackage(),
             new SvgPackage(),
             new RNGestureHandlerPackage(),
             new VectorIconsPackage(),
-            new SplashScreenReactPackage()
+            new SplashScreenReactPackage(),
+            new GeoLocationPackage()
 
       );
     }
