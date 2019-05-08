@@ -297,6 +297,7 @@ export default class HomeBase extends Component {
   }
   setUserLocation = Coordinate => {
     const { latitude, longitude } = Coordinate;
+    console.warn('location>>>>', Coordinate);
     CurrentLocation = { latitude, longitude };
     const newCoordinate = {
       latitude,

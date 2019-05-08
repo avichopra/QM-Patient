@@ -20,7 +20,6 @@ export default class App extends Component {
     AppState.removeEventListener('change', this._handleAppStateChange);
   }
   _handleAppstatechange = async nextAppState => {
-    console.warn('next app state>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', nextAppState);
     let email = null;
     await Storage.get('user')
       .then(data => {
