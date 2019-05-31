@@ -39,7 +39,7 @@ class Home extends Base {
       <ReasonOfCancellation onShowReasons={this.onShowReasons} onSubmit={this.onSubmit} />
     ) : (
       <View style={[styles.f2]}>
-        <Header title={'Quick Medic'} openDrawer={this.openDrawer} />
+        <Header title={'UP 108'} openDrawer={this.openDrawer} />
 
         {this.state.loading ? (
           <View style={[styles.f2, styles.center]}>

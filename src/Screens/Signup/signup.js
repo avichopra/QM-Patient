@@ -20,7 +20,7 @@ export default class Login extends SignupBase {
         <ScrollView contentContainerStyle={style.f1} keyboardShouldPersistTaps="always">
           <ImageBackground source={{ uri: 'asset:/icon/group_2.png' }} style={[style.d1]} resizeMode={'stretch'}>
             <View style={style.d3}>
-              <Image source={{ uri: 'asset:/icon/group.png' }} style={[style.a1, style.d2]} />
+              <Image source={{ uri: 'asset:/icon/group.jpg' }} style={[style.a1, style.d2]} />
             </View>
             <View>
               <View style={[style.d4]}>

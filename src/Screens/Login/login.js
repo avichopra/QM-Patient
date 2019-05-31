@@ -75,28 +75,14 @@ export default class Login extends Base {
     // console.warn("hiiiiiiiiiiiiiiiiii")
     return (
       <KeyboardAvoidingView style={{ flex: 1 }}>
-        <ScrollView
-          contentContainerStyle={style.f1}
-          keyboardShouldPersistTaps="always"
-        >
-          <ImageBackground
-            source={{ uri: 'asset:/icon/group_2.png' }}
-            style={style.d1}
-            resizeMode={'stretch'}
-          >
+        <ScrollView contentContainerStyle={style.f1} keyboardShouldPersistTaps="always">
+          <ImageBackground source={{ uri: 'asset:/icon/group_2.png' }} style={style.d1} resizeMode={'stretch'}>
             <View style={style.f1}>
-              <Image
-                source={{ uri: 'asset:/icon/group.png' }}
-                style={[style.d2, style.d3, style.a1]}
-              />
+              <Image source={{ uri: 'asset:/icon/group.jpg' }} style={[style.d2, style.d3, style.a1]} />
             </View>
             <View style={style.f1}>
               <View style={style.d4}>
-                <Image
-                  source={{ uri: 'asset:/icon/mail_copy.png' }}
-                  style={style.d5}
-                  resizeMode="contain"
-                />
+                <Image source={{ uri: 'asset:/icon/mail_copy.png' }} style={style.d5} resizeMode="contain" />
 
                 <View style={style.f8}>
                   <Textinput
@@ -112,11 +98,7 @@ export default class Login extends Base {
               </View>
               <Text style={style.c1}>{this.state.emailerror}</Text>
               <View style={style.d4}>
-                <Image
-                  source={{ uri: 'asset:/icon/lock.png' }}
-                  style={[style.d6, style.d3]}
-                  resizeMode="contain"
-                />
+                <Image source={{ uri: 'asset:/icon/lock.png' }} style={[style.d6, style.d3]} resizeMode="contain" />
 
                 <View style={style.f3}>
                   <Textinput
@@ -144,9 +126,7 @@ export default class Login extends Base {
             </View>
             <View style={[style.j1, style.f1]}>
               <View style={style.d7}>
-                <Text style={[style.i1, { fontSize: 12 }]}>
-                  Dont have an account? &nbsp;
-                </Text>
+                <Text style={[style.i1, { fontSize: 12 }]}>Dont have an account? &nbsp;</Text>
 
                 <Text
                   onPress={() => {
@@ -158,11 +138,7 @@ export default class Login extends Base {
                 </Text>
               </View>
               {this.state.loading === false ? (
-                <TouchableOpacity
-                  style={style.c2}
-                  onPress={this.onSubmit}
-                  accessible={false}
-                >
+                <TouchableOpacity style={style.c2} onPress={this.onSubmit} accessible={false}>
                   <Text
                     style={{
                       textAlign: 'center',

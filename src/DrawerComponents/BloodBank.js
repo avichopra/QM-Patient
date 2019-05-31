@@ -12,7 +12,7 @@ class BloodBank extends Base {
     const { params } = this.props.navigation.state;
     return (
       <View style={[styles.f2]}>
-        <Header title={'Quick Medic'} openDrawer={this.openDrawer} />
+        <Header title={!params.status ? 'Blood Bank' : 'Hospital'} openDrawer={this.openDrawer} />
         {this.state.loading ? (
           <View style={[styles.f2, styles.center]}>
             <ActivityIndicator size="large" color="#000" />

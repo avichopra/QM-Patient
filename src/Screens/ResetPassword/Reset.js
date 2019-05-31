@@ -51,7 +51,7 @@ export default class Reset extends Base {
           >
             <View style={style.f1}>
               <Image
-                source={{ uri: 'asset:/icon/group.png' }}
+                source={{ uri: 'asset:/icon/group.jpg' }}
                 style={[style.d2, style.d3, style.a1]}
               />
             </View>
