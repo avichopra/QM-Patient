@@ -1,12 +1,5 @@
 import React, { Component } from 'react';
-import {
-  Text,
-  View,
-  TextInput,
-  Dimensions,
-  Image,
-  ScrollView
-} from 'react-native';
+import { Text, View, TextInput, Dimensions, Image, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/Octicons';
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;

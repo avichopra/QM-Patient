@@ -12,7 +12,11 @@ function isValidContactnumber(contactnumber) {
   if (contactnumber.length < 10) return 'Enter Valid Contact Number';
   return true;
 }
-
+function isValidAge(age) {
+  if (age === '') return 'Age cannot be empty';
+  if (age.length > 3) return 'Enter Valid Age';
+  return true;
+}
 function isValidPassword(password) {
   if (password === '') return 'Password cannot be empty';
   if (password.length < 6) return 'Password must be greater than 6';
@@ -37,6 +41,7 @@ function checkEmpty(field) {
   else return false;
 }
 export {
+  isValidAge,
   checkField,
   isValidEmail,
   isValidContactnumber,

@@ -6,11 +6,7 @@ import {
   createStackNavigator,
   createSwitchNavigator
 } from 'react-navigation';
-import {
-  subscribeGroups,
-  saveSubscriptionInfo,
-  unSubscribeSockets
-} from '../utilities/socket';
+import { subscribeGroups, saveSubscriptionInfo, unSubscribeSockets } from '../utilities/socket';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/Foundation';
 import Home from '../DrawerComponents/Home';
@@ -20,6 +16,7 @@ import ChangePassword from '../DrawerComponents/ChangePassword';
 import Header from '../DrawerComponents/Header';
 import Logout from '../DrawerComponents/Logout';
 import DrawerContent from '../DrawerComponents/DrawerContent';
+import BloodBank from '../DrawerComponents/BloodBank';
 const Stack = createStackNavigator(
   {
     Home: {
@@ -36,6 +33,9 @@ const Stack = createStackNavigator(
     },
     Logout: {
       screen: Logout
+    },
+    BloodBank: {
+      screen: BloodBank
     }
   },
   {
@@ -63,8 +63,7 @@ class DrawerNavigaterWrapper extends Component {
   componentWillMount() {
     console.log('deviceId>>>>>>>>>>>>>>>>>>>>>>>>>>', this.props);
     saveSubscriptionInfo('DrawerNavigater', [this.props.user.id]);
-    this.props.trip != null &&
-      saveSubscriptionInfo('OnAccept', [this.props.trip.deviceId]);
+    this.props.trip != null && saveSubscriptionInfo('OnAccept', [this.props.trip.deviceId]);
   }
   componentWillUnmount() {
     unSubscribeSockets('DrawerNavigater');

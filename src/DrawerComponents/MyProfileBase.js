@@ -25,7 +25,8 @@ export default class MyProfile extends Component {
         address: '',
         bloodGroup: '',
         emergencyContactNo: '',
-        relationWithPatient: ''
+        relationWithPatient: '',
+        gender: ''
       },
       imageSelected: false,
       profileImage: '',
@@ -39,6 +40,7 @@ export default class MyProfile extends Component {
   }
 
   onHandleChange = (name, value, field) => {
+    // console.warn('vale>>>>>', this.state.AdditionalInfo.gender);
     if (field) {
       this.state[field][name] = value;
       this.setState({});
@@ -79,11 +81,13 @@ export default class MyProfile extends Component {
     this.setState({ userName: '' });
   };
   componentDidMount() {
+    console.warn('userProps>>>>>>>>>>>>>>>.', this.props.patient);
     this.state.userName = this.props.user.fullname;
     this.state.GeneralInfo.email = this.props.user.email;
     this.state.GeneralInfo.contactNo = this.props.user.contactNo;
     this.state.picture = this.props.user.picture;
     this.state.AdditionalInfo.bloodGroup = this.props.patient.bloodGroup;
+    this.state.AdditionalInfo.gender = this.props.patient.gender;
     this.state.AdditionalInfo.relationWithPatient = this.props.patient.realtionWithPatient;
     this.state.AdditionalInfo.address = this.props.patient.address;
     this.state.GeneralInfo.emergencyContactNo = this.props.user.emergencycontactnumber;
@@ -110,33 +114,8 @@ export default class MyProfile extends Component {
     Keyboard.dismiss();
     let contactNo = this.state.GeneralInfo.contactNo;
     let contactNoError = checkEmpty(contactNo);
-    contactNoError && true
-      ? this.setState({ contactNoError: 'Contact Number Cannot be empty' })
-      : '';
+    contactNoError && true ? this.setState({ contactNoError: 'Contact Number Cannot be empty' }) : '';
     contactNoError === false ? (contactNoError = this.checkLength()) : '';
-    // console.log('on save being called>>>>>>>>>>>>>>>>>>>>>>>>>>.');
-    // let contactNoError, emergencyContactNoError;
-    // if (
-    // 	this.state.GeneralInfo.contactNo !== '' &&
-    // 	(this.state.GeneralInfo.contactNo.length < 10 || this.state.GeneralInfo.contactNo.length > 10)
-    // ) {
-    // 	contactNoError = true;
-    // 	this.state.GeneralInfo.contactNoError = 'field should be 10 characters long';
-    // 	this.setState({});
-    // } else {
-    // 	contactNoError = false;
-    // }
-    // if (
-    // 	this.state.GeneralInfo.emergencyContactNo !== '' &&
-    // 	(this.state.GeneralInfo.emergencyContactNo.length < 10 || this.state.GeneralInfo.emergencyContactNo > 10)
-    // ) {
-    // 	emergencyContactNoError = true;
-    // 	this.state.GeneralInfo.emergencyContactNoError = 'field should be 10 characters long';
-    // 	this.setState({});
-    // } else {
-    // 	emergencyContactNoError = false;
-    // }
-    // if (emergencyContactNoError && contactNoError === false) {
     if (contactNoError === false) {
       let headers = {
         'Content-Type': 'application/json',
@@ -154,7 +133,7 @@ export default class MyProfile extends Component {
           bloodGroup: this.state.AdditionalInfo.bloodGroup,
           realtionWithPatient: this.state.AdditionalInfo.relationWithPatient,
           emergencyContactNo: this.state.AdditionalInfo.emergencyContactNo,
-          picture: this.state.picture
+          gender: this.state.AdditionalInfo.gender
         };
         console.warn('token before save', this.props.token);
 
@@ -173,12 +152,7 @@ export default class MyProfile extends Component {
             });
           })
           .catch(err => {
-            console.warn(
-              'error from myProfile Base ',
-              err.response,
-              err.status,
-              err
-            );
+            console.warn('error from myProfile Base ', err.response, err.status, err);
           });
       } else {
         let data = {
@@ -190,7 +164,8 @@ export default class MyProfile extends Component {
           bloodGroup: this.state.AdditionalInfo.bloodGroup,
           realtionWithPatient: this.state.AdditionalInfo.relationWithPatient,
           emergencyContactNo: this.state.AdditionalInfo.emergencyContactNo,
-          picture: this.state.picture
+          picture: this.state.picture,
+          gender: this.state.AdditionalInfo.gender
         };
         console.warn('token before save', this.props.token);
 
@@ -204,21 +179,14 @@ export default class MyProfile extends Component {
             setPatient(result.data.updatedPatient);
           })
           .catch(err => {
-            console.warn(
-              'error from myProfile Base ',
-              err.response,
-              err.status,
-              err
-            );
+            console.warn('error from myProfile Base ', err.response, err.status, err);
           });
       }
       // }
     }
   };
   cameraClicked = () => {
-    console.log(
-      'avatarrrrrrrrrrrrrrr clicked called>>>>>>>>>>>>>>>>>>>>>>>>>>>'
-    );
+    console.log('avatarrrrrrrrrrrrrrr clicked called>>>>>>>>>>>>>>>>>>>>>>>>>>>');
     const options = {
       title: 'Select Avatar'
     };
@@ -237,14 +205,7 @@ export default class MyProfile extends Component {
 
         // You can also display the image using data:
         // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-        ImageResizer.createResizedImage(
-          response.uri,
-          164,
-          164,
-          'JPEG',
-          100,
-          0
-        ).then(result => {
+        ImageResizer.createResizedImage(response.uri, 164, 164, 'JPEG', 100, 0).then(result => {
           data.append('file', {
             uri: result.uri,
             type: 'image/jpeg',
@@ -264,12 +225,7 @@ export default class MyProfile extends Component {
               this.setState({ picture: result1.data[0].file.filename });
             })
             .catch(err => {
-              console.log(
-                'error from myProfile Base upload image',
-                err.response,
-                err.status,
-                err
-              );
+              console.log('error from myProfile Base upload image', err.response, err.status, err);
               // this.setState({ loading: false });
             });
         });

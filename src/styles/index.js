@@ -5,6 +5,31 @@ export const Palette = {
   w: 'white'
 };
 export default StyleSheet.create({
+  modalStyle: {
+    display: 'flex',
+    backgroundColor: 'rgb(255,255,255)',
+    marginTop: 100,
+    marginBottom: 30,
+    marginRight: 30,
+    marginLeft: 30,
+    borderRadius: 2
+  },
+  checkBox: {
+    height: 24,
+    width: 24,
+    borderRadius: 12,
+    borderWidth: 2,
+    borderColor: '#2d76d4',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 10
+  },
+  innerCheckBoxStyle: {
+    height: 12,
+    width: 12,
+    borderRadius: 6,
+    backgroundColor: '#2d76d4'
+  },
   h200: { height: 200 },
   call: {
     height: 30,

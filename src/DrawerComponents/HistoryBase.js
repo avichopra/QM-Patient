@@ -15,9 +15,7 @@ export default class History extends Component {
     console.warn('OnEndReached', this.state.page);
     let data = {
       perPage:
-        this.state.count - this.state.historyList.length <= 5
-          ? this.state.count - this.state.historyList.length
-          : 5,
+        this.state.count - this.state.historyList.length <= 5 ? this.state.count - this.state.historyList.length : 5,
       page: this.state.page,
       fields: {
         driverId: { userId: { picture: 1, fullname: 1 } },
@@ -37,9 +35,7 @@ export default class History extends Component {
       authorization: `Bearer ${this.props.token}`
     };
     let a =
-      this.state.count - this.state.historyList.length <= 5
-        ? this.state.count - this.state.historyList.length
-        : 5;
+      this.state.count - this.state.historyList.length <= 5 ? this.state.count - this.state.historyList.length : 5;
     console.warn('Length', a, 'Perpage value', data.perPage);
     if (this.state.count - this.state.historyList.length != 0) {
       let b = this.state.count - this.state.historyList.length != 0;
@@ -59,10 +55,7 @@ export default class History extends Component {
     }
   };
   componentDidMount() {
-    console.log(
-      'history >>>>>>>>>>>>>>>>>>>>>>>>>>>>       >>>>>>>>>>>>>>',
-      this.props.user
-    );
+    console.log('history >>>>>>>>>>>>>>>>>>>>>>>>>>>>       >>>>>>>>>>>>>>', this.props.user);
     let data = {
       page: this.state.page,
       perPage: 5,
@@ -95,10 +88,7 @@ export default class History extends Component {
             console.log('response from historyyyyy', response.data);
           })
           .catch(err => {
-            console.log(
-              'error from history get route>>>>>>>>>>>>>>>>>>>>>',
-              err
-            );
+            console.log('error from history get route>>>>>>>>>>>>>>>>>>>>>', err);
           });
       })
       .catch(err => {

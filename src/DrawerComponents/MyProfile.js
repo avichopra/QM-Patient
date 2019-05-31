@@ -1,13 +1,5 @@
 import React, { Component } from 'react';
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  ScrollView,
-  KeyboardAvoidingView,
-  Dimensions,
-  StyleSheet
-} from 'react-native';
+import { Text, View, TouchableOpacity, ScrollView, KeyboardAvoidingView, Dimensions, StyleSheet } from 'react-native';
 import Header from './Header';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import TextField from '../ReusableComponents/TextInput';
@@ -17,9 +9,7 @@ import { connect } from 'react-redux';
 class MyProfile extends MyProfileBase {
   static navigationOptions = {
     drawerLabel: 'My Profile',
-    drawerIcon: ({ tintColor }) => (
-      <Icon name={'user'} size={25} color={'black'} />
-    )
+    drawerIcon: ({ tintColor }) => <Icon name={'user'} size={25} color={'black'} />
   };
 
   render() {
@@ -29,17 +19,15 @@ class MyProfile extends MyProfileBase {
       bloodGroup = '',
       address = '',
       relationWithPatient = '',
-      emergencyContactNo
+      emergencyContactNo,
+      gender
     } = this.state.AdditionalInfo;
     let { username = '', email = '', picture = '' } = this.props.user;
     let ECN = this.state.GeneralInfo.emergencyContactNo,
       ECn = this.state.AdditionalInfo.emergencyContactNo;
     return (
       <KeyboardAvoidingView style={styles.fg}>
-        <ScrollView
-          contentContainerStyle={styles.fg}
-          keyboardShouldPersistTaps="always"
-        >
+        <ScrollView contentContainerStyle={styles.fg} keyboardShouldPersistTaps="always">
           <View style={styles.fg}>
             <View style={styles.ProfileHeaderHeight}>
               <Header
@@ -55,17 +43,9 @@ class MyProfile extends MyProfileBase {
               />
             </View>
             <View style={styles.InfoView}>
-              <TouchableOpacity
-                style={[styles.GInfo, styles.center]}
-                onPress={this.GeneralInfoPressed}
-              >
+              <TouchableOpacity style={[styles.GInfo, styles.center]} onPress={this.GeneralInfoPressed}>
                 <Text
-                  style={[
-                    GeneralInfoPressed && true
-                      ? { color: 'black' }
-                      : { color: '#B1B1B1' },
-                    { fontSize: 18 }
-                  ]}
+                  style={[GeneralInfoPressed && true ? { color: 'black' } : { color: '#B1B1B1' }, { fontSize: 18 }]}
                 >
                   General Info
                 </Text>
@@ -91,12 +71,7 @@ class MyProfile extends MyProfileBase {
                 onPress={this.AdditionalInfoPressed}
               >
                 <Text
-                  style={[
-                    AdditionalInfoPressed && true
-                      ? { color: 'black' }
-                      : { color: '#B1B1B1' },
-                    { fontSize: 18 }
-                  ]}
+                  style={[AdditionalInfoPressed && true ? { color: 'black' } : { color: '#B1B1B1' }, { fontSize: 18 }]}
                 >
                   Additional Info
                 </Text>
@@ -163,7 +138,7 @@ class MyProfile extends MyProfileBase {
             ) : (
               <View
                 style={{
-                  height: 300,
+                  height: 370,
                   width: '80%',
                   borderWidth: 3,
                   borderRadius: 2,
@@ -212,6 +187,15 @@ class MyProfile extends MyProfileBase {
                   fieldValue={relationWithPatient}
                   autoCapitalize="none"
                 />
+                <TextField
+                  placeholder={'Gender'}
+                  icon={'relation'}
+                  onHandleChange={this.onHandleChange}
+                  field={'AdditionalInfo'}
+                  value={'gender'}
+                  fieldValue={gender}
+                  autoCapitalize="none"
+                />
               </View>
             )}
             {this.props.user.phoneVerified === false ? (
@@ -233,12 +217,7 @@ class MyProfile extends MyProfileBase {
                 marginVertical: 30
               }}
             >
-              <Button
-                title={'Save'}
-                backgroundColor={'#2d76d4'}
-                onSave={this.onSave}
-                loading={this.state.loading}
-              />
+              <Button title={'Save'} backgroundColor={'#2d76d4'} onSave={this.onSave} loading={this.state.loading} />
             </View>
           </View>
         </ScrollView>
