@@ -21,6 +21,7 @@ import {
   addHospitalLocationCoord,
   addPickupLocation
 } from '../redux/actions/index';
+import { checkField, isValidContactnumber, isValidAge } from '../utilities/validation';
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 let latitude_delta = 0.009,
   longitude_delta = 0.009;
@@ -45,18 +46,83 @@ export default class HomeBase extends Component {
         latitude: 29.1397982,
         longitude: 75.75666079999999
       }),
-      showReasons: false
+      showReasons: false,
+      selfSelected: true,
+      othersSelected: false,
+      otherSelf: false,
+      MobileNumber: '',
+      Age: '',
+      VictimName: '',
+      gender: ''
+      // MobileNumberError: '',
+      // AgeError: '',
+      // VictimNameError: '',
+      // GenderError: '',
+      // otherSelfError: ''
     };
   }
-  Call = Type => {
+  ChangeText = (value, fieldName) => {
+    this.setState({ [fieldName]: value });
+  };
+  // checkVictim = () => {
+  //   // if (this.state.selfSelected || this.state.othersSelected) {
+  //   //   if (this.state.selfSelected) {
+  //   //   } else {
+  //   //     // if (this.checkAllMandatoryField()) {
+  //   //     console.warn('true');
+  //   //     // }
+  //   //   }
+  //   // } else {
+  //   //   this.setState({ otherSelfError: 'Select Options' });
+  //   // }
+  // };
+  checkAllMandatoryField = () => {
+    // console.warn(
+    //   'Victimname>>>',
+    //   this.state.VictimName,
+    //   'gender>>>',
+    //   this.state.gender,
+    //   'age>>>',
+    //   this.state.Age,
+    //   'contactno',
+    //   this.state.MobileNumber
+    // );
+    // var victimname = checkField('Victim Name', this.state.VictimName.trim());
+    // var contactnumber = isValidContactnumber(this.state.MobileNumber.trim());
+    // var age = isValidAge(this.state.Age.trim());
+    // var gender = checkField('Gender', this.state.gender.trim());
+    // this.setState({
+    //   // VictimNameError: victimname,
+    //   // MobileNumberError: contactnumber,
+    //   // AgeError: age,
+    //   GenderError: gender
+    // });
+    // console.warn('Victimname>>>', victimname, 'gender>>>', gender, 'age>>>', age, 'contactno', contactnumber);
+    // if (gender === true) {
+    //   return true;
+    // }
+    // return false;
+  };
+  EmergencyCall = () => {
     const args = {
-      number:
-        Type === 'CN'
-          ? this.props.patient.contactNo
-          : this.props.patient.emergencyContactNo,
+      number: '108',
       prompt: false
     };
     call(args).catch(console.error);
+  };
+  Call = Type => {
+    // console.warn('Type>>>>', Type);
+    const args = {
+      number: Type === 'CN' ? this.props.patient.contactNo : this.props.patient.emergencyContactNo,
+      prompt: false
+    };
+    call(args).catch(console.error);
+  };
+  selfSelected = () => {
+    this.setState({ selfSelected: true, othersSelected: false, otherSelfError: '' });
+  };
+  othersSelected = () => {
+    this.setState({ selfSelected: false, othersSelected: true, otherSelfError: '' });
   };
   onCancelRequest = () => {
     let headers = {
@@ -75,12 +141,7 @@ export default class HomeBase extends Component {
         longitude: longitude
       }
     };
-    callApi(
-      'post',
-      'v1/daffo/dispatch/cancelAllAmbulanceRequest',
-      data,
-      headers
-    ).then(response => {
+    callApi('post', 'v1/daffo/dispatch/cancelAllAmbulanceRequest', data, headers).then(response => {
       console.log('response', response);
     });
     Store.dispatch(cancelAllRequest(true, null, null));
@@ -137,11 +198,9 @@ export default class HomeBase extends Component {
       showPatient: false,
       deviceId: this.props.trip.deviceId
     };
-    callApi('post', 'v1/daffo/dispatch/cancelTrip', data, headers).then(
-      response => {
-        console.log('response', response);
-      }
-    );
+    callApi('post', 'v1/daffo/dispatch/cancelTrip', data, headers).then(response => {
+      console.log('response', response);
+    });
     this.setState({
       showReasons: false,
       callAmbulance: false,
@@ -170,8 +229,7 @@ export default class HomeBase extends Component {
     if (nextProps.trip != null) {
       console.warn('Inside component receive props for trips', nextProps);
       if (nextProps.pickedLocationCoord === null) {
-        if (nextProps.trip.pickedPatient === false)
-          this.getPickupRouteDirection(nextProps.trip.patientLocation, false);
+        if (nextProps.trip.pickedPatient === false) this.getPickupRouteDirection(nextProps.trip.patientLocation, false);
       }
       if (nextProps.hospitalLocationCoord === null) {
         this.getHospitalRouteDirection(nextProps.trip, false);
@@ -256,14 +314,11 @@ export default class HomeBase extends Component {
       Accept: 'application/json',
       authorization: `Bearer ${this.props.token}`
     };
-    callApi(
-      'post',
-      'v1/daffo/Patient/getOwn',
-      { perPage: 1, filter: { userId: this.props.user.id } },
-      headers
-    ).then(result => {
-      result.data[0] ? setPatient(result.data[0]) : '';
-    });
+    callApi('post', 'v1/daffo/Patient/getOwn', { perPage: 1, filter: { userId: this.props.user.id } }, headers).then(
+      result => {
+        result.data[0] ? setPatient(result.data[0]) : '';
+      }
+    );
   }
   componentWillUnmount() {
     if (this.props.trip === null) {
@@ -278,6 +333,8 @@ export default class HomeBase extends Component {
     this.props.navigation.openDrawer();
   };
   componentDidMount() {
+    // const { params } = this.props.navigation.state;
+    // console.warn('>>>>route name>>', params !== undefined ? params.showBloodBank : 'false');
     this.checkLocationIsEnabled();
     GPSState.addListener(status => {
       if (status === 1) {
@@ -297,7 +354,7 @@ export default class HomeBase extends Component {
   }
   setUserLocation = Coordinate => {
     const { latitude, longitude } = Coordinate;
-    console.warn('location>>>>', Coordinate);
+    // console.warn('location>>>>', Coordinate);
     CurrentLocation = { latitude, longitude };
     const newCoordinate = {
       latitude,
@@ -358,9 +415,7 @@ export default class HomeBase extends Component {
           : CurrentLocation != null
           ? CurrentLocation.longitude
           : this.state.longitude
-      }&destination=${patientLocation.lat},${
-        patientLocation.long
-      }&key=AIzaSyAYl-EN9gKgW4DflxwhYmHIt4RqP5vT-WY`,
+      }&destination=${patientLocation.lat},${patientLocation.long}&key=AIzaSyAYl-EN9gKgW4DflxwhYmHIt4RqP5vT-WY`,
       headers = { 'content-type': 'application/json' };
     let option = {
       method,
@@ -368,9 +423,7 @@ export default class HomeBase extends Component {
       headers
     };
     axios(option).then(response => {
-      const points = PolyLine.decode(
-        response.data.routes[0].overview_polyline.points
-      );
+      const points = PolyLine.decode(response.data.routes[0].overview_polyline.points);
       let pointCoords = points.map(point => {
         return { latitude: point[0], longitude: point[1] };
       });
@@ -395,9 +448,7 @@ export default class HomeBase extends Component {
     let method = 'get',
       url = `https://maps.googleapis.com/maps/api/directions/json?origin=${
         reRoute ? data.Gps_Data.latitude : data.patientLocation.lat
-      },${
-        reRoute ? data.Gps_Data.longitude : data.patientLocation.long
-      }&destination=${data.hospitalLocation.lat},${
+      },${reRoute ? data.Gps_Data.longitude : data.patientLocation.long}&destination=${data.hospitalLocation.lat},${
         data.hospitalLocation.long
       }&key=AIzaSyAYl-EN9gKgW4DflxwhYmHIt4RqP5vT-WY`,
       headers = { 'content-type': 'application/json' };
@@ -407,9 +458,7 @@ export default class HomeBase extends Component {
       headers
     };
     axios(option).then(response => {
-      const points = PolyLine.decode(
-        response.data.routes[0].overview_polyline.points
-      );
+      const points = PolyLine.decode(response.data.routes[0].overview_polyline.points);
       let pointCoords = points.map(point => {
         return { latitude: point[0], longitude: point[1] };
       });
@@ -428,7 +477,11 @@ export default class HomeBase extends Component {
       );
     });
   };
+  showSelfOtherCapture = () => {
+    this.setState({ otherSelf: true });
+  };
   onRequestAmbulance = () => {
+    this.setState({ otherSelf: false });
     let { latitude = '', longitude = '', currentPlace = '' } = this.state;
     let headers = {
       'Content-Type': 'application/json',
@@ -439,18 +492,16 @@ export default class HomeBase extends Component {
       ambulanceSupport: this.state.advancedSupport ? 'Advance' : 'Basic',
       id: this.props.patient._id,
       location: {
-        currentPlace:
-          this.props.pickupLocation != null
-            ? this.props.pickupLocation.currentPlace
-            : currentPlace,
-        latitude:
-          this.props.pickupLocation != null
-            ? this.props.pickupLocation.latitude
-            : CurrentLocation.latitude,
-        longitude:
-          this.props.pickupLocation != null
-            ? this.props.pickupLocation.longitude
-            : CurrentLocation.longitude
+        currentPlace: this.props.pickupLocation != null ? this.props.pickupLocation.currentPlace : currentPlace,
+        latitude: this.props.pickupLocation != null ? this.props.pickupLocation.latitude : CurrentLocation.latitude,
+        longitude: this.props.pickupLocation != null ? this.props.pickupLocation.longitude : CurrentLocation.longitude
+      },
+      victimData: {
+        victimName: this.state.VictimName,
+        age: this.state.Age,
+        mobileNo: this.state.MobileNumber,
+        gender: this.state.gender,
+        victimType: this.state.selfSelected ? 'Self' : 'Others'
       }
     };
     callApi('post', 'v1/daffo/dispatch/requestAmbulance', data, headers)

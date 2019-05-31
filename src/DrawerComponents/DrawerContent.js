@@ -1,14 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { NavigationActions, StackActions } from 'react-navigation';
-import {
-  ScrollView,
-  Text,
-  View,
-  StyleSheet,
-  Dimensions,
-  TouchableOpacity,
-  Image
-} from 'react-native';
+import { ScrollView, Text, View, StyleSheet, Dimensions, TouchableOpacity, Image } from 'react-native';
 import DrawerItem from '../ReusableComponents/DrawerItem';
 import { connect } from 'react-redux';
 import * as Storage from '../utilities/asyncStorage';
@@ -20,10 +12,11 @@ import store from '../utilities/store';
 import Store from '../redux/store/index';
 import { cancelAllRequest } from '../redux/actions/index';
 class DrawerContent extends Component {
-  navigateToScreen = route => {
+  navigateToScreen = (route, status) => {
+    // console.warn('>>>>>>navigation', status);
     const navigateAction = StackActions.reset({
       index: 0,
-      actions: [NavigationActions.navigate({ routeName: route })]
+      actions: [NavigationActions.navigate({ routeName: route, params: { status } })]
     });
     store.getInstance().setKeyWithRef('CurrentScreen', route);
 
@@ -54,11 +47,7 @@ class DrawerContent extends Component {
     return (
       <View style={styles.DrawerContent}>
         <View>
-          <Svg
-            width={'100%'}
-            height={200}
-            style={{ backgroundColor: 'transparent' }}
-          >
+          <Svg width={'100%'} height={200} style={{ backgroundColor: 'transparent' }}>
             <Ellipse cx={150} cy={45} rx={200} ry={110} fill={'#E8F0FD'} />
           </Svg>
         </View>
@@ -92,6 +81,20 @@ class DrawerContent extends Component {
         />
         {/* <TouchableOpacity onPress={this.onPressLogout}> */}
         <DrawerItem
+          title={'Blood Bank'}
+          navigateToScreen={this.navigateToScreen}
+          route={'BloodBank'}
+          // icon={<FontAwesome name={'history'} size={25} color={'#383838'} />}
+          name={'bloodbank'}
+        />
+        <DrawerItem
+          title={'Hospital'}
+          navigateToScreen={this.navigateToScreen}
+          route={'BloodBank'}
+          // icon={<FontAwesome name={'history'} size={25} color={'#383838'} />}
+          name={'hospital_1'}
+        />
+        <DrawerItem
           title={'Logout'}
           navigateToScreen={this.onPressLogout}
           route={'Logout'}
@@ -99,9 +102,7 @@ class DrawerContent extends Component {
           name={'logout'}
         />
         {/* </TouchableOpacity> */}
-        <View
-          style={{ position: 'absolute', width: '100%', alignItems: 'center' }}
-        >
+        <View style={{ position: 'absolute', width: '100%', alignItems: 'center' }}>
           <TouchableOpacity
             style={{
               height: 100,
@@ -140,9 +141,7 @@ class DrawerContent extends Component {
           </TouchableOpacity>
           <View style={{ width: '50%', alignItems: 'center' }}>
             <Text style={{ color: 'black' }} numberOfLines={1}>
-              {this.props.user.fullname
-                ? this.props.user.fullname.split(' ')[0]
-                : ''}
+              {this.props.user.fullname ? this.props.user.fullname.split(' ')[0] : ''}
             </Text>
           </View>
         </View>

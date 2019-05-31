@@ -8,7 +8,7 @@ import SplashScreen from 'react-native-splash-screen';
 import { connectToSocket } from './src/utilities/socket';
 import * as Storage from './src/utilities/asyncStorage';
 import { callApi } from './src/utilities/serverApi';
-console.disableYellowBox = true;
+// console.disableYellowBox = true;
 export default class App extends Component {
   componentWillMount() {
     AppState.addEventListener('change', this._handleAppstatechange);
@@ -53,13 +53,10 @@ export default class App extends Component {
     }
   };
   componentDidMount() {
-    PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-      {
-        title: 'Location',
-        message: 'Access your location'
-      }
-    ).then(granted => {
+    PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION, {
+      title: 'Location',
+      message: 'Access your location'
+    }).then(granted => {
       console.log('granted', granted);
     });
 
@@ -68,11 +65,7 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={Store}>
-        <StatusBar
-          barStyle="light-content"
-          hidden={false}
-          backgroundColor="#2d76d4"
-        />
+        <StatusBar barStyle="light-content" hidden={false} backgroundColor="#2d76d4" />
         <Switchnavigator />
         <ModalView id={'Root_App'} />
       </Provider>

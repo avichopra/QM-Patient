@@ -1,56 +1,31 @@
 import React, { Component } from 'react';
-import { Header } from 'react-navigation';
-import {
-  View,
-  Image,
-  Dimensions,
-  ScrollView,
-  KeyboardAvoidingView,
-  ImageBackground,
-  StatusBar,
-  Linking,
-  ActivityIndicator
-} from 'react-native';
+import { View, Image, ScrollView, KeyboardAvoidingView, ImageBackground, ActivityIndicator } from 'react-native';
+import ModalDropdown from 'react-native-modal-dropdown';
 import SignupBase from './signupBase';
 import style from '../../styles/index';
 import Text from '../../component/CustomComponent/text';
 import Button from '../../component/CustomComponent/button';
 import Textinput from '../../component/CustomComponent/Textinput';
-import SplashScreen from 'react-native-splash-screen';
-import GenericModal from '../../ReusableComponents/modal';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icons from 'react-native-vector-icons/MaterialIcons';
+Gender = ['Male', 'Female'];
+BloodGroup = ['A+', 'A-', 'B+', 'B-', 'o+', 'o-', 'AB+', 'AB-'];
 export default class Login extends SignupBase {
   constructor(props) {
     super(props);
   }
-
   render() {
     return (
       <KeyboardAvoidingView style={{ flex: 1 }}>
-        <ScrollView
-          contentContainerStyle={style.f1}
-          keyboardShouldPersistTaps="always"
-        >
-          {/* <StatusBar barStyle='light-content' hidden={true} backgroundColor='blue' /> */}
-
-          <ImageBackground
-            source={{ uri: 'asset:/icon/group_2.png' }}
-            style={[style.d1]}
-            resizeMode={'stretch'}
-          >
+        <ScrollView contentContainerStyle={style.f1} keyboardShouldPersistTaps="always">
+          <ImageBackground source={{ uri: 'asset:/icon/group_2.png' }} style={[style.d1]} resizeMode={'stretch'}>
             <View style={style.d3}>
-              <Image
-                source={{ uri: 'asset:/icon/group.png' }}
-                style={[style.a1, style.d2]}
-              />
+              <Image source={{ uri: 'asset:/icon/group.png' }} style={[style.a1, style.d2]} />
             </View>
             <View>
               <View style={[style.d4]}>
                 <View>
-                  <Image
-                    source={{ uri: 'asset:/icon/avatar.png' }}
-                    style={[style.d6, style.d3]}
-                    resizeMode="contain"
-                  />
+                  <Image source={{ uri: 'asset:/icon/avatar.png' }} style={[style.d6, style.d3]} resizeMode="contain" />
                 </View>
                 <View style={style.f8}>
                   <Textinput
@@ -151,9 +126,7 @@ export default class Login extends SignupBase {
                   </Textinput>
                 </View>
               </View>
-              <Text style={{ color: 'red' }}>
-                {this.state.emergencycontacterror}
-              </Text>
+              <Text style={{ color: 'red' }}>{this.state.emergencycontacterror}</Text>
               <View style={style.d4}>
                 <Image
                   source={{ uri: 'asset:/icon/lock.png' }}
@@ -196,9 +169,79 @@ export default class Login extends SignupBase {
                   </Textinput>
                 </View>
               </View>
-              <Text style={{ color: 'red' }}>
-                {this.state.confirmpassworderror}
-              </Text>
+              <Text style={{ color: 'red' }}>{this.state.confirmpassworderror}</Text>
+              <View style={style.d4}>
+                {/* <View> */}
+                {/* <Image
+                  source={{ uri: 'mipmap/relation' }}
+                  style={{ width: 40, height: 20, marginVertical: 30 }}
+                  resizeMode="contain"
+                /> */}
+                {/* </View> */}
+                <View style={{ marginVertical: 30, marginHorizontal: 5, marginRight: 10, marginBottom: 10 }}>
+                  <Icon name="gender-male-female" size={25} color="rgb(255,255,255)" />
+                </View>
+                <View style={[style.f8, { flexDirection: 'row', justifyContent: 'space-between', top: 27 }]}>
+                  <ModalDropdown
+                    options={Gender}
+                    onSelect={(index, value) => {
+                      this.onGenderSelect(value);
+                    }}
+                    dropdownStyle={{
+                      width: 100,
+                      height: 80,
+                      backgroundColor: '#2d76d4'
+                    }}
+                    dropdownTextStyle={{
+                      color: '#FBFCFC',
+                      fontSize: 15,
+                      backgroundColor: '#2d76d4',
+                      marginLeft: 20
+                    }}
+                    // dropdownTextHighlightStyle={{ backgroundColor: '#34495E' }}
+                  >
+                    <Text style={{ marginLeft: 10, color: 'rgb(255,255,255)' }}>
+                      {this.state.gender != null ? this.state.gender : 'Gender'}
+                    </Text>
+                  </ModalDropdown>
+                </View>
+              </View>
+              <Text style={{ color: 'red' }}>{this.state.gendererror}</Text>
+              <View style={style.d4}>
+                {/* <Image
+                  source={{ uri: 'mipmap/blood' }}
+                  style={{ width: 40, height: 20, marginVertical: 30 }}
+                  resizeMode="contain"
+                /> */}
+                <View style={{ marginVertical: 30, marginHorizontal: 5, marginRight: 10, marginBottom: 10 }}>
+                  <Icons name="whatshot" size={25} color="rgb(255,255,255)" />
+                </View>
+                <View style={[{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', top: 27 }]}>
+                  <ModalDropdown
+                    options={BloodGroup}
+                    onSelect={(index, value) => {
+                      this.onBloodSelect(value);
+                    }}
+                    dropdownStyle={{
+                      width: 100,
+                      height: 120,
+                      backgroundColor: '#2d76d4'
+                    }}
+                    dropdownTextStyle={{
+                      color: '#FBFCFC',
+                      fontSize: 15,
+                      backgroundColor: '#2d76d4',
+                      marginLeft: 30
+                    }}
+                    // dropdownTextHighlightStyle={{ backgroundColor: '#34495E' }}
+                  >
+                    <Text style={{ marginLeft: 10, color: 'rgb(255,255,255)' }}>
+                      {this.state.bloodGroup != null ? this.state.bloodGroup : 'Blood Group'}
+                    </Text>
+                  </ModalDropdown>
+                </View>
+              </View>
+              <Text style={{ color: 'red' }}>{this.state.bloodGrouperror}</Text>
             </View>
             <View style={style.a9}>
               {this.state.loading === false ? (
@@ -220,12 +263,12 @@ export default class Login extends SignupBase {
                 <Text style={[style.f10, { color: 'white' }]}>SIGN IN</Text>
               </Button>
             </View>
-            <GenericModal
+            {/* <GenericModal
               modalVisible={this.state.modalVisible}
               firstTitle={'Ok'}
               secondTitle={'Resend Email'}
               firstOnPress={this.setModalVisible}
-            />
+            /> */}
           </ImageBackground>
         </ScrollView>
       </KeyboardAvoidingView>

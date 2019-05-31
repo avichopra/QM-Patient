@@ -28,30 +28,23 @@ export default class signupBase extends Component {
       passworderror: '',
       confirmpassworderror: '',
       modalVisible: false,
-      loading: false
+      loading: false,
+      bloodGroup: null,
+      gender: null,
+      bloodGrouperror: '',
+      gendererror: ''
     };
   }
   checkAllMandatoryField = () => {
     var fullname = checkField('Fullname', this.state.FullName.trim());
     var email = isValidEmail(this.state.Email.trim());
     var contactnumber = isValidContactnumber(this.state.contactnumber.trim());
-    var emergencycontactnumber = isValidContactnumber(
-      this.state.emergencycontactnumber.trim()
-    );
+    var emergencycontactnumber = isValidContactnumber(this.state.emergencycontactnumber.trim());
     var password = isValidPassword(this.state.password.trim());
-    var confirmpassword = isValidConfirmPassword(
-      this.state.password.trim(),
-      this.state.confirmpassword.trim()
-    );
-
-    console.log(
-      fullname,
-      email,
-      contactnumber,
-      emergencycontactnumber,
-      password,
-      confirmpassword
-    );
+    var confirmpassword = isValidConfirmPassword(this.state.password.trim(), this.state.confirmpassword.trim());
+    let gender = this.state.gender === null ? 'Select gender' : true;
+    let blood = this.state.bloodGroup === null ? 'Select BloodGroup' : true;
+    // console.log(fullname, email, contactnumber, emergencycontactnumber, password, confirmpassword);
     if (email === false) email = 'Enter Valid Email id';
     this.setState({
       fullnameerror: fullname,
@@ -59,7 +52,9 @@ export default class signupBase extends Component {
       contacterror: contactnumber,
       emergencycontacterror: emergencycontactnumber,
       passworderror: password,
-      confirmpassworderror: confirmpassword
+      confirmpassworderror: confirmpassword,
+      bloodGrouperror: blood,
+      gendererror: gender
     });
     if (
       fullname === true &&
@@ -67,11 +62,19 @@ export default class signupBase extends Component {
       contactnumber === true &&
       emergencycontactnumber === true &&
       password === true &&
-      confirmpassword === true
+      confirmpassword === true &&
+      blood === true &&
+      gender === true
     ) {
       return true;
     }
     return false;
+  };
+  onGenderSelect = Value => {
+    this.setState({ gender: Value, gendererror: true });
+  };
+  onBloodSelect = value => {
+    this.setState({ bloodGroup: value, bloodGrouperror: true });
   };
   ChangeText = async (text, name) => {
     await this.setState({ [name]: text });
@@ -82,25 +85,16 @@ export default class signupBase extends Component {
       let email = checkField('Email', this.state.Email.trim());
       this.setState({ emailerror: email });
     } else if (name === 'contactnumber') {
-      let contactnumber = checkField(
-        'ContactNumber',
-        this.state.contactnumber.trim()
-      );
+      let contactnumber = checkField('ContactNumber', this.state.contactnumber.trim());
       this.setState({ contacterror: contactnumber });
     } else if (name === 'emergencycontactnumber') {
-      let emergencycontactnumber = checkField(
-        'Emergency Contact Number',
-        this.state.emergencycontactnumber.trim()
-      );
+      let emergencycontactnumber = checkField('Emergency Contact Number', this.state.emergencycontactnumber.trim());
       this.setState({ emergencycontacterror: emergencycontactnumber });
     } else if (name === 'password') {
       let password = checkField('Password', this.state.password.trim());
       this.setState({ passworderror: password });
     } else if (name === 'confirmpassword') {
-      let confirmpassword = checkField(
-        'ConfirmPassword',
-        this.state.confirmpassword.trim()
-      );
+      let confirmpassword = checkField('ConfirmPassword', this.state.confirmpassword.trim());
       this.setState({ confirmpassworderror: confirmpassword });
     }
   };
@@ -113,8 +107,11 @@ export default class signupBase extends Component {
         contactNo: this.state.contactnumber.trim(),
         emergencycontactnumber: this.state.emergencycontactnumber.trim(),
         password: this.state.password.trim(),
+        gender: this.state.gender,
+        bloodGroup: this.state.bloodGroup,
         role: 'Patient'
       };
+      // console.warn('???????', this.state.gender);
       callApi('post', 'v1/auth/register', data)
         .then(response => {
           if (response.status === 201) {

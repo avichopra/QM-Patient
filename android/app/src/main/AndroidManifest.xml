@@ -14,7 +14,7 @@
       android:allowBackup="true"
       android:label="@string/app_name"
       android:icon="@mipmap/app_icon"
-      
+      android:windowSoftInputMode="adjustNothing"
       android:theme="@style/AppTheme"
       >
       <activity
