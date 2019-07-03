@@ -22,7 +22,6 @@ export default class Reset extends Base {
       loading: false
     };
   }
-
   componentDidMount() {
     setTimeout(() => {
       SplashScreen.hide();
@@ -31,15 +30,8 @@ export default class Reset extends Base {
   render() {
     return (
       <KeyboardAvoidingView style={{ flex: 1 }}>
-        <ScrollView
-          contentContainerStyle={{ flexGrow: 1 }}
-          keyboardShouldPersistTaps="always"
-        >
-          <ImageBackground
-            source={{ uri: 'asset:/icon/group_2.png' }}
-            style={[style.d1]}
-            resizeMode={'stretch'}
-          >
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="always">
+          <ImageBackground source={{ uri: 'asset:/icon/group_2.png' }} style={[style.d1]} resizeMode={'stretch'}>
             <View>
               <View style={style.d3}>
                 <Image
@@ -56,13 +48,7 @@ export default class Reset extends Base {
                   We just need your registered e-mail address to
                 </Text>
 
-                <Text
-                  style={[
-                    style.i1,
-                    style.a1,
-                    { fontSize: 12, alignSelf: 'center' }
-                  ]}
-                >
+                <Text style={[style.i1, style.a1, { fontSize: 12, alignSelf: 'center' }]}>
                   send you password reset link
                 </Text>
               </View>

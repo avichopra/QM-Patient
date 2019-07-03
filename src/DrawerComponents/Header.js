@@ -1,19 +1,11 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  Image,
-  TouchableOpacity
-} from 'react-native';
+import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import config from '../config/index';
 export default class Header extends Component {
   constructor(props) {
     super(props);
   }
-
   render() {
     const {
       cameraClicked = () => {},
@@ -34,12 +26,7 @@ export default class Header extends Component {
       >
         <View style={[styles.fr, styles.header]}>
           <TouchableOpacity style={styles.headerIcon}>
-            <Icon
-              name="menu"
-              size={25}
-              color={'white'}
-              onPress={this.props.openDrawer}
-            />
+            <Icon name="menu" size={25} color={'white'} onPress={this.props.openDrawer} />
           </TouchableOpacity>
           <View style={styles.HText}>
             <Text style={styles.HTitle}>{this.props.title}</Text>
@@ -59,14 +46,8 @@ export default class Header extends Component {
                 style={[styles.circle, styles.circleBorder]}
               />
             </View>
-            <TouchableOpacity
-              style={styles.cameraContainer}
-              onPress={cameraClicked}
-            >
-              <Image
-                source={{ uri: 'mipmap/camera' }}
-                style={styles.cameraIcon}
-              />
+            <TouchableOpacity style={styles.cameraContainer} onPress={cameraClicked}>
+              <Image source={{ uri: 'mipmap/camera' }} style={styles.cameraIcon} />
             </TouchableOpacity>
             <View style={styles.nameContainer}>
               <TextInput

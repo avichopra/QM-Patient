@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, Image } from 'react-native';
-
 export default (CallAmbulance = props => {
   const {
     onBasicSupport = () => {},
     onAdvancedSupport = () => {},
     onRequestAmbulance = () => {},
-
     advancedSupport = false,
     basicSupport = false
   } = props;
@@ -41,23 +39,15 @@ export default (CallAmbulance = props => {
           alignItems: 'stretch'
         }}
       >
-        <TouchableOpacity
-          style={{ height: 100, width: '50%', alignItems: 'center' }}
-          onPress={onAdvancedSupport}
-        >
+        <TouchableOpacity style={{ height: 100, width: '50%', alignItems: 'center' }} onPress={onAdvancedSupport}>
           <Image
             style={{ height: 70, width: 70 }}
             source={{
-              uri:
-                advancedSupport === false ? 'mipmap/support1' : 'mipmap/support'
+              uri: advancedSupport === false ? 'mipmap/support1' : 'mipmap/support'
             }}
           />
-          <Text style={{ fontFamily: 'NunitoSans-Regular', fontSize: 14 }}>
-            Advanced Life
-          </Text>
-          <Text style={{ fontFamily: 'NunitoSans-Regular', fontSize: 14 }}>
-            Support
-          </Text>
+          <Text style={{ fontFamily: 'NunitoSans-Regular', fontSize: 14 }}>Advanced Life</Text>
+          <Text style={{ fontFamily: 'NunitoSans-Regular', fontSize: 14 }}>Support</Text>
         </TouchableOpacity>
         <View
           style={{
@@ -67,29 +57,18 @@ export default (CallAmbulance = props => {
             marginTop: 10
           }}
         />
-        <TouchableOpacity
-          style={{ height: 100, width: '50%', alignItems: 'center' }}
-          onPress={onBasicSupport}
-        >
+        <TouchableOpacity style={{ height: 100, width: '50%', alignItems: 'center' }} onPress={onBasicSupport}>
           <Image
             style={{ height: 70, width: 70 }}
             source={{
               uri: basicSupport === false ? 'mipmap/support1' : 'mipmap/support'
             }}
           />
-          <Text style={{ fontFamily: 'NunitoSans-Regular', fontSize: 14 }}>
-            Basic Life
-          </Text>
-          <Text style={{ fontFamily: 'NunitoSans-Regular', fontSize: 14 }}>
-            Support
-          </Text>
+          <Text style={{ fontFamily: 'NunitoSans-Regular', fontSize: 14 }}>Basic Life</Text>
+          <Text style={{ fontFamily: 'NunitoSans-Regular', fontSize: 14 }}>Support</Text>
         </TouchableOpacity>
       </View>
-      <Button
-        title={'Request Ambulance'}
-        backgroundColor={'#f6263f'}
-        onSave={onRequestAmbulance}
-      />
+      <Button title={'Request Ambulance'} backgroundColor={'#f6263f'} onSave={onRequestAmbulance} />
     </View>
   );
 });

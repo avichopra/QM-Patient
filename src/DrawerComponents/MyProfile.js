@@ -240,15 +240,12 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center'
-    // flexGrow: 1,
   },
   center: { alignItems: 'center', justifyContent: 'center' },
   GInfo: {
     width: '48%',
     borderRightWidth: 1,
     borderRightColor: '#B1B1B1'
-    // alignItems: 'center',
-    // justifyContent: 'center'
   }
 });
 export default connect(mapStateToProps)(MyProfile);

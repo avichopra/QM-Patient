@@ -6,19 +6,12 @@ import {
   TouchableOpacity,
   ImageBackground,
   ScrollView,
-  Platform,
-  Linking,
-  AppState,
   KeyboardAvoidingView,
-  ActivityIndicator,
-  StatusBar
+  ActivityIndicator
 } from 'react-native';
 import Textinput from '../../component/CustomComponent/Textinput';
 import style from '../../styles/index';
 import Base from './LoginBase';
-import SplashScreen from 'react-native-splash-screen';
-import Loading from '../../ReusableComponents/loading';
-
 export default class Login extends Base {
   constructor(props) {
     super(props);
@@ -30,49 +23,7 @@ export default class Login extends Base {
       loading: false
     };
   }
-  // componentDidMount() {
-  // 	Linking.addEventListener("url", this.handleOpenURL);
-  // 	AppState.addEventListener("change", this._handleAppStateChange);
-  // }
-  // componentWillUnmount() {
-  //   AppState.removeEventListener('change', this._handleAppStateChange);
-  // }
-  // handleOpenURL = event => {
-  //   console.log('inside handle', event);
-  //   this.navigate(event.url);
-  // };
-  // _handleAppStateChange = () => {
-  // 	if (Platform.OS === "android") {
-  // 	  Linking.getInitialURL().then(url => {
-  // 		this.navigate(url);
-  // 	  });
-  // 	}
-  //   };
-  // navigate = url => {
-  //   console.log('Inside navigate url', url);
-  //   if (url === null) {
-  //     console.log('url', url);
-  //     return;
-  //   }
-  //   console.log('Linking ', url);
-  //   // E
-  //   const { navigate } = this.props.navigation;
-  //   const route = url.replace(/.*?:\/\//g, '');
-  //   const routeParams = route.split('/');
-  //   let routeName = routeParams[0];
-  //   let email = routeParams[1];
-  //   if (routeName === 'otp') {
-  //     console.log('User in auth', email);
-  //     navigate('OTP', { email: email });
-  //   }
-  //   if (routeName === 'reset') {
-  //     let resetPasswordToken = routeParams[2];
-  //     console.log('inside reset');
-  //     navigate('ResetPassword', { email: email, token: resetPasswordToken });
-  //   }
-  // };
   render() {
-    // console.warn("hiiiiiiiiiiiiiiiiii")
     return (
       <KeyboardAvoidingView style={{ flex: 1 }}>
         <ScrollView contentContainerStyle={style.f1} keyboardShouldPersistTaps="always">

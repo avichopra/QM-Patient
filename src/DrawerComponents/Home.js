@@ -12,12 +12,9 @@ import {
   TouchableWithoutFeedback,
   KeyboardAvoidingView
 } from 'react-native';
-// import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
 import ModalDropdown from 'react-native-modal-dropdown';
 import _ from 'lodash';
 Gender = ['Male', 'Female'];
-// import Textinput from '../component/CustomComponent/Textinput';
-import style from '../styles/index';
 import FloatingLabel from 'react-native-floating-labels';
 import styles from '../styles/index';
 import { connect } from 'react-redux';
@@ -82,17 +79,7 @@ class Home extends Base {
                 title={'Picked Location Distance,Time'}
                 coordinate={this.props.pickedLocationCoord[parseInt(this.props.pickedLocationCoord.length / 2)]}
               >
-                <View
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    backgroundColor: '#FFFFFF',
-                    borderRadius: 5,
-                    borderColor: 'black',
-                    display: 'flex',
-                    flexDirection: 'row'
-                  }}
-                >
+                <View style={styles.markerStyle}>
                   <Image
                     source={{ uri: 'mipmap/ambulance' }}
                     style={{ width: 20, height: 20, margin: 10 }}
@@ -110,17 +97,7 @@ class Home extends Base {
                 title={'Hospital Location Distance,Time'}
                 coordinate={this.props.hospitalLocationCoord[parseInt(this.props.hospitalLocationCoord.length / 2)]}
               >
-                <View
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    backgroundColor: '#FFFFFF',
-                    borderRadius: 5,
-                    borderColor: 'black',
-                    display: 'flex',
-                    flexDirection: 'row'
-                  }}
-                >
+                <View style={styles.markerStyle}>
                   <Image
                     source={{ uri: 'mipmap/hospital' }}
                     style={{ width: 20, height: 20, margin: 10 }}
@@ -204,20 +181,7 @@ class Home extends Base {
           </MapView>
         )}
         <TouchableWithoutFeedback onPress={() => this.EmergencyCall()}>
-          <View
-            style={{
-              position: 'absolute',
-              alignSelf: 'flex-end',
-              // bottom: 0,
-              top: 170,
-              width: 80,
-              height: 80,
-              borderRadius: 60,
-              right: 10,
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
-          >
+          <View style={styles.emergencyCallButton}>
             <Image
               style={{ width: 100, height: 100 }}
               source={{ uri: 'asset:/icon/emergency108.png' }}
@@ -226,22 +190,7 @@ class Home extends Base {
           </View>
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback onPress={this.AutoCom}>
-          <View
-            style={[
-              styles.center,
-              styles.fr,
-              {
-                width: '96%',
-                height: 50,
-                padding: 5,
-                borderRadius: 5,
-                backgroundColor: '#fff',
-                elevation: 20,
-                position: 'absolute',
-                marginTop: 60
-              }
-            ]}
-          >
+          <View style={[styles.center, styles.fr, styles.searchBar]}>
             <ScrollView
               contentContainerStyle={{ alignItems: 'center' }}
               style={{ width: '90%', marginRight: 5 }}
@@ -286,32 +235,14 @@ class Home extends Base {
               onRequestAmbulance={this.showSelfOtherCapture}
             />
           ) : (
-            <View
-              style={{
-                position: 'absolute',
-                alignSelf: 'flex-end',
-                bottom: 0,
-                marginVertical: 10,
-                width: '100%'
-              }}
-            >
+            <View style={styles.callAmbulance}>
               <Button title={'Call Ambulance'} backgroundColor={'#f6263f'} onSave={this.callAmbulance} />
             </View>
           )
         ) : null}
 
         {this.props.ambulanceRequested != null && this.props.trip === null && (
-          <View
-            style={{
-              width: '100%',
-              position: 'absolute',
-              alignItems: 'center',
-              justifyContent: 'center',
-              backgroundColor: 'rgba(174,182,191,0.8)',
-              height: height - 190,
-              top: 50
-            }}
-          >
+          <View style={styles.rippleLoader}>
             <RippleLoader size={350} strokeWidth={10} />
           </View>
         )}
@@ -326,77 +257,22 @@ class Home extends Base {
               entry={'bottom'}
             >
               <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)' }}>
-                <View
-                  style={{
-                    flex: 1,
-                    display: 'flex',
-                    backgroundColor: 'rgb(255,255,255)',
-                    marginTop: this.state.othersSelected ? 100 : 150,
-                    marginBottom: this.state.othersSelected ? 30 : 150,
-                    marginRight: 30,
-                    marginLeft: 30,
-                    borderRadius: 2
-                  }}
-                >
+                <View style={styles.otherselfWrapper}>
                   <ScrollView contentContainerStyle={style.f1} keyboardShouldPersistTaps="always">
                     <Text style={{ color: 'black', alignSelf: 'center', top: 20 }}>Choose Any one...</Text>
                     <View style={{ flexDirection: 'row', top: 40, flexGrow: 1, marginBottom: 40 }}>
                       <Text style={{ color: this.state.selfSelected ? '#2d76d4' : 'black', marginLeft: 15 }}>Self</Text>
                       <TouchableWithoutFeedback onPress={this.selfSelected}>
-                        <View
-                          style={[
-                            {
-                              height: 24,
-                              width: 24,
-                              borderRadius: 12,
-                              borderWidth: 2,
-                              borderColor: '#2d76d4',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              marginLeft: 10
-                            }
-                          ]}
-                        >
-                          {this.state.selfSelected ? (
-                            <View
-                              style={{
-                                height: 12,
-                                width: 12,
-                                borderRadius: 6,
-                                backgroundColor: '#2d76d4'
-                              }}
-                            />
-                          ) : null}
+                        <View style={styles.selfCheckBoxWrapper}>
+                          {this.state.selfSelected ? <View style={styles.checkboxstyles} /> : null}
                         </View>
                       </TouchableWithoutFeedback>
                       <Text style={{ color: this.state.othersSelected ? '#2d76d4' : 'black', marginLeft: 50 }}>
                         Others
                       </Text>
                       <TouchableWithoutFeedback onPress={this.othersSelected}>
-                        <View
-                          style={[
-                            {
-                              height: 24,
-                              width: 24,
-                              borderRadius: 12,
-                              borderWidth: 2,
-                              borderColor: '#2d76d4',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              marginLeft: 10
-                            }
-                          ]}
-                        >
-                          {this.state.othersSelected ? (
-                            <View
-                              style={{
-                                height: 12,
-                                width: 12,
-                                borderRadius: 6,
-                                backgroundColor: '#2d76d4'
-                              }}
-                            />
-                          ) : null}
+                        <View style={styles.selfCheckBoxWrapper}>
+                          {this.state.othersSelected ? <View style={styles.checkboxstyles} /> : null}
                         </View>
                       </TouchableWithoutFeedback>
                     </View>
@@ -428,7 +304,6 @@ class Home extends Base {
                             Victim Name
                           </FloatingLabel>
                         </View>
-                        {/* <Text style={{ color: 'red', marginLeft: 10 }}>{this.state.VictimNameError}</Text> */}
                         <View
                           style={{ borderBottomColor: 'green', borderBottomWidth: 1, marginLeft: 10, marginRight: 10 }}
                         >
@@ -453,7 +328,6 @@ class Home extends Base {
                             Age
                           </FloatingLabel>
                         </View>
-                        {/* <Text style={{ color: 'red', marginLeft: 10 }}>{this.state.AgeError}</Text> */}
                         <View
                           style={{ borderBottomColor: 'green', borderBottomWidth: 1, marginLeft: 10, marginRight: 10 }}
                         >
@@ -478,7 +352,6 @@ class Home extends Base {
                             Mobile Number
                           </FloatingLabel>
                         </View>
-                        {/* <Text style={{ color: 'red', marginLeft: 10 }}>{this.state.MobileNumberError}</Text> */}
                         <View
                           style={{
                             borderBottomColor: 'green',
@@ -505,14 +378,12 @@ class Home extends Base {
                               backgroundColor: '#2d76d4',
                               marginLeft: 20
                             }}
-                            // dropdownTextHighlightStyle={{ backgroundColor: '#34495E' }}
                           >
                             <Text style={{ marginLeft: 10, color: 'black' }}>
                               {this.state.gender !== '' ? this.state.gender : 'Gender'}
                             </Text>
                           </ModalDropdown>
                         </View>
-                        {/* <Text style={{ color: 'red', marginLeft: 10 }}>{this.state.GenderError}</Text> */}
                       </View>
                     )}
                     <View
@@ -526,30 +397,11 @@ class Home extends Base {
                         onPress={() => {
                           this.setState({ otherSelf: false, VictimName: '', Age: '', MobileNumber: '', Gender: '' });
                         }}
-                        style={{
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          margin: 5,
-                          width: '45%',
-                          height: 50,
-                          backgroundColor: '#2d76d4',
-                          borderRadius: 2
-                        }}
+                        style={styles.cancelSubmitStyle}
                       >
                         <Text style={{ color: 'rgb(255,255,255)' }}>CANCEL</Text>
                       </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={this.onRequestAmbulance}
-                        style={{
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          margin: 5,
-                          width: '45%',
-                          height: 50,
-                          backgroundColor: '#2d76d4',
-                          borderRadius: 2
-                        }}
-                      >
+                      <TouchableOpacity onPress={this.onRequestAmbulance} style={styles.cancelSubmitStyle}>
                         <Text style={{ color: 'rgb(255,255,255)' }}>PROCEED</Text>
                       </TouchableOpacity>
                     </View>

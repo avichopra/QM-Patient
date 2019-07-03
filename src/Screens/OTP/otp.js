@@ -27,37 +27,17 @@ export default class OTP extends Base {
 
   componentDidMount() {
     const { navigation } = this.props;
-    // const email = navigation.getParam('email');
-    console.warn(
-      'did mount>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>',
-      navigation.state.params.email
-    );
     if (navigation.state.params.contactNo) {
-      console.warn('inside ifffffffffffffffffffffffffffffffffffff');
-      // const user = navigation.getParam('user');
       this.resendOTP(navigation.state.params.email);
     }
   }
-
   render() {
-    const { navigation } = this.props;
     return (
       <KeyboardAvoidingView style={{ flex: 1 }}>
-        <ScrollView
-          contentContainerStyle={{ flexGrow: 1 }}
-          keyboardShouldPersistTaps="always"
-        >
-          <ImageBackground
-            source={{ uri: 'asset:/icon/group_2.png' }}
-            style={[style.d1]}
-            resizeMode={'stretch'}
-          >
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="always">
+          <ImageBackground source={{ uri: 'asset:/icon/group_2.png' }} style={[style.d1]} resizeMode={'stretch'}>
             <View>
-              <Icon
-                name={'arrowleft'}
-                size={25}
-                onPress={() => this.props.navigation.goBack()}
-              />
+              <Icon name={'arrowleft'} size={25} onPress={() => this.props.navigation.goBack()} />
 
               <View style={style.d3}>
                 <Image

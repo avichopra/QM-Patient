@@ -13,27 +13,7 @@ const callApi = (
 ) => {
   return new Promise((resolve, reject) => {
     let url = `${config.SERVER_URL}/${reqUrl}`;
-    // if (method === 'get') {
-    //   Storage.get('token').then(data => {
-    //     headers = { ...headers, authorization: `Bearer ${data}` };
-    //     axios({ ...options })
-    //       .then(response => resolve(response))
-    //       .catch(error => {
-    //         reject(error);
-    //       });
-    //   });
-    // }
-
-    console.log(
-      url,
-      'data',
-      data,
-      'method',
-      method,
-      'token',
-      'header',
-      headers
-    );
+    console.log(url, 'data', data, 'method', method, 'token', 'header', headers);
     let options = {
       method,
       url,
@@ -47,9 +27,7 @@ const callApi = (
         resolve(response);
       })
       .catch(error => {
-        //  console.log("error inside callApi",error)
         if (error.response != undefined && error.response.status === 401) {
-          console.log('status 401');
           Storage.remove('token');
           Storage.remove('user');
           store

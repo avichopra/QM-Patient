@@ -9,10 +9,7 @@ import styles from '../styles/index';
 class History extends Base {
   static navigationOptions = {
     drawerLabel: 'History',
-    drawerIcon: ({ tintColor }) => (
-      // <Image source={require('./chats-icon.png')} style={[ styles.icon, { tintColor: tintColor } ]} />
-      <Icon name={'history'} size={25} color={'black'} />
-    )
+    drawerIcon: ({ tintColor }) => <Icon name={'history'} size={25} color={'black'} />
   };
   openDrawer = () => {
     this.props.navigation.openDrawer();
@@ -46,7 +43,6 @@ class History extends Base {
                     borderBottomColor: 'grey',
                     alignSelf: 'center',
                     paddingBottom: 15
-                    // marginLeft: 15
                   }}
                 >
                   <View style={{ flexDirection: 'row' }}>
@@ -63,9 +59,7 @@ class History extends Base {
                         marginTop: 5
                       }}
                     >
-                      {`${new Date(item.updatedAt).getDate()}/${new Date(
-                        item.updatedAt
-                      ).getMonth() + 1}/${new Date(
+                      {`${new Date(item.updatedAt).getDate()}/${new Date(item.updatedAt).getMonth() + 1}/${new Date(
                         item.updatedAt
                       ).getFullYear()},${
                         new Date(item.updatedAt).getHours() > 12
@@ -87,23 +81,15 @@ class History extends Base {
                       marginHorizontal: 10
                     }}
                   >
-                    <Text
-                      style={{ fontSize: 17, color: 'grey' }}
-                      numberOfLines={1}
-                    >
+                    <Text style={{ fontSize: 17, color: 'grey' }} numberOfLines={1}>
                       {item.driverId.userId.fullname}
                     </Text>
                     <Text>|</Text>
-                    <Text
-                      style={{ fontSize: 17, color: 'grey' }}
-                      numberOfLines={1}
-                    >
+                    <Text style={{ fontSize: 17, color: 'grey' }} numberOfLines={1}>
                       {item.vehicleNo}
                     </Text>
                   </View>
-                  <View
-                    style={{ flexDirection: 'row', marginTop: 20, flex: 1 }}
-                  >
+                  <View style={{ flexDirection: 'row', marginTop: 20, flex: 1 }}>
                     <Image
                       source={{ uri: 'mipmap/group_3' }}
                       style={{ height: 70, width: 30, marginTop: 5 }}
@@ -116,16 +102,10 @@ class History extends Base {
                         marginRight: 3
                       }}
                     >
-                      <Text
-                        style={{ fontSize: 15, color: 'black' }}
-                        numberOfLines={2}
-                      >
+                      <Text style={{ fontSize: 15, color: 'black' }} numberOfLines={2}>
                         {item.patientAddress}
                       </Text>
-                      <Text
-                        style={{ fontSize: 15, color: 'black', marginTop: 10 }}
-                        numberOfLines={2}
-                      >
+                      <Text style={{ fontSize: 15, color: 'black', marginTop: 10 }} numberOfLines={2}>
                         {item.hospitalAddress}
                       </Text>
                     </View>
@@ -143,9 +123,7 @@ class History extends Base {
                       <Image
                         source={{
                           uri: item.driverId.userId.picture
-                            ? `${config.SERVER_URL}/v1/daffo/file/${
-                                item.driverId.userId.picture
-                              }`
+                            ? `${config.SERVER_URL}/v1/daffo/file/${item.driverId.userId.picture}`
                             : 'asset:/icon/def.png'
                         }}
                         style={{ height: 50, width: 50, borderRadius: 50 }}

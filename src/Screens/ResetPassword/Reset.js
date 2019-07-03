@@ -40,28 +40,14 @@ export default class Reset extends Base {
   render() {
     return (
       <KeyboardAvoidingView style={{ flex: 1 }}>
-        <ScrollView
-          contentContainerStyle={style.f1}
-          keyboardShouldPersistTaps="always"
-        >
-          <ImageBackground
-            source={{ uri: 'asset:/icon/group_2.png' }}
-            style={style.d1}
-            resizeMode={'stretch'}
-          >
+        <ScrollView contentContainerStyle={style.f1} keyboardShouldPersistTaps="always">
+          <ImageBackground source={{ uri: 'asset:/icon/group_2.png' }} style={style.d1} resizeMode={'stretch'}>
             <View style={style.f1}>
-              <Image
-                source={{ uri: 'asset:/icon/group.jpg' }}
-                style={[style.d2, style.d3, style.a1]}
-              />
+              <Image source={{ uri: 'asset:/icon/group.jpg' }} style={[style.d2, style.d3, style.a1]} />
             </View>
             <View style={style.f1}>
               <View style={style.d4}>
-                <Image
-                  source={{ uri: 'asset:/icon/lock.png' }}
-                  style={style.d5}
-                  resizeMode="contain"
-                />
+                <Image source={{ uri: 'asset:/icon/lock.png' }} style={style.d5} resizeMode="contain" />
 
                 <View style={style.f8}>
                   <Textinput
@@ -77,11 +63,7 @@ export default class Reset extends Base {
               </View>
               <Text style={style.c1}>{this.state.passworderror}</Text>
               <View style={style.d4}>
-                <Image
-                  source={{ uri: 'asset:/icon/lock.png' }}
-                  style={[style.d6, style.d3]}
-                  resizeMode="contain"
-                />
+                <Image source={{ uri: 'asset:/icon/lock.png' }} style={[style.d6, style.d3]} resizeMode="contain" />
 
                 <View style={style.f3}>
                   <Textinput

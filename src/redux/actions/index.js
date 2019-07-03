@@ -42,11 +42,7 @@ export function addTrip(tripData) {
 export function cancelAllRequest() {
   return { type: CANCEL_ALL_REQUEST };
 }
-export function addPatientLocationCoord(
-  pickedLocation,
-  duration,
-  pickedReRoute
-) {
+export function addPatientLocationCoord(pickedLocation, duration, pickedReRoute) {
   return {
     type: ADD_PATIENT_LOCATION_COORD,
     data: {
@@ -56,11 +52,7 @@ export function addPatientLocationCoord(
     }
   };
 }
-export function addHospitalLocationCoord(
-  hospitalLocation,
-  duration,
-  hospitalReRoute
-) {
+export function addHospitalLocationCoord(hospitalLocation, duration, hospitalReRoute) {
   return {
     type: ADD_HOSPITAL_LOCATION_COORD,
     data: {

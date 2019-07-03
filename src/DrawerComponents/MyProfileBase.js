@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Text, View, Keyboard } from 'react-native';
 import { callApi } from '../utilities/serverApi';
 import ImageResizer from 'react-native-image-resizer';
-
 import SplashScreen from 'react-native-splash-screen';
 import ImagePicker from 'react-native-image-picker';
 import { setUser, setPatient } from '../redux/index';
@@ -40,7 +39,6 @@ export default class MyProfile extends Component {
   }
 
   onHandleChange = (name, value, field) => {
-    // console.warn('vale>>>>>', this.state.AdditionalInfo.gender);
     if (field) {
       this.state[field][name] = value;
       this.setState({});
@@ -70,7 +68,6 @@ export default class MyProfile extends Component {
     }
   };
   goToOtp = () => {
-    console.warn('otp', this.props.user.email);
     this.props.navigation.navigate('OTP', {
       contactNo: this.props.user.newContactNo,
       email: this.props.user.email,
@@ -81,7 +78,6 @@ export default class MyProfile extends Component {
     this.setState({ userName: '' });
   };
   componentDidMount() {
-    console.warn('userProps>>>>>>>>>>>>>>>.', this.props.patient);
     this.state.userName = this.props.user.fullname;
     this.state.GeneralInfo.email = this.props.user.email;
     this.state.GeneralInfo.contactNo = this.props.user.contactNo;
@@ -94,7 +90,6 @@ export default class MyProfile extends Component {
     this.state.AdditionalInfo.emergencyContactNo = this.props.user.emergencycontactnumber;
     this.setState({});
     this.checkPhoneVerified();
-    // console.log('did mount>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', this.props.user.);
     setTimeout(() => {
       SplashScreen.hide();
     }, 2000);
@@ -109,7 +104,6 @@ export default class MyProfile extends Component {
       return false;
     }
   };
-
   onSave = () => {
     Keyboard.dismiss();
     let contactNo = this.state.GeneralInfo.contactNo;
@@ -135,13 +129,9 @@ export default class MyProfile extends Component {
           emergencyContactNo: this.state.AdditionalInfo.emergencyContactNo,
           gender: this.state.AdditionalInfo.gender
         };
-        console.warn('token before save', this.props.token);
-
         this.setState({ loading: true });
         callApi('post', 'v1/daffo/dispatch/updatePatient', data, headers)
-          // Axios.patch('http://192.168.100.141:3000/v1/daffo/User/updateOwn', data, { headers })
           .then(result => {
-            console.log('useeeeeeeeeeeeeeeeeeeeeeeeee', result);
             this.setState({ loading: false });
             setUser(result.data.updatedUser);
             setPatient(result.data.updatedPatient);
@@ -158,7 +148,6 @@ export default class MyProfile extends Component {
         let data = {
           fullname: this.state.userName,
           email: this.state.GeneralInfo.email,
-          // newContactNo: this.state.GeneralInfo.contactNo,
           emergencycontactnumber: this.state.GeneralInfo.emergencyContactNo,
           address: this.state.AdditionalInfo.address,
           bloodGroup: this.state.AdditionalInfo.bloodGroup,
@@ -171,7 +160,6 @@ export default class MyProfile extends Component {
 
         this.setState({ loading: true });
         callApi('post', 'v1/daffo/dispatch/updatePatient', data, headers)
-          // Axios.patch('http://192.168.100.141:3000/v1/daffo/User/updateOwn', data, { headers })
           .then(result => {
             console.log('useeeeeeeeeeeeeeeeeeeeeeeeee', result);
             this.setState({ loading: false });
@@ -182,11 +170,9 @@ export default class MyProfile extends Component {
             console.warn('error from myProfile Base ', err.response, err.status, err);
           });
       }
-      // }
     }
   };
   cameraClicked = () => {
-    console.log('avatarrrrrrrrrrrrrrr clicked called>>>>>>>>>>>>>>>>>>>>>>>>>>>');
     const options = {
       title: 'Select Avatar'
     };
@@ -194,17 +180,10 @@ export default class MyProfile extends Component {
       console.log('Response = ', response);
 
       if (response.didCancel) {
-        console.log('User cancelled image picker');
       } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
       } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
       } else {
         let data = new FormData();
-        // const source = { uri: response.uri };
-
-        // You can also display the image using data:
-        // const source = { uri: 'data:image/jpeg;base64,' + response.data };
         ImageResizer.createResizedImage(response.uri, 164, 164, 'JPEG', 100, 0).then(result => {
           data.append('file', {
             uri: result.uri,
@@ -217,17 +196,11 @@ export default class MyProfile extends Component {
             Accept: 'application/json',
             authorization: `Bearer ${this.props.token}`
           };
-          console.log('Tokennnnnnnnnnnnnnnnnnnnnnnnnnnnn', this.props.token);
           callApi('post', 'v1/daffo/dispatch/upload', data, headers)
-            // Axios.post('http://192.168.100.141:3000/v1/daffo/dispatch/upload', data, { headers })
             .then(result1 => {
-              console.warn('updateddddddddddddddddddd', result1);
               this.setState({ picture: result1.data[0].file.filename });
             })
-            .catch(err => {
-              console.log('error from myProfile Base upload image', err.response, err.status, err);
-              // this.setState({ loading: false });
-            });
+            .catch(err => {});
         });
       }
     });

@@ -1,12 +1,6 @@
 import React, { Component } from 'react';
-import {
-  isValidConfirmPassword,
-  isValidPassword,
-  checkField
-} from '../../utilities/validation';
+import { isValidConfirmPassword, isValidPassword, checkField } from '../../utilities/validation';
 import { callApi } from '../../utilities/serverApi';
-import { setUserToken, setUser } from '../../redux/index';
-import { get } from 'lodash';
 import { Alert } from '../../ReusableComponents/modal';
 export default class LoginBase extends Component {
   constructor(props) {
@@ -18,22 +12,14 @@ export default class LoginBase extends Component {
       let password = checkField('Password', this.state.password.trim());
       this.setState({ passworderror: password });
     } else if (name === 'confirmpassword') {
-      let cnfpassword = checkField(
-        'Confirm Password',
-        this.state.confirmpassword.trim()
-      );
+      let cnfpassword = checkField('Confirm Password', this.state.confirmpassword.trim());
       this.setState({ confirmpassworderror: cnfpassword });
     }
   };
   checkAllField = () => {
     console.log(this.state.email);
     var password = isValidPassword(this.state.password);
-    var confirmpassword = isValidConfirmPassword(
-      this.state.password,
-      this.state.confirmpassword
-    );
-    // console.log(email, password);
-    // if (email === false) email = 'Enter Valid Email id';
+    var confirmpassword = isValidConfirmPassword(this.state.password, this.state.confirmpassword);
     this.setState({
       passworderror: password,
       confirmpassworderror: confirmpassword
@@ -44,7 +30,6 @@ export default class LoginBase extends Component {
     return false;
   };
   onSubmit = () => {
-    // const { navigate } = this.props.navigation;
     if (this.checkAllField()) {
       this.setState({ loading: true });
       let data = {
@@ -71,7 +56,6 @@ export default class LoginBase extends Component {
         })
         .catch(error => {
           this.setState({ loading: false });
-          console.log(error.response);
         });
     } else {
       console.log('error in validation');

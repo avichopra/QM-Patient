@@ -6,30 +6,19 @@ import { get } from 'lodash';
 const Calls = props => {
   const { Call = () => {} } = props;
   return (
-    <TouchableOpacity
-      style={[styles.center, styles.call]}
-      onPress={() => Call('CN')}
-    >
-      <Image
-        source={{ uri: 'mipmap/telephone' }}
-        style={[styles.icon19, { marginRight: 10 }]}
-      />
+    <TouchableOpacity style={[styles.center, styles.call]} onPress={() => Call('CN')}>
+      <Image source={{ uri: 'mipmap/telephone' }} style={[styles.icon19, { marginRight: 10 }]} />
       <Text style={[styles.f18, styles.bold, { color: 'white' }]}>Call</Text>
     </TouchableOpacity>
   );
 };
 export const PickedPatient = props => {
   const { patient = {}, Call = () => {} } = props;
-  // const { fullname='', picture= '' }=patient.patientId.userId
   let patientData = get(patient, 'patientId.userId', {
     fullname: '',
     picture: ''
   });
-  const {
-    hospitalNo = '',
-    hospitalName = 'Fortris Hospital',
-    hospitalAddress = 'Sector 30, Gurgaon'
-  } = patient;
+  const { hospitalNo = '', hospitalName = 'Fortris Hospital', hospitalAddress = 'Sector 30, Gurgaon' } = patient;
   return (
     <View style={[styles.h200, styles.wbg]}>
       <View
@@ -53,9 +42,7 @@ export const PickedPatient = props => {
           />
         </View>
 
-        <Text style={{ fontSize: 18, color: 'black' }}>
-          {patientData.fullname}
-        </Text>
+        <Text style={{ fontSize: 18, color: 'black' }}>{patientData.fullname}</Text>
       </View>
       <View style={styles.divider} />
       <View
@@ -68,13 +55,8 @@ export const PickedPatient = props => {
         ]}
       >
         <View style={{ marginLeft: 5, height: 50, width: 50, marginTop: 10 }}>
-          <Image
-            source={{ uri: `mipmap/hospital` }}
-            style={{ height: 50, width: 50 }}
-            resizeMode="contain"
-          />
+          <Image source={{ uri: `mipmap/hospital` }} style={{ height: 50, width: 50 }} resizeMode="contain" />
         </View>
-
         <View style={{ width: '58%', marginLeft: 10 }}>
           <Text
             style={{
@@ -82,7 +64,6 @@ export const PickedPatient = props => {
               fontFamily: 'NunitoSans-SemiBold',
               color: 'black',
               marginBottom: 5,
-              // marginRight: 45,
               width: '96%'
             }}
             numberOfLines={1}
@@ -101,17 +82,9 @@ export const PickedPatient = props => {
             {hospitalAddress}
           </Text>
         </View>
-        <TouchableOpacity
-          style={[styles.center, styles.call]}
-          onPress={() => Call(hospitalNo)}
-        >
-          <Image
-            source={{ uri: 'mipmap/telephone' }}
-            style={[styles.icon19, { marginRight: 10 }]}
-          />
-          <Text style={[styles.f18, styles.bold, { color: 'white' }]}>
-            Call
-          </Text>
+        <TouchableOpacity style={[styles.center, styles.call]} onPress={() => Call(hospitalNo)}>
+          <Image source={{ uri: 'mipmap/telephone' }} style={[styles.icon19, { marginRight: 10 }]} />
+          <Text style={[styles.f18, styles.bold, { color: 'white' }]}>Call</Text>
         </TouchableOpacity>
       </View>
     </View>

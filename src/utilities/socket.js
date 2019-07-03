@@ -1,12 +1,7 @@
 import io from 'socket.io-client';
 import config from '../config/index';
 import Store from '../redux/store/index';
-import {
-  addGPSData,
-  addTrip,
-  cancelAllRequest,
-  cancelPickedLocationCoord
-} from '../redux/actions';
+import { addGPSData, addTrip, cancelAllRequest, cancelPickedLocationCoord } from '../redux/actions';
 
 let ViewIdSubscriptionMap = {};
 let socket = undefined;
@@ -69,8 +64,7 @@ export function saveSubscriptionInfo(viewName, groupIds) {
 
   if (groupIds && groupIds.length > 0) {
     for (let groupId of groupIds) {
-      if (!ViewIdSubscriptionMap[viewName].indexOf(groupId) >= 0)
-        ViewIdSubscriptionMap[viewName].push(groupId);
+      if (!ViewIdSubscriptionMap[viewName].indexOf(groupId) >= 0) ViewIdSubscriptionMap[viewName].push(groupId);
     }
   }
   subscribeGroups(groupIds);

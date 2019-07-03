@@ -1,16 +1,8 @@
 import React, { Component } from 'react';
-import {
-  Text,
-  View,
-  Modal,
-  Alert,
-  TouchableOpacity,
-  Dimensions
-} from 'react-native';
+import { Text, View, Modal, Alert, TouchableOpacity, Dimensions } from 'react-native';
 import ModalDropdown from 'react-native-modal-dropdown';
 const height = Dimensions.get('window').height;
 import { Reasons } from '../../config/constants';
-
 export default class ReasonOfCancellation extends Component {
   constructor(props) {
     super(props);
@@ -22,10 +14,8 @@ export default class ReasonOfCancellation extends Component {
   render() {
     let { onShowReasons = () => {}, onSubmit = () => {} } = this.props;
     return (
-      // <Modal visible={true} transparent={true} onRequestClose={() => Alert.alert('Modal closed')}>
       <View
         style={{
-          // height: height,
           flex: 1,
           backgroundColor: 'rgba(128,128,128,0.9)',
           alignItems: 'center',
@@ -48,18 +38,15 @@ export default class ReasonOfCancellation extends Component {
         >
           <View
             style={{
-              // alignSelf: 'center',
               alignItems: 'center',
               justifyContent: 'center',
               width: '100%',
               marginTop: 20
-              // marginVertical: 50
             }}
           >
             <Text
               style={{
                 fontSize: 20,
-
                 color: '#34495E'
               }}
             >
@@ -91,13 +78,10 @@ export default class ReasonOfCancellation extends Component {
                 alignItems: 'center',
                 justifyContent: 'center',
                 backgroundColor: '#AAB7B8'
-
-                // backgroundColor: 'blue'
               }}
             >
               <Text
                 style={{
-                  // width: '100%',
                   fontSize: 20
                 }}
               >
@@ -114,10 +98,7 @@ export default class ReasonOfCancellation extends Component {
               marginTop: 50
             }}
           >
-            <Text
-              style={{ color: '#5D6D7E', fontSize: 18 }}
-              textBreakStrategy="balanced"
-            >
+            <Text style={{ color: '#5D6D7E', fontSize: 18 }} textBreakStrategy="balanced">
               {this.state.selectedReason}
             </Text>
           </View>
@@ -136,7 +117,6 @@ export default class ReasonOfCancellation extends Component {
                 borderRadius: 20,
                 alignItems: 'center',
                 justifyContent: 'center',
-                // marginVertical: 20,
                 marginBottom: 10
               }}
               onPress={() => onShowReasons(false)}
@@ -153,11 +133,9 @@ export default class ReasonOfCancellation extends Component {
                 alignItems: 'center',
                 justifyContent: 'center',
                 marginBottom: 30
-                // marginVertical: 20
               }}
               disabled={this.state.selectedReason === ''}
               onPress={() => onSubmit(this.state.selectedReason)}
-              // disabled={this.state.selectedReason !== ''}
               disabled={this.state.selectedReason == ''}
             >
               <Text>Submit</Text>

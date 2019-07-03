@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-// import { Alert } from '../../ReusableComponents/modal';
 import {
   checkField,
   isValidEmail,
@@ -44,7 +42,6 @@ export default class signupBase extends Component {
     var confirmpassword = isValidConfirmPassword(this.state.password.trim(), this.state.confirmpassword.trim());
     let gender = this.state.gender === null ? 'Select gender' : true;
     let blood = this.state.bloodGroup === null ? 'Select BloodGroup' : true;
-    // console.log(fullname, email, contactnumber, emergencycontactnumber, password, confirmpassword);
     if (email === false) email = 'Enter Valid Email id';
     this.setState({
       fullnameerror: fullname,
@@ -111,7 +108,6 @@ export default class signupBase extends Component {
         bloodGroup: this.state.bloodGroup,
         role: 'Patient'
       };
-      // console.warn('???????', this.state.gender);
       callApi('post', 'v1/auth/register', data)
         .then(response => {
           if (response.status === 201) {
@@ -136,10 +132,7 @@ export default class signupBase extends Component {
                 }
               ]
             });
-
-            // alert('Verification link has been sent to your email');
           }
-          // console.log(response);
         })
         .catch(error => {
           this.setState({

@@ -2,25 +2,15 @@ import React, { Component } from 'react';
 import { Keyboard } from 'react-native';
 import Store from '../../redux/store/index';
 import { addAmbulanceRequest, addTrip } from '../../redux/actions';
-import {
-  isValidEmail,
-  isValidPassword,
-  checkField
-} from '../../utilities/validation';
+import { isValidEmail, isValidPassword, checkField } from '../../utilities/validation';
 import { callApi } from '../../utilities/serverApi';
-import {
-  setUserToken,
-  setUser,
-  setPatient,
-  setUserRefreshToken
-} from '../../redux/index';
+import { setUserToken, setUser, setPatient, setUserRefreshToken } from '../../redux/index';
 import { Alert } from '../../ReusableComponents/modal';
 import { get } from 'lodash';
 export default class LoginBase extends Component {
   constructor(props) {
     super(props);
   }
-
   ChangeText = async (text, name) => {
     await this.setState({ [name]: text });
     if (name === 'email') {
@@ -144,10 +134,8 @@ export default class LoginBase extends Component {
             )
           ])
             .then(response => {
-              response[0].data.length != 0 &&
-                Store.dispatch(addTrip(response[0].data[0]));
-              response[1].data.length != 0 &&
-                Store.dispatch(addAmbulanceRequest(response[1].data[0]));
+              response[0].data.length != 0 && Store.dispatch(addTrip(response[0].data[0]));
+              response[1].data.length != 0 && Store.dispatch(addAmbulanceRequest(response[1].data[0]));
               navigate('Drawer');
             })
             .catch(error => {
@@ -188,10 +176,8 @@ export default class LoginBase extends Component {
               routeName: 'Drawer',
               currentRoute: 'Login'
             });
-          else if (error.response.data.message === 'User Deleted')
-            this.setState({ emailerror: 'User Deleted' });
-          else if (error.response.data.message === 'User Blocked')
-            this.setState({ emailerror: 'User Blocked' });
+          else if (error.response.data.message === 'User Deleted') this.setState({ emailerror: 'User Deleted' });
+          else if (error.response.data.message === 'User Blocked') this.setState({ emailerror: 'User Blocked' });
           else {
             console.warn('error in login', error.response.data.message);
             this.setState({ emailerror: 'Unauthorised User' });

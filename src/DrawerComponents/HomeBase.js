@@ -21,7 +21,6 @@ import {
   addHospitalLocationCoord,
   addPickupLocation
 } from '../redux/actions/index';
-import { checkField, isValidContactnumber, isValidAge } from '../utilities/validation';
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 let latitude_delta = 0.009,
   longitude_delta = 0.009;
@@ -54,55 +53,12 @@ export default class HomeBase extends Component {
       Age: '',
       VictimName: '',
       gender: ''
-      // MobileNumberError: '',
-      // AgeError: '',
-      // VictimNameError: '',
-      // GenderError: '',
-      // otherSelfError: ''
     };
   }
   ChangeText = (value, fieldName) => {
     this.setState({ [fieldName]: value });
   };
-  // checkVictim = () => {
-  //   // if (this.state.selfSelected || this.state.othersSelected) {
-  //   //   if (this.state.selfSelected) {
-  //   //   } else {
-  //   //     // if (this.checkAllMandatoryField()) {
-  //   //     console.warn('true');
-  //   //     // }
-  //   //   }
-  //   // } else {
-  //   //   this.setState({ otherSelfError: 'Select Options' });
-  //   // }
-  // };
-  checkAllMandatoryField = () => {
-    // console.warn(
-    //   'Victimname>>>',
-    //   this.state.VictimName,
-    //   'gender>>>',
-    //   this.state.gender,
-    //   'age>>>',
-    //   this.state.Age,
-    //   'contactno',
-    //   this.state.MobileNumber
-    // );
-    // var victimname = checkField('Victim Name', this.state.VictimName.trim());
-    // var contactnumber = isValidContactnumber(this.state.MobileNumber.trim());
-    // var age = isValidAge(this.state.Age.trim());
-    // var gender = checkField('Gender', this.state.gender.trim());
-    // this.setState({
-    //   // VictimNameError: victimname,
-    //   // MobileNumberError: contactnumber,
-    //   // AgeError: age,
-    //   GenderError: gender
-    // });
-    // console.warn('Victimname>>>', victimname, 'gender>>>', gender, 'age>>>', age, 'contactno', contactnumber);
-    // if (gender === true) {
-    //   return true;
-    // }
-    // return false;
-  };
+  checkAllMandatoryField = () => {};
   EmergencyCall = () => {
     const args = {
       number: '108',
@@ -111,7 +67,6 @@ export default class HomeBase extends Component {
     call(args).catch(console.error);
   };
   Call = Type => {
-    // console.warn('Type>>>>', Type);
     const args = {
       number: Type === 'CN' ? this.props.patient.contactNo : this.props.patient.emergencyContactNo,
       prompt: false
@@ -147,7 +102,6 @@ export default class HomeBase extends Component {
     Store.dispatch(cancelAllRequest(true, null, null));
   };
   onShowReasons = value => {
-    console.warn('this.onShowReasons');
     this.setState({ showReasons: value });
   };
   checkLocationIsEnabled() {
@@ -156,10 +110,8 @@ export default class HomeBase extends Component {
       fastInterval: 5000
     })
       .then(data => {
-        console.warn('location>>>>>>>>>>>>', data);
         RNGooglePlaces.getCurrentPlace()
           .then(results => {
-            console.log('current location', results);
             const { latitude, longitude } = results[0];
             Store.dispatch(
               addLocation({
@@ -176,7 +128,6 @@ export default class HomeBase extends Component {
               latitude: results[0].latitude,
               longitude: results[0].longitude
             });
-            console.log('current place', results);
           })
           .catch(error => console.warn(error.message));
       })
@@ -225,9 +176,7 @@ export default class HomeBase extends Component {
     });
   };
   componentWillReceiveProps(nextProps) {
-    console.warn('Inside Component receive props', this.state.currentPlace);
     if (nextProps.trip != null) {
-      console.warn('Inside component receive props for trips', nextProps);
       if (nextProps.pickedLocationCoord === null) {
         if (nextProps.trip.pickedPatient === false) this.getPickupRouteDirection(nextProps.trip.patientLocation, false);
       }
@@ -236,7 +185,6 @@ export default class HomeBase extends Component {
       }
     }
     if (this.props.gpsData != nextProps.gpsData) {
-      console.log('Inside gpsData ambulanace moving');
       if (nextProps.trip.pickedPatient === false) {
         if (nextProps.pickedReRoute != null) {
           this.reRoute(nextProps, false);
@@ -281,7 +229,6 @@ export default class HomeBase extends Component {
           if (status) this.getHospitalRouteDirection(customisedData1, true);
           else this.getPickupRouteDirection(customisedData, true);
         }
-        console.log('>>>>>>points on polyline >>>>>>', response);
       }
     );
   };
@@ -333,8 +280,6 @@ export default class HomeBase extends Component {
     this.props.navigation.openDrawer();
   };
   componentDidMount() {
-    // const { params } = this.props.navigation.state;
-    // console.warn('>>>>route name>>', params !== undefined ? params.showBloodBank : 'false');
     this.checkLocationIsEnabled();
     GPSState.addListener(status => {
       if (status === 1) {
@@ -354,7 +299,6 @@ export default class HomeBase extends Component {
   }
   setUserLocation = Coordinate => {
     const { latitude, longitude } = Coordinate;
-    // console.warn('location>>>>', Coordinate);
     CurrentLocation = { latitude, longitude };
     const newCoordinate = {
       latitude,
@@ -509,7 +453,6 @@ export default class HomeBase extends Component {
         Store.dispatch(addAmbulanceRequest(response.data.requestData));
       })
       .catch(error => {
-        console.log('Error>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.', error.response);
         if (error.response != undefined && error.response.data.code === 404) {
           Alert({
             title: 'Ambulance Request',
