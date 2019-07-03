@@ -144,7 +144,7 @@ export default class LoginBase extends Component {
           console.log('token set');
         })
         .catch(error => {
-          console.log('Error---->', error.response);
+          console.log('Error---->', error);
           this.setState({ loading: false });
           if (error.response.data.message === 'Incorrect email') {
             this.setState({ emailerror: 'Incorrect email' });

@@ -55,8 +55,6 @@ export default StyleSheet.create({
     flex: 1,
     display: 'flex',
     backgroundColor: 'rgb(255,255,255)',
-    marginTop: this.state.othersSelected ? 100 : 150,
-    marginBottom: this.state.othersSelected ? 30 : 150,
     marginRight: 30,
     marginLeft: 30,
     borderRadius: 2

@@ -257,7 +257,15 @@ class Home extends Base {
               entry={'bottom'}
             >
               <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)' }}>
-                <View style={styles.otherselfWrapper}>
+                <View
+                  style={[
+                    styles.otherselfWrapper,
+                    {
+                      marginTop: this.state.othersSelected ? 100 : 150,
+                      marginBottom: this.state.othersSelected ? 30 : 150
+                    }
+                  ]}
+                >
                   <ScrollView contentContainerStyle={style.f1} keyboardShouldPersistTaps="always">
                     <Text style={{ color: 'black', alignSelf: 'center', top: 20 }}>Choose Any one...</Text>
                     <View style={{ flexDirection: 'row', top: 40, flexGrow: 1, marginBottom: 40 }}>
