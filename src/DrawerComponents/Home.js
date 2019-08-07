@@ -17,6 +17,7 @@ import _ from 'lodash';
 Gender = ['Male', 'Female'];
 import FloatingLabel from 'react-native-floating-labels';
 import styles from '../styles/index';
+
 import { connect } from 'react-redux';
 import { PickedPatient } from './HomeComponents/HomeComponent';
 import MapView, { PROVIDER_GOOGLE, Marker, Polyline } from 'react-native-maps';
@@ -266,7 +267,7 @@ class Home extends Base {
                     }
                   ]}
                 >
-                  <ScrollView contentContainerStyle={style.f1} keyboardShouldPersistTaps="always">
+                  <ScrollView contentContainerStyle={styles.f1} keyboardShouldPersistTaps="always">
                     <Text style={{ color: 'black', alignSelf: 'center', top: 20 }}>Choose Any one...</Text>
                     <View style={{ flexDirection: 'row', top: 40, flexGrow: 1, marginBottom: 40 }}>
                       <Text style={{ color: this.state.selfSelected ? '#2d76d4' : 'black', marginLeft: 15 }}>Self</Text>
