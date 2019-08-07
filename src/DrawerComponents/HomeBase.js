@@ -437,8 +437,18 @@ export default class HomeBase extends Component {
       id: this.props.patient._id,
       location: {
         currentPlace: this.props.pickupLocation != null ? this.props.pickupLocation.currentPlace : currentPlace,
-        latitude: this.props.pickupLocation != null ? this.props.pickupLocation.latitude : CurrentLocation.latitude,
-        longitude: this.props.pickupLocation != null ? this.props.pickupLocation.longitude : CurrentLocation.longitude
+        latitude:
+          this.props.pickupLocation != null
+            ? this.props.pickupLocation.latitude
+            : CurrentLocation != null
+            ? CurrentLocation.latitude
+            : 75.00001,
+        longitude:
+          this.props.pickupLocation != null
+            ? this.props.pickupLocation.longitude
+            : CurrentLocation != null
+            ? CurrentLocation.longitude
+            : 26.0001
       },
       victimData: {
         victimName: this.state.VictimName,
