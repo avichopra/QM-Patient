@@ -45,10 +45,7 @@ export default class resetBase extends Component {
                 }
               ]
             });
-            console.log('response', response);
-            // alert('Password Reset Link has been sent to your email');
           }
-          // console.log(response);
         })
         .catch(error => {
           if (error.response.data.code === 400) {

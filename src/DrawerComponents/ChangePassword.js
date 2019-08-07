@@ -1,32 +1,15 @@
 import React, { Component } from 'react';
-import {
-  Text,
-  View,
-  Image,
-  KeyboardAvoidingView,
-  Dimensions,
-  ScrollView
-} from 'react-native';
-import Icon from 'react-native-vector-icons/Octicons';
+import { View, Image, KeyboardAvoidingView, Dimensions, ScrollView } from 'react-native';
 import Header from './Header';
 import Button from '../ReusableComponents/Button';
 import TextField from '../ReusableComponents/TextInput';
 import { connect } from 'react-redux';
 const height = Dimensions.get('window').height;
-const width = Dimensions.get('window').width;
 import Base from './ChangePasswordBase';
 class ChangePassword extends Base {
-  // static navigationOptions = {
-  // 	drawerLabel: 'Change Password',
-  // 	drawerIcon: ({ tintColor }) => (
-  // 		// <Image source={require('./chats-icon.png')} style={[ styles.icon, { tintColor: tintColor } ]} />
-  // 		<Icon name={'key'} size={25} color={'black'} />
-  // 	)
-  // };
   openDrawer = () => {
     this.props.navigation.openDrawer();
   };
-
   render() {
     return (
       <KeyboardAvoidingView style={{ flex: 1 }}>
@@ -46,27 +29,18 @@ class ChangePassword extends Base {
                 width: '50%'
               }}
             >
-              <Image
-                source={{ uri: 'mipmap/aid' }}
-                style={{ height: 140, width: '100%' }}
-              />
+              <Image source={{ uri: 'mipmap/aid' }} style={{ height: 140, width: '100%' }} />
             </View>
             <View
               style={{
                 height: 270,
                 flexGrow: 1,
-                // width: '80%',
-                // justifyContent: 'center',
                 borderWidth: 3,
                 borderRadius: 2,
                 borderColor: 'rgba(178,186,187 	,0.1)',
                 borderBottomWidth: 0,
                 elevation: 5,
                 marginVertical: 30,
-                // marginBottom: height * 0.132,
-                // backgroundColor: 'green',
-                // marginLeft: 5,
-                // marginRight: 5,
                 alignItems: 'center'
               }}
             >
@@ -101,20 +75,13 @@ class ChangePassword extends Base {
             <View
               style={{
                 flexGrow: 1,
-                // height: height * 0.061,
                 width: '100%',
                 alignItems: 'center',
                 justifyContent: 'flex-end',
-                // backgroundColor: 'red',
                 marginVertical: height * 0.044
               }}
             >
-              <Button
-                title={'Save'}
-                backgroundColor={'#2d76d4'}
-                onSave={this.onSave}
-                loading={this.state.loading}
-              />
+              <Button title={'Save'} backgroundColor={'#2d76d4'} onSave={this.onSave} loading={this.state.loading} />
             </View>
           </View>
         </ScrollView>
@@ -124,7 +91,6 @@ class ChangePassword extends Base {
 }
 
 function mapStateToProps(state) {
-  console.log('I am the stateeeeeeeeeeeeeeeeeeeeeeeeeeee', state);
   return {
     user: state.user,
     token: state.token

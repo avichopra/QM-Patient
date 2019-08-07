@@ -36,10 +36,8 @@ export default class History extends Component {
     };
     let a =
       this.state.count - this.state.historyList.length <= 5 ? this.state.count - this.state.historyList.length : 5;
-    console.warn('Length', a, 'Perpage value', data.perPage);
     if (this.state.count - this.state.historyList.length != 0) {
       let b = this.state.count - this.state.historyList.length != 0;
-      console.warn('inside if>>>>>', b);
       callApi('post', 'v1/daffo/Trips/getOwn', data, headers)
         .then(response => {
           console.log('History response', response);
@@ -49,13 +47,10 @@ export default class History extends Component {
             loading: false
           });
         })
-        .catch(err => {
-          console.log('error from history get route>>>>>>>>>>>>>>>>>>>>>', err);
-        });
+        .catch(err => {});
     }
   };
   componentDidMount() {
-    console.log('history >>>>>>>>>>>>>>>>>>>>>>>>>>>>       >>>>>>>>>>>>>>', this.props.user);
     let data = {
       page: this.state.page,
       perPage: 5,
@@ -75,24 +70,17 @@ export default class History extends Component {
     };
     callApi('post', 'v1/daffo/Trips/count', data, headers)
       .then(result => {
-        console.log('count>>>>>>>>>>>>>>>>>>>>>>>>>>', result.data.count);
         this.setState({ count: result.data.count });
         callApi('post', 'v1/daffo/Trips/getOwn', data, headers)
           .then(response => {
-            console.log('response>>>>>>>>>>>>>>', response);
             this.setState({
               loading: false,
               historyList: response.data,
               page: this.state.page + 1
             });
-            console.log('response from historyyyyy', response.data);
           })
-          .catch(err => {
-            console.log('error from history get route>>>>>>>>>>>>>>>>>>>>>', err);
-          });
+          .catch(err => {});
       })
-      .catch(err => {
-        console.log('error from myProfile Base', err.response, err.status, err);
-      });
+      .catch(err => {});
   }
 }

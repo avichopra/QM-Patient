@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import Icon from 'react-native-vector-icons/Foundation';
-
 export default class DrawerItem extends Component {
   constructor(props) {
     super(props);
   }
-
   render() {
     const { navigateToScreen = () => {}, name } = this.props;
     return (

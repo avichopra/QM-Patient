@@ -39,12 +39,6 @@ export default (TextField = props => {
           }}
           resizeMode={'contain'}
         />
-        {/* <Icon name={'key'} size={25} color={'#8D8D8D'}  /> */}
-        {/* <ScrollView
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                    style={{ width: '82%' }}
-				> */}
         <TextInput
           style={{ width: '82%', fontSize: 15, color: 'black' }}
           placeholder={placeholder}
@@ -56,7 +50,6 @@ export default (TextField = props => {
           keyboardType={keyboardType}
           secureTextEntry={secureTextEntry}
         />
-        {/* </ScrollView> */}
       </View>
       <View style={{ height: 5, width: '90%', marginLeft: 10 }}>
         <Text style={{ color: 'red', fontSize: 12 }}>{error}</Text>

@@ -1,5 +1,3 @@
-// import { Button } from "react-native-elements";
-// import styles from "./../style";
 import React, { Fragment } from 'react';
 import { TouchableOpacity, Text, View } from 'react-native';
 import Loading from '../ReusableComponents/loading';
@@ -36,8 +34,6 @@ export default (Button = props => {
             style
           ]}
           onPress={onSave}
-          // {disabled ? () => {} : onPress}
-          // activeOpacity={0.5}
         >
           <Text
             style={{

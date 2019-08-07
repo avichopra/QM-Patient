@@ -7,12 +7,11 @@ import Base from './BloodBankBase';
 import MapView, { PROVIDER_GOOGLE, Marker, Polyline } from 'react-native-maps';
 class BloodBank extends Base {
   render() {
-    console.log('>>>>>data>>>>>>>>', this.state.bloodBank);
     const { bloodBank, promptPriGov, PriSelected, govtSelected, hospital } = this.state;
     const { params } = this.props.navigation.state;
     return (
       <View style={[styles.f2]}>
-        <Header title={'Quick Medic'} openDrawer={this.openDrawer} />
+        <Header title={!params.status ? 'Blood Bank' : 'Hospital'} openDrawer={this.openDrawer} />
         {this.state.loading ? (
           <View style={[styles.f2, styles.center]}>
             <ActivityIndicator size="large" color="#000" />
@@ -44,7 +43,6 @@ class BloodBank extends Base {
                   <Marker
                     coordinate={{ latitude: item.bloodBankLocation[0], longitude: item.bloodBankLocation[1] }}
                     title={`${item.bloodBankName},${item.bloodBankAddress}`}
-                    // title={'hvjy'}
                   />
                 ))
               : hospital != null &&
@@ -53,7 +51,6 @@ class BloodBank extends Base {
                     coordinate={{ latitude: item.Location[0], longitude: item.Location[1] }}
                     title={`${item.hospitalName},${item.hospitalAddress}`}
                     pinColor="#FF1493"
-                    // title={'hvjy'}
                   />
                 ))}
           </MapView>

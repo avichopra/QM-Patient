@@ -3,11 +3,7 @@ import { Text, View, TouchableOpacity, Image } from 'react-native';
 import config from '../../config/index';
 import { get } from 'lodash';
 export default (ShowDriver = props => {
-  const {
-    driverDetails = { vehicleNo: '2DFR456' },
-    Call = () => {},
-    onShowReasons = () => {}
-  } = props;
+  const { driverDetails = { vehicleNo: '2DFR456' }, Call = () => {}, onShowReasons = () => {} } = props;
   let driverData = get(driverDetails, 'driverId.userId', {
     fullname: 'Naveksha Jain',
     picture: 'public/1549363727367.JPEG',
@@ -45,9 +41,7 @@ export default (ShowDriver = props => {
             style={{ height: 60, width: 60, borderRadius: 30 }}
           />
           <View style={{ marginTop: 8, marginLeft: 10 }}>
-            <Text style={{ fontSize: 18, marginBottom: 5 }}>
-              {driverData.fullname}
-            </Text>
+            <Text style={{ fontSize: 18, marginBottom: 5 }}>{driverData.fullname}</Text>
             <Text style={{ fontSize: 18 }}>{driverDetails.vehicleNo}</Text>
           </View>
         </View>
@@ -59,7 +53,6 @@ export default (ShowDriver = props => {
             borderRadius: 30,
             flexDirection: 'row',
             alignItems: 'center',
-            // justifyContent: 'center',
             marginLeft: 70,
             marginTop: 10
           }}

@@ -14,6 +14,85 @@ export default StyleSheet.create({
     marginLeft: 30,
     borderRadius: 2
   },
+  emergencyCallButton: {
+    position: 'absolute',
+    alignSelf: 'flex-end',
+    top: 170,
+    width: 80,
+    height: 80,
+    borderRadius: 60,
+    right: 10,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  callAmbulance: {
+    position: 'absolute',
+    alignSelf: 'flex-end',
+    bottom: 0,
+    marginVertical: 10,
+    width: '100%'
+  },
+  rippleLoader: {
+    width: '100%',
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(174,182,191,0.8)',
+    height: height - 190,
+    top: 50
+  },
+  selfCheckBoxWrapper: {
+    height: 24,
+    width: 24,
+    borderRadius: 12,
+    borderWidth: 2,
+    borderColor: '#2d76d4',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 10
+  },
+  otherselfWrapper: {
+    flex: 1,
+    display: 'flex',
+    backgroundColor: 'rgb(255,255,255)',
+    marginRight: 30,
+    marginLeft: 30,
+    borderRadius: 2
+  },
+  checkboxstyles: {
+    height: 12,
+    width: 12,
+    borderRadius: 6,
+    backgroundColor: '#2d76d4'
+  },
+  cancelSubmitStyle: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 5,
+    width: '45%',
+    height: 50,
+    backgroundColor: '#2d76d4',
+    borderRadius: 2
+  },
+  searchBar: {
+    width: '96%',
+    height: 50,
+    padding: 5,
+    borderRadius: 5,
+    backgroundColor: '#fff',
+    elevation: 20,
+    position: 'absolute',
+    marginTop: 60
+  },
+  markerStyle: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 5,
+    borderColor: 'black',
+    display: 'flex',
+    flexDirection: 'row'
+  },
   checkBox: {
     height: 24,
     width: 24,

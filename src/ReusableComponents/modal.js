@@ -1,176 +1,93 @@
 import React, { Component } from 'react';
-import {
-  Modal,
-  Text,
-  TouchableHighlight,
-  TouchableWithoutFeedback,
-  View,
-  Dimensions
-} from 'react-native';
+import { Modal, Text, TouchableHighlight, TouchableWithoutFeedback, View, Dimensions } from 'react-native';
 import Events from 'react-native-simple-events';
-
-// import { Image } from '../components';
-
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
-// import { isFunction, TOTAL_TOOLBAR_HEIGHT, LOG, playDopSound } from '../utilities';
-
-// import TempStorage from '../utilities/tempStorage';
-
 export function Alert(data = {}) {
   let {
     emotion = 'normal',
-
     title = 'Alert',
-
     message = 'Your custom message',
-
     buttons = [
       {
         title: 'CANCEL',
-
         onPress: () => {},
-
         icon: false,
-
         backgroundColor: 'blue'
       },
-
       {
         title: 'OK',
-
         onPress: () => {},
-
         icon: false,
-
         backgroundColor: 'blue'
       }
     ],
-
     ...otherProps
   } = data;
-
   Events.trigger('showAlert', {
     message,
-
     title,
-
     buttons,
-
     emotion,
-
     ...otherProps
   });
 }
-
 export default class ModalView extends Component {
   constructor(props) {
     super(props);
-
-    let {
-      title = false,
-      message = false,
-      buttons = false,
-      show = false,
-      emotion = false
-    } = props || {};
-
+    let { title = false, message = false, buttons = false, show = false, emotion = false } = props || {};
     this.state = {
       title: title || 'Alert',
-
       message: message || 'Your custom message',
-
       buttons: buttons || [
         {
           title: 'CANCEL',
-
           onPress: () => {},
-
           icon: false,
-
           backgroundColor: '#1A5276'
         },
-
         {
           title: 'OK',
-
           onPress: () => {},
-
           icon: false,
-
           backgroundColor: '#1A5276'
         }
       ],
-
       show: show,
-
       emotion: emotion || 'normal'
     };
   }
-
   componentWillMount() {
     let { id = null } = this.props;
-
     Events.on('showAlert', id ? id : '123456789', this.onRequest);
-
     Events.on('upDateAlert', id ? id : '123456789', this.upDateAlert);
   }
-
   componentWillUnmount() {
     let { id = null } = this.props;
-
     Events.remove('showAlert', id ? id : '123456789');
-
     Events.remove('upDateAlert', id ? id : '123456789');
   }
-
   onRequest = options => {
-    let {
-      message,
-      title,
-      show = true,
-      buttons = [],
-      emotion = 'normal'
-    } = options;
+    let { message, title, show = true, buttons = [], emotion = 'normal' } = options;
 
     if (message) {
       this.setState({ title, message, buttons, show, emotion });
     }
   };
-
   upDateAlert = options => {
     this.setState({ ...options });
   };
-
   closeModal = () => {
     this.setState({ show: false });
   };
-
   render() {
     let { backgroundColor, animationType } = this.props;
-
     let { title, message, buttons, show, emotion = 'normal' } = this.state;
-
     const height = Dimensions.get('window').height;
-
-    let alertGuy = [
-      'angry',
-      'confused',
-      'happy',
-      'normal',
-      'sad',
-      'surprized'
-    ].includes(emotion)
+    let alertGuy = ['angry', 'confused', 'happy', 'normal', 'sad', 'surprized'].includes(emotion)
       ? `icon_guy_${emotion}`
       : 'icon_guy_normal';
-
     return (
-      <Modal
-        transparent
-        visible={show}
-        animationType={animationType || 'fade'}
-        onRequestClose={this.closeModal}
-      >
+      <Modal transparent visible={show} animationType={animationType || 'fade'} onRequestClose={this.closeModal}>
         <TouchableWithoutFeedback>
           <View
             style={{
@@ -184,32 +101,16 @@ export default class ModalView extends Component {
             <View
               style={[
                 {
-                  // borderWidth: 5,
-                  // borderColor: 'grey',
-                  // elevation: 10,
                   borderRadius: 15,
                   width: '90%',
-
                   height: height - 200,
-
                   backgroundColor: '#FDFEFE'
                 }
               ]}
             >
               <View
                 style={{
-                  // elevation: 24,
-
-                  // shadowColor: "#000",
-
-                  // shadowOffset: { height: 12, width: 6 },
-
-                  // shadowRadius: 12,
-
-                  // shadowOpacity: 0.5,
-
                   justifyContent: 'center',
-
                   alignItems: 'center',
                   padding: 0,
                   margin: 0,
@@ -219,22 +120,7 @@ export default class ModalView extends Component {
                 <View style={{ height: 50 }} />
                 <View style={{ padding: 24, flex: 1 }}>
                   <View style={{ flex: 0.5 }} />
-                  <View
-                    style={{ justifyContent: 'center', alignItems: 'center' }}
-                  >
-                    {/* <Image
-										source={{ uri: alertGuy }}
-										style={{
-											height: 96,
-											width: 96,
-											borderRadius: 48,
-											borderWidth: 0.5,
-											borderColor: '#ccc'
-										}}
-									/> */}
-                  </View>
-
-                  {/* -------------------------- Title --------------------------------- */}
+                  <View style={{ justifyContent: 'center', alignItems: 'center' }} />
                   <View
                     style={{
                       justifyContent: 'center',
@@ -243,15 +129,8 @@ export default class ModalView extends Component {
                       marginBottom: 40
                     }}
                   >
-                    <Text
-                      style={[
-                        { textAlign: 'center', color: 'grey', fontSize: 25 }
-                      ]}
-                    >
-                      {title}
-                    </Text>
+                    <Text style={[{ textAlign: 'center', color: 'grey', fontSize: 25 }]}>{title}</Text>
                   </View>
-                  {/* -------------------------- message --------------------------------- */}
                   <View style={{ flex: 4 }}>
                     <Text
                       style={{
@@ -268,8 +147,6 @@ export default class ModalView extends Component {
                   </View>
                 </View>
               </View>
-
-              {/* -------------------------- Actions --------------------------------- */}
               <View
                 style={{
                   flexDirection: 'row',
@@ -277,7 +154,6 @@ export default class ModalView extends Component {
                   paddingVertical: 8,
                   marginHorizontal: 24,
                   marginBottom: 46
-                  // backgroundColor: 'blue'
                 }}
               >
                 {buttons.map((button, index) =>
@@ -305,7 +181,6 @@ export default class ModalView extends Component {
                   ) : (
                     <TouchableHighlight
                       key={index}
-                      // underlayColor={'#e6e6e6'}
                       onPress={() => {
                         button.onPress ? button.onPress() : {};
                         this.closeModal();

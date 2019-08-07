@@ -2,20 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Store from '../../redux/store/index';
 import store from '../../utilities/store';
-import { saveSubscriptionInfo } from '../../utilities/socket';
-import {
-  setUserToken,
-  setUser,
-  setPatient,
-  setUserRefreshToken
-} from '../../redux/index';
+import { setUserToken, setUser, setUserRefreshToken } from '../../redux/index';
 import { addAmbulanceRequest, addTrip } from '../../redux/actions';
-import { Platform, Linking, View, Text, AppState } from 'react-native';
+import { Linking, View } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import * as Storage from '../../utilities/asyncStorage';
 import { callApi } from '../../utilities/serverApi';
 import { timeCalculate } from '../../utilities/timeCalculate';
-import axios from 'axios';
 import { addUser, addUserToken } from '../../redux/actions/index';
 class oauth extends Component {
   constructor(props) {
@@ -34,17 +27,12 @@ class oauth extends Component {
     setTimeout(() => {
       SplashScreen.hide();
     }, 1000);
-    console.log('inside oauth ');
   }
 
   navigateTo = url => {
-    console.log('Inside navigate url', url);
     if (url === null) {
-      console.log('url', url);
       return;
     }
-    console.log('Linking ', url);
-    // E
     const { navigate } = this.props.navigation;
     const route = url.replace(/.*?:\/\//g, '');
     const routeParams = route.split('/');
@@ -68,9 +56,6 @@ class oauth extends Component {
       });
     }
   };
-  componentWillUnmount() {
-    // Linking.removeAllListeners("url");
-  }
   tryLogin = async () => {
     const { navigate } = this.props.navigation;
     try {
@@ -82,7 +67,6 @@ class oauth extends Component {
         token = data;
       });
       await Storage.get('refreshToken').then(data => {
-        console.log('data in asynstorage', data);
         expireTime = data.expiresIn;
         refreshToken = data.refreshToken;
       });
@@ -90,12 +74,9 @@ class oauth extends Component {
         console.log('user data', data);
         email = data.email;
       });
-      console.log('after function', token);
       if (token === null) {
         throw Error('Token not found. Log-in again to proceed.');
       } else {
-        // Store.getInstance().setKeyWithRef('Login', this.props.navigation);
-        console.log('inside callapi');
         let headers = {
           'content-type': 'application/json',
           Accept: 'application/json',
@@ -148,13 +129,10 @@ class oauth extends Component {
                 Accept: 'application/json',
                 authorization: `Bearer ${response.data.accessToken}`
               };
-              console.log('rsefresh token', response);
               setUserToken(response.data.accessToken);
               setUserRefreshToken(response.data);
               callApi('get', 'v1/auth/isLogin', {}, headers)
                 .then(response => {
-                  console.log('>>>>>>>>>>>>>>>>>>>>>>>>', response);
-                  console.warn('token', this.props.token);
                   Promise.all([
                     callApi(
                       'post',
@@ -183,27 +161,18 @@ class oauth extends Component {
                     )
                   ])
                     .then(response => {
-                      console.log('Response>>>>>>>>>>', response);
-                      response[0].data.length != 0 &&
-                        Store.dispatch(addTrip(response[0].data[0]));
-                      response[1].data.length != 0 &&
-                        Store.dispatch(
-                          addAmbulanceRequest(response[1].data[0])
-                        );
-                      console.log('response in auth', response);
+                      response[0].data.length != 0 && Store.dispatch(addTrip(response[0].data[0]));
+                      response[1].data.length != 0 && Store.dispatch(addAmbulanceRequest(response[1].data[0]));
                       navigate('Drawer');
                     })
                     .catch(error => {
                       console.log('error>>>>>', error);
                     });
                   setUser(response.data.userTransformed);
-                  console.log('response in auth', response);
                   navigate('Drawer');
                 })
                 .catch(error => {
-                  console.log('error token expired', error);
                   if (error.response.status === 401) navigate('Login');
-                  console.log('Error', error);
                 });
             })
             .catch(error => {
@@ -244,10 +213,8 @@ class oauth extends Component {
               ])
                 .then(response => {
                   console.log('Response>>>>>>>>>>', response);
-                  response[0].data.length != 0 &&
-                    Store.dispatch(addTrip(response[0].data[0]));
-                  response[1].data.length != 0 &&
-                    Store.dispatch(addAmbulanceRequest(response[1].data[0]));
+                  response[0].data.length != 0 && Store.dispatch(addTrip(response[0].data[0]));
+                  response[1].data.length != 0 && Store.dispatch(addAmbulanceRequest(response[1].data[0]));
                   console.log('response in auth', response);
                   navigate('Drawer');
                 })
@@ -274,7 +241,6 @@ class oauth extends Component {
   }
 }
 function mapStateToProps(state) {
-  console.log('State in map state', state);
   return {
     accessToken: state.token,
     user: state.user

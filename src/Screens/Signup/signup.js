@@ -20,7 +20,7 @@ export default class Login extends SignupBase {
         <ScrollView contentContainerStyle={style.f1} keyboardShouldPersistTaps="always">
           <ImageBackground source={{ uri: 'asset:/icon/group_2.png' }} style={[style.d1]} resizeMode={'stretch'}>
             <View style={style.d3}>
-              <Image source={{ uri: 'asset:/icon/group.png' }} style={[style.a1, style.d2]} />
+              <Image source={{ uri: 'asset:/icon/group.jpg' }} style={[style.a1, style.d2]} />
             </View>
             <View>
               <View style={[style.d4]}>
@@ -171,13 +171,6 @@ export default class Login extends SignupBase {
               </View>
               <Text style={{ color: 'red' }}>{this.state.confirmpassworderror}</Text>
               <View style={style.d4}>
-                {/* <View> */}
-                {/* <Image
-                  source={{ uri: 'mipmap/relation' }}
-                  style={{ width: 40, height: 20, marginVertical: 30 }}
-                  resizeMode="contain"
-                /> */}
-                {/* </View> */}
                 <View style={{ marginVertical: 30, marginHorizontal: 5, marginRight: 10, marginBottom: 10 }}>
                   <Icon name="gender-male-female" size={25} color="rgb(255,255,255)" />
                 </View>
@@ -198,7 +191,6 @@ export default class Login extends SignupBase {
                       backgroundColor: '#2d76d4',
                       marginLeft: 20
                     }}
-                    // dropdownTextHighlightStyle={{ backgroundColor: '#34495E' }}
                   >
                     <Text style={{ marginLeft: 10, color: 'rgb(255,255,255)' }}>
                       {this.state.gender != null ? this.state.gender : 'Gender'}
@@ -208,11 +200,6 @@ export default class Login extends SignupBase {
               </View>
               <Text style={{ color: 'red' }}>{this.state.gendererror}</Text>
               <View style={style.d4}>
-                {/* <Image
-                  source={{ uri: 'mipmap/blood' }}
-                  style={{ width: 40, height: 20, marginVertical: 30 }}
-                  resizeMode="contain"
-                /> */}
                 <View style={{ marginVertical: 30, marginHorizontal: 5, marginRight: 10, marginBottom: 10 }}>
                   <Icons name="whatshot" size={25} color="rgb(255,255,255)" />
                 </View>
@@ -233,7 +220,6 @@ export default class Login extends SignupBase {
                       backgroundColor: '#2d76d4',
                       marginLeft: 30
                     }}
-                    // dropdownTextHighlightStyle={{ backgroundColor: '#34495E' }}
                   >
                     <Text style={{ marginLeft: 10, color: 'rgb(255,255,255)' }}>
                       {this.state.bloodGroup != null ? this.state.bloodGroup : 'Blood Group'}
@@ -263,12 +249,6 @@ export default class Login extends SignupBase {
                 <Text style={[style.f10, { color: 'white' }]}>SIGN IN</Text>
               </Button>
             </View>
-            {/* <GenericModal
-              modalVisible={this.state.modalVisible}
-              firstTitle={'Ok'}
-              secondTitle={'Resend Email'}
-              firstOnPress={this.setModalVisible}
-            /> */}
           </ImageBackground>
         </ScrollView>
       </KeyboardAvoidingView>

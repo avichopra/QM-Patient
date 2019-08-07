@@ -1,13 +1,5 @@
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, Image } from 'react-native';
-import {
-  CirclesLoader,
-  PulseLoader,
-  TextLoader,
-  DotsLoader,
-  RippleLoader
-} from 'react-native-indicator';
-
 export default (CallAmbulance = props => {
   const { onCancelRequest = () => {} } = props;
   return (

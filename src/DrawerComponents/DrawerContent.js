@@ -13,7 +13,6 @@ import Store from '../redux/store/index';
 import { cancelAllRequest } from '../redux/actions/index';
 class DrawerContent extends Component {
   navigateToScreen = (route, status) => {
-    // console.warn('>>>>>>navigation', status);
     const navigateAction = StackActions.reset({
       index: 0,
       actions: [NavigationActions.navigate({ routeName: route, params: { status } })]
@@ -51,57 +50,33 @@ class DrawerContent extends Component {
             <Ellipse cx={150} cy={45} rx={200} ry={110} fill={'#E8F0FD'} />
           </Svg>
         </View>
-        <DrawerItem
-          title={'Call Ambulance'}
-          navigateToScreen={this.navigateToScreen}
-          route={'Home'}
-          // icon={<Foundation name={'home'} size={25} color={'#383838'} />
-          name={'home'}
-        />
+        <DrawerItem title={'Call Ambulance'} navigateToScreen={this.navigateToScreen} route={'Home'} name={'home'} />
         <DrawerItem
           title={'My Profile'}
           navigateToScreen={this.navigateToScreen}
           route={'MyProfile'}
-          // icon={<FontAwesome name={'user'} size={25} color={'#383838'} />}
           name={'profile'}
         />
         <DrawerItem
           title={'Change Password'}
           navigateToScreen={this.navigateToScreen}
           route={'ChangePassword'}
-          // icon={<Octicons name={'key'} size={25} color={'#383838'} />}
           name={'drawer_key'}
         />
-        <DrawerItem
-          title={'History'}
-          navigateToScreen={this.navigateToScreen}
-          route={'History'}
-          // icon={<FontAwesome name={'history'} size={25} color={'#383838'} />}
-          name={'history'}
-        />
-        {/* <TouchableOpacity onPress={this.onPressLogout}> */}
+        <DrawerItem title={'History'} navigateToScreen={this.navigateToScreen} route={'History'} name={'history'} />
         <DrawerItem
           title={'Blood Bank'}
           navigateToScreen={this.navigateToScreen}
           route={'BloodBank'}
-          // icon={<FontAwesome name={'history'} size={25} color={'#383838'} />}
           name={'bloodbank'}
         />
         <DrawerItem
           title={'Hospital'}
           navigateToScreen={this.navigateToScreen}
           route={'BloodBank'}
-          // icon={<FontAwesome name={'history'} size={25} color={'#383838'} />}
           name={'hospital_1'}
         />
-        <DrawerItem
-          title={'Logout'}
-          navigateToScreen={this.onPressLogout}
-          route={'Logout'}
-          // icon={<FontAwesome name={'history'} size={25} color={'#383838'} />}
-          name={'logout'}
-        />
-        {/* </TouchableOpacity> */}
+        <DrawerItem title={'Logout'} navigateToScreen={this.onPressLogout} route={'Logout'} name={'logout'} />
         <View style={{ position: 'absolute', width: '100%', alignItems: 'center' }}>
           <TouchableOpacity
             style={{
@@ -112,8 +87,6 @@ class DrawerContent extends Component {
               alignSelf: 'center',
               alignItems: 'center',
               marginTop: 20
-              // borderColor: 'white',
-              // borderWidth: 2
             }}
             onPress={() => {
               this.navigateToScreen('MyProfile');
@@ -133,10 +106,8 @@ class DrawerContent extends Component {
                 backgroundColor: 'transparent',
                 borderWidth: 2,
                 borderColor: 'white',
-                // borderColor: 'white',
                 borderWidth: 2
               }}
-              // resizeMode={'contain'}
             />
           </TouchableOpacity>
           <View style={{ width: '50%', alignItems: 'center' }}>

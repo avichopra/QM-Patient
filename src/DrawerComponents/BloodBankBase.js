@@ -25,7 +25,6 @@ export default class HomeBase extends Component {
       interval: 10000,
       fastInterval: 5000
     }).then(data => {
-      console.warn('location>>>>>>>>>>>>', data);
       RNGooglePlaces.getCurrentPlace().then(results => {
         const { latitude, longitude } = results[0];
         this.fetchData(latitude, longitude);
@@ -34,7 +33,6 @@ export default class HomeBase extends Component {
           longitude,
           loading: false
         });
-        console.warn('>>>>', results);
       });
     });
   };
@@ -55,8 +53,6 @@ export default class HomeBase extends Component {
     callApi('post', 'v1/daffo/dispatch/getBloodBank', data, headers)
       .then(async response => {
         let coordinate;
-        // Store.dispatch(addAmbulanceRequest(response.data.requestData));
-        console.log('>>>>responses>>', response.data);
         if (response.data.length != 0) {
           if (!params.status) {
             this.setState({ bloodBank: response.data });
@@ -64,7 +60,6 @@ export default class HomeBase extends Component {
               return { latitude: data.bloodBankLocation[0], longitude: data.bloodBankLocation[1] };
             });
           } else {
-            console.log('>>>>>>hospital location>>', response);
             this.setState({ hospital: response.data });
             coordinate = await response.data.map(data => {
               return { latitude: data.Location[0], longitude: data.Location[1] };
@@ -74,8 +69,6 @@ export default class HomeBase extends Component {
         } else {
           this.setState({ hospital: null, bloodBank: null });
         }
-
-        // console.log('response>>>>', coordinate);
       })
       .catch(error => {
         console.warn('Error>>>>', error);
@@ -86,7 +79,6 @@ export default class HomeBase extends Component {
   }
   componentDidMount() {
     const { params } = this.props.navigation.state;
-    // console.warn('>>>>>navigation params>>>', this.props.navigation.state.params.status);
     params.status && this.setState({ promptPriGov: true });
     this.checkLocationEnabled();
     GPSState.addListener(status => {
@@ -94,7 +86,6 @@ export default class HomeBase extends Component {
         this.checkLocationEnabled();
       }
     });
-    // console.warn('location>>>>', this.props.location);
   }
   privateSelected = () => {
     this.setState({ PriSelected: !this.state.PriSelected, govtSelected: !this.state.govtSelected }, () => {

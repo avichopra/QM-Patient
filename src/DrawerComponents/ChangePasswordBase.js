@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Keyboard } from 'react-native';
-import Axios from 'axios';
+import { Keyboard } from 'react-native';
 import { callApi } from '../utilities/serverApi';
 import { checkEmpty } from '../utilities/validation';
 import { Alert } from '../../src/ReusableComponents/modal';
@@ -24,11 +23,7 @@ export default class MyProfile extends Component {
     this.setState({ oldPassword: '' });
   };
   onHandleChange = (name, value) => {
-    let {
-      oldPasswordError,
-      newPasswordError,
-      confirmNewPasswordError
-    } = this.state;
+    let { oldPasswordError, newPasswordError, confirmNewPasswordError } = this.state;
     if (oldPasswordError !== '' && name === 'oldPassword') {
       this.state.oldPasswordError = '';
     }
@@ -95,9 +90,7 @@ export default class MyProfile extends Component {
   };
   checkLength = (errorField, field) => {
     if (this.state[field].length < 6) {
-      this.state[
-        errorField
-      ] = `Password length should not be less than 6 characters`;
+      this.state[errorField] = `Password length should not be less than 6 characters`;
       this.setState({});
       return true;
     } else {
@@ -109,35 +102,21 @@ export default class MyProfile extends Component {
     let { oldPassword, newPassword, confirmNewPassword } = this.state;
     let oldPasswordError, newPasswordError, confirmNewPasswordError;
     oldPasswordError = checkEmpty(oldPassword);
-    oldPasswordError && true
-      ? this.setError('oldPasswordError', 'Old Password')
-      : '';
+    oldPasswordError && true ? this.setError('oldPasswordError', 'Old Password') : '';
     newPasswordError = checkEmpty(newPassword);
-    newPasswordError && true
-      ? this.setError('newPasswordError', 'New Password')
-      : '';
+    newPasswordError && true ? this.setError('newPasswordError', 'New Password') : '';
     confirmNewPasswordError = checkEmpty(confirmNewPassword);
-    confirmNewPasswordError && true
-      ? this.setError('confirmNewPasswordError', 'Confirm New Password')
-      : '';
+    confirmNewPasswordError && true ? this.setError('confirmNewPasswordError', 'Confirm New Password') : '';
 
     console.log('newpassword error', newPasswordError && false);
 
-    oldPasswordError === false
-      ? (oldPasswordError = this.checkLength('oldPasswordError', 'oldPassword'))
-      : '';
+    oldPasswordError === false ? (oldPasswordError = this.checkLength('oldPasswordError', 'oldPassword')) : '';
 
-    newPasswordError === false
-      ? (newPasswordError = this.checkLength('newPasswordError', 'newPassword'))
-      : '';
-    confirmNewPasswordError === false
-      ? this.checkLength('confirmNewPasswordError', 'confirmNewPassword')
-      : '';
+    newPasswordError === false ? (newPasswordError = this.checkLength('newPasswordError', 'newPassword')) : '';
+    confirmNewPasswordError === false ? this.checkLength('confirmNewPasswordError', 'confirmNewPassword') : '';
 
     newPasswordError === false ? (newPasswordError = this.checkMatch()) : '';
 
-    oldPasswordError === false && newPasswordError === false
-      ? this.setOldPassword()
-      : '';
+    oldPasswordError === false && newPasswordError === false ? this.setOldPassword() : '';
   };
 }
